@@ -176,6 +176,18 @@ MariaDB [gregs_list]> INSERT INTO my_contacts(
 Query OK, 1 row affected (0.005 sec)
 ```
 
+참고로 내가 넣은 자료를 확인하려면 `SELECT`을 사용하면 된다. 자세한 내용을 2장에서 나온다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+1 row in set (0.000 sec)
+```
+
 ## 연필을 깎으며
 
 문제가 있는 INSERT 문을 쳐보고 에러를 확인해보자.
