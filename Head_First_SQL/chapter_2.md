@@ -93,6 +93,19 @@ VALUES
 ```sql
  SELECT drink_name FROM easy_drinks WHERE main IS NULL;
 ```
+## 문자 일부만으로 데이터 찾기 (LIKE)
+
+```sql
+SELECT drink_name FROM easy_drinks WHERE main LIKE '%juice';
+```
+
+### main 카테고리에 juice로 끝나는 데이터 찾기 (%: 다수의 불특정 문자, _ : 하나의 불특정 문자)
+
+## 사이 값 찾기
+
+```sql
+ SELECT drink_name, second FROM easy_drinks WHERE amount1 BETWEEN 1 AND 1.5;
+```
 
 ## OR 여러 개 == IN
 
@@ -100,8 +113,11 @@ VALUES
 SELECT drink_name FROM easy_drinks WHERE main = 'soda' OR main = 'sprite' OR main = 'tonic water';
 SELECT drink_name FROM easy_drinks WHERE main IN ('soda', 'sprite','tonic water');
 ```
-## 사이 값 찾기
+
+## NOT 사용법
 
 ```sql
- SELECT drink_name, second FROM easy_drinks WHERE amount1 BETWEEN 1 AND 1.5;
+SELECT drink_name FROM easy_drinks WHERE main NOT IN ('soda', 'sprite','tonic water');
+SELECT drink_name, second FROM easy_drinks WHERE NOT amount1 BETWEEN 1 AND 1.5;
+SELECT drink_name FROM easy_drinks WHERE NOT main LIKE '%juice';
 ```
