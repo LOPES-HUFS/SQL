@@ -144,9 +144,44 @@ VALUES
 
 ## 특정 열의 값만 가져오기
 
+`SELECT * FROM easy_drinks`은 easy_drinks의 전체 열을 보여준다. 그런데 다음과 같이 하면, easy_drinks의 전체 자료 중 특정 열만 반환한다.
+
 ```sql
-SELECT drink_name, main, second FROM easy_drinks; # 특정 열 전체보기
-SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda'; # 해당 조건의 열 전체보기
+SELECT drink_name, main, second FROM easy_drinks;
+```
+
+결과는 다음과 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT drink_name, main, second FROM easy_drinks;
++------------------+--------------+-----------------+
+| drink_name       | main         | second          |
++------------------+--------------+-----------------+
+| Blackthorn       | tonic water  | pineapple juice |
+| Blue moon        | soda         | blueberry juice |
+| Oh my Gosh       | peach nectar | pineapple juice |
+| Lime  Fizz       | sprite       | lime juice      |
+| Kiss on the Lips | cherry juice | pineapple juice |
++------------------+--------------+-----------------+
+5 rows in set (0.000 sec)
+```
+
+main열에 soda가 들어 있는 drink_name, main, second 열만 보고 싶다면, 다음과 같이 하면 된다.
+
+```sql
+SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda';
+```
+
+결과는 다음과 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda';
++------------+------+-----------------+
+| drink_name | main | second          |
++------------+------+-----------------+
+| Blue moon  | soda | blueberry juice |
++------------+------+-----------------+
+1 row in set (0.001 sec)
 ```
 
 ## 쿼리들의 결합 (AND, OR)
