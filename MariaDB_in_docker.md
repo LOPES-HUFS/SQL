@@ -2,7 +2,7 @@
 
 ## Docker를 사용해서 MariaDB 설치하기
 
-다음 링크를 참고합니다.
+[Docker를 사용해서 MariaDB을 설치하기 – Epistemology](http://www.epistemology.pe.kr/2020/09/26/1293) 참고하여 설치합니다.
 
 ## MariaDB 사용하기
 
