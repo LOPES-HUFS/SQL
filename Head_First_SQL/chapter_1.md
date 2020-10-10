@@ -188,7 +188,7 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 1 row in set (0.000 sec)
 ```
 
-## 연필을 깎으며 - 에러 안나는 코드도 추가해서 
+## 연필을 깎으며
 
 문제가 있는 INSERT 문을 쳐보고 에러를 확인해보자.
 
