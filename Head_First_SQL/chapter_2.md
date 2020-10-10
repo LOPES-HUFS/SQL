@@ -80,8 +80,28 @@ SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
 ### 음료 이름이 A, B로 시작하는 음료만 보여준다.
 
 ## NULL 찾기
-### NULL 
+### NULL 포함된 데이터 추가하기
+
+```sql
 INSERT INTO easy_drinks 
 VALUES
 ('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL)
+```
 
+### NULL 포함된 데이터 찾기
+
+```sql
+ SELECT drink_name FROM easy_drinks WHERE main IS NULL;
+```
+
+## OR 여러 개 == IN
+
+```sql
+SELECT drink_name FROM easy_drinks WHERE main = 'soda' OR main = 'sprite' OR main = 'tonic water';
+SELECT drink_name FROM easy_drinks WHERE main IN ('soda', 'sprite','tonic water');
+```
+## 사이 값 찾기
+
+```sql
+ SELECT drink_name, second FROM easy_drinks WHERE amount1 BETWEEN 1 AND 1.5;
+```
