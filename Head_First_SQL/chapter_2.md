@@ -93,7 +93,7 @@ SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
 ```sql
 INSERT INTO easy_drinks
 VALUES
-('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL)
+('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL);
 ```
 
 ### NULL 포함된 데이터 찾기
