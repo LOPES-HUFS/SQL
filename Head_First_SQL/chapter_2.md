@@ -26,7 +26,7 @@ VALUES
 ('Kiss on the Lips' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw');
 ```
 
-입력한 자료는 다음과 같다.
+입력한 자료는 다음과 같다. 참고로 `SELECT`를 사용하면 입력한 자료를 볼 수 있다.  `*`를 사용하는 이유는 `easy_drinks` 데이블의 모든 열을 보여달라는 것이다.
 
 ```sql
 MariaDB [gregs_list]> SELECT * FROM easy_drinks;
@@ -49,8 +49,29 @@ MariaDB [gregs_list]> SELECT * FROM easy_drinks;
 
 ```sql
 SELECT * FROM easy_drinks WHERE main = 'sprite';
+```
+
+결과는 다음과 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE main = 'sprite';
++------------+--------+---------+------------+---------+-------------------------------------------+
+| drink_name | main   | amount1 | second     | amount2 | directions                                |
++------------+--------+---------+------------+---------+-------------------------------------------+
+| Lime  Fizz | sprite |    1.50 | lime juice |    1.00 | stir with ice, strain into cocktail glass |
++------------+--------+---------+------------+---------+-------------------------------------------+
+1 row in set (0.001 sec)
+```
+
+```sql
 SELECT * FROM easy_drinks WHERE main > 'soda';
+```
+
+```sql
 SELECT * FROM easy_drinks WHERE amount2 > '1.00';
+```
+
+```sql
 SELECT * FROM easy_drinks WHERE amount2 > 1.00;
 ```
 
