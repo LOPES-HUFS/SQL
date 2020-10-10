@@ -16,7 +16,7 @@ CREATE TABLE easy_drinks(drink_name VARCHAR(50), main VARCHAR(30), amount1 DEC(3
 
 ```sql
 INSERT INTO easy_drinks  
-VALUES 
+VALUES
 ('Blackthorn',  'tonic water', 1.5, 'pineapple juice', 1 ,'stir with ice, strain into cocktail glass with lemon twist'),
 ('Blue moon' , 'soda', 1.5, 'blueberry juice', 0.75, 'stir with ice, strain into cocktail glass with lemon twist'),
 ('Oh my Gosh' , 'peach nectar', 1, 'pineapple juice', 1, 'stir with ice, strain into shot glass'),
@@ -25,7 +25,8 @@ VALUES
 ```
 
 ## 특정 조건 찾기
-### DEC의 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함
+
+DEC의 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함
 
 ```sql
 SELECT * FROM easy_drinks WHERE main = 'sprite';
@@ -34,7 +35,8 @@ SELECT * FROM easy_drinks WHERE amount2 > 1.00;
 ```
 
 ## 작은따옴표가 포함된 정보
-### 내용 안의 작은따옴표에 \ 붙여서 추가하기
+
+내용 안의 작은따옴표에 \ 붙여서 추가하기
 
 ```sql
 INSERT INTO easy_drinks
@@ -50,6 +52,7 @@ SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda'; # 해당 �
 ```
 
 ## 쿼리들의 결합 (AND, OR)
+
 ### AND
 
 ```sql
@@ -65,6 +68,7 @@ SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
 ```
 
 ## 비교 연산자
+
 = : 같다  
 <> : 같지 않다  
 < : 조건보다 작다 (미만)  
@@ -77,13 +81,15 @@ SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
 ```sql
 SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
 ```
-### 음료 이름이 A, B로 시작하는 음료만 보여준다.
+
+ 음료 이름이 A, B로 시작하는 음료만 보여준다.
 
 ## NULL 찾기
+
 ### NULL 포함된 데이터 추가하기
 
 ```sql
-INSERT INTO easy_drinks 
+INSERT INTO easy_drinks
 VALUES
 ('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL)
 ```
@@ -93,13 +99,14 @@ VALUES
 ```sql
  SELECT drink_name FROM easy_drinks WHERE main IS NULL;
 ```
+
 ## 문자 일부만으로 데이터 찾기 (LIKE)
 
 ```sql
 SELECT drink_name FROM easy_drinks WHERE main LIKE '%juice';
 ```
 
-### main 카테고리에 juice로 끝나는 데이터 찾기 (%: 다수의 불특정 문자, _ : 하나의 불특정 문자)
+ main 카테고리에 juice로 끝나는 데이터 찾기 (%: 다수의 불특정 문자, _ : 하나의 불특정 문자)
 
 ## 사이 값 찾기
 
