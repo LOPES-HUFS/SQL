@@ -1,42 +1,68 @@
 # 2장 SELECT 문: 데이터 가져오기의 축복
 
+## 데이터베이스 접속하기
+
+```sql
+USE gregs_list;
+```
+
 ## 테이블 생성하기
+
+```sql
 CREATE TABLE easy_drinks(drink_name VARCHAR(50), main VARCHAR(30), amount1 DEC(3,2), second VARCHAR(50), amount2 DEC(3,2), directions VARCHAR(100));
+```
 
 ## 테이블 데이터 추가하기
+
+```sql
 INSERT INTO easy_drinks  
 VALUES 
 ('Blackthorn',  'tonic water', 1.5, 'pineapple juice', 1 ,'stir with ice, strain into cocktail glass with lemon twist'),
 ('Blue moon' , 'soda', 1.5, 'blueberry juice', 0.75, 'stir with ice, strain into cocktail glass with lemon twist'),
 ('Oh my Gosh' , 'peach nectar', 1, 'pineapple juice', 1, 'stir with ice, strain into shot glass'),
 ('Lime  Fizz' , 'sprite', 1.5, 'lime juice', 1, 'stir with ice, strain into cocktail glass'),
-('Kiss on the Lips' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw')
+('Kiss on the Lips' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw');
+```
 
 ## 특정 조건 찾기
 ### DEC의 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함
+
+```sql
 SELECT * FROM easy_drinks WHERE main = 'sprite';
 SELECT * FROM easy_drinks WHERE main > 'soda';
 SELECT * FROM easy_drinks WHERE amount2 > 1.00;
+```
 
 ## 작은따옴표가 포함된 정보
 ### 내용 안의 작은따옴표에 \ 붙여서 추가하기
+
+```sql
 INSERT INTO easy_drinks
 VALUES
-('Indian\'s Summer' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw')
+('Indian\'s Summer' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw');
+```
 
 ## 특정 열의 값만 가져오기
 
+```sql
 SELECT drink_name, main, second FROM easy_drinks; # 열 전체보기
 SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda'; # 해당 조건의 열 전체보기
-
+```
 
 ## 쿼리들의 결합 (AND, OR)
 ### AND
+
+```sql
 SELECT drink_name FROM easy_drinks WHERE main = 'soda' AND amount1 > 1;
 SELECT drink_name, second FROM easy_drinks WHERE amount1 > 1 AND amount2 > 1;
+```
+
 ### OR
+
+```sql
 SELECT drink_name FROM easy_drinks WHERE main = 'soda' OR amount1 > 1;
 SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
+```
 
 ## 비교 연산자
 = : 같다  
@@ -47,3 +73,10 @@ SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
 >= : 조건과 같거나 크다 (이상)  
 
 ## 비교연산자로 문자열 처리
+
+```sql
+SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
+```
+### 음료 이름이 A, B로 시작하는 음료만 보여준다.
+
+## 
