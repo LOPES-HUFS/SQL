@@ -117,6 +117,21 @@ MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE amount2 > 1.00;
 
 참고로 데이터 타입이 `DEC`인 경우에는 작은 따옴표('')를 사용해도 바로 찾아주지만, 글자는 작은 따옴표('')를 필수로 넣어주어야 함
 
+`amount1`에서 `SELECT * FROM easy_drinks WHERE amount1 > 1.00`을 실행하면, 이 명령어를 더 잘 이해할 수 있다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE amount1 > 1.00;
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+| drink_name       | main         | amount1 | second          | amount2 | directions                                                 |
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+| Blackthorn       | tonic water  |    1.50 | pineapple juice |    1.00 | stir with ice, strain into cocktail glass with lemon twist |
+| Blue moon        | soda         |    1.50 | blueberry juice |    0.75 | stir with ice, strain into cocktail glass with lemon twist |
+| Lime  Fizz       | sprite       |    1.50 | lime juice      |    1.00 | stir with ice, strain into cocktail glass                  |
+| Kiss on the Lips | cherry juice |    2.00 | pineapple juice |    7.00 | serve over ice with straw                                  |
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+4 rows in set (0.000 sec)
+```
+
 ## 작은따옴표가 포함된 정보
 
 '은 SQL의 문법으로 사용되기 때문에 텍스트로 사용되는 경우 내용 안의 작은따옴표에 \ 붙여서 추가하기.
