@@ -39,11 +39,11 @@ SELECT drink_name FROM easy_drinks WHERE main = 'soda' OR amount1 > 1;
 SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
 
 ## 비교 연산자
-= : 같다
-<> : 같지 않다
-< : 조건보다 작다 (미만)
-> : 조건보다 크다 (초과)
-<= : 조건과 같거나 작다 (이하)
->= : 조건과 같거나 크다 (이상)
+= : 같다//
+<> : 같지 않다//
+< : 조건보다 작다 (미만)//
+> : 조건보다 크다 (초과)//
+<= : 조건과 같거나 작다 (이하)//
+>= : 조건과 같거나 크다 (이상)//
 
 ## 비교연산자로 문자열 처리
