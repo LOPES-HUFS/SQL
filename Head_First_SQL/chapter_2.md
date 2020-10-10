@@ -49,7 +49,7 @@ VALUES
 ## 특정 열의 값만 가져오기
 
 ```sql
-SELECT drink_name, main, second FROM easy_drinks; # 열 전체보기
+SELECT drink_name, main, second FROM easy_drinks; # 특정 열 전체보기
 SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda'; # 해당 조건의 열 전체보기
 ```
 
