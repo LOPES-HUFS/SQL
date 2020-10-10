@@ -79,4 +79,9 @@ SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
 ```
 ### 음료 이름이 A, B로 시작하는 음료만 보여준다.
 
-## 
+## NULL 찾기
+### NULL 
+INSERT INTO easy_drinks 
+VALUES
+('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL)
+
