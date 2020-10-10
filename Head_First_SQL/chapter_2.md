@@ -14,6 +14,8 @@ CREATE TABLE easy_drinks(drink_name VARCHAR(50), main VARCHAR(30), amount1 DEC(3
 
 ## 테이블 데이터 추가하기
 
+이번에는 한 줄씩 입력하지 말고 한꺼번에 입력하겠다.
+
 ```sql
 INSERT INTO easy_drinks  
 VALUES
@@ -22,6 +24,22 @@ VALUES
 ('Oh my Gosh' , 'peach nectar', 1, 'pineapple juice', 1, 'stir with ice, strain into shot glass'),
 ('Lime  Fizz' , 'sprite', 1.5, 'lime juice', 1, 'stir with ice, strain into cocktail glass'),
 ('Kiss on the Lips' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw');
+```
+
+입력한 자료는 다음과 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks;
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+| drink_name       | main         | amount1 | second          | amount2 | directions                                                 |
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+| Blackthorn       | tonic water  |    1.50 | pineapple juice |    1.00 | stir with ice, strain into cocktail glass with lemon twist |
+| Blue moon        | soda         |    1.50 | blueberry juice |    0.75 | stir with ice, strain into cocktail glass with lemon twist |
+| Oh my Gosh       | peach nectar |    1.00 | pineapple juice |    1.00 | stir with ice, strain into shot glass                      |
+| Lime  Fizz       | sprite       |    1.50 | lime juice      |    1.00 | stir with ice, strain into cocktail glass                  |
+| Kiss on the Lips | cherry juice |    2.00 | pineapple juice |    7.00 | serve over ice with straw                                  |
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+5 rows in set (0.001 sec)
 ```
 
 ## 특정 조건 찾기
