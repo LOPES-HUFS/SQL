@@ -165,7 +165,7 @@ SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
 SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
 ```
 
- 음료 이름이 A, B로 시작하는 음료만 보여준다.
+ 음료 이름이 A, B로 시작하는 음료만 보여준다. 만약 CB라면 CA로 시작하는 이름도 포함하게 된다.
 
 ## NULL 찾기
 
