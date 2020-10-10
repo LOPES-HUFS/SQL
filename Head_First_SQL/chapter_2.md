@@ -44,8 +44,7 @@ MariaDB [gregs_list]> SELECT * FROM easy_drinks;
 
 ## 특정 조건 찾기
 
-데이터 타입이 DEC인 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함  
-'*'은 해당 테이블의 모든 열을 반환함
+우선 `main`열에 `sprite`가 들어가는 자료를 찾아보자.
 
 ```sql
 SELECT * FROM easy_drinks WHERE main = 'sprite';
@@ -67,13 +66,43 @@ MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE main = 'sprite';
 SELECT * FROM easy_drinks WHERE main > 'soda';
 ```
 
+그러면 데이터 타입이 `DEC`인 `amount2`열에서는 `>`이 어떻게 작동할까? 한 번 해보자.
+
 ```sql
 SELECT * FROM easy_drinks WHERE amount2 > '1.00';
 ```
 
+결과는 다음과 같다. `amount2` 열에서 1.00보다 높은 값이 들어 있는 자료를 반환한다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE amount2 > '1.00';
++------------------+--------------+---------+-----------------+---------+---------------------------+
+| drink_name       | main         | amount1 | second          | amount2 | directions                |
++------------------+--------------+---------+-----------------+---------+---------------------------+
+| Kiss on the Lips | cherry juice |    2.00 | pineapple juice |    7.00 | serve over ice with straw |
++------------------+--------------+---------+-----------------+---------+---------------------------+
+1 row in set (0.001 sec)
+```
+
+그러면 작은 따옴표('')를 빼고 하면 어떻게 될까?
+
 ```sql
 SELECT * FROM easy_drinks WHERE amount2 > 1.00;
 ```
+
+결과는 다음과 같다. 위와 같은 결과가 나온다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE amount2 > 1.00;
++------------------+--------------+---------+-----------------+---------+---------------------------+
+| drink_name       | main         | amount1 | second          | amount2 | directions                |
++------------------+--------------+---------+-----------------+---------+---------------------------+
+| Kiss on the Lips | cherry juice |    2.00 | pineapple juice |    7.00 | serve over ice with straw |
++------------------+--------------+---------+-----------------+---------+---------------------------+
+1 row in set (0.001 sec)
+```
+
+참고로 데이터 타입이 `DEC`인 경우에는 작은 따옴표('')를 사용해도 바로 찾아주지만, 글자는 작은 따옴표('')를 필수로 넣어주어야 함
 
 ## 작은따옴표가 포함된 정보
 
