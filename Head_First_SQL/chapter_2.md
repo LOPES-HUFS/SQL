@@ -26,7 +26,7 @@ VALUES
 
 ## 특정 조건 찾기
 
-DEC의 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함
+데이터 타입이 DEC인 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함
 
 ```sql
 SELECT * FROM easy_drinks WHERE main = 'sprite';
