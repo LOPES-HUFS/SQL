@@ -17,6 +17,16 @@ CREATE DATABASE gregs_list;
 USE gregs_list;
 ```
 
+결과는 다음과 같습니다.
+
+```bash
+MariaDB [(none)]> CREATE DATABASE gregs_list;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> USE gregs_list;
+Database changed
+```
+
 ## 테이블을 만드는 방법 CREATE TABLE
 
 VARCHAR 변하는 문자형으로 텍스트를 저장하는데 이용됨 () 안 숫자는 그 숫자 자리까지 저장할 수 있다는 것을 의미한다. 단 한글의 경우 2byte이기에 1byte 괄호 안 숫자의 그 절반까지만 입력가능하다. 총 255자리 까지 저장가능
