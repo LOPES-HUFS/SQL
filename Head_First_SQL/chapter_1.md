@@ -188,7 +188,7 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 1 row in set (0.000 sec)
 ```
 
-## 연필을 깎으며
+## 연필을 깎으며 - 에러 안나는 코드도 추가해서 
 
 문제가 있는 INSERT 문을 쳐보고 에러를 확인해보자.
 
@@ -201,7 +201,7 @@ VALUES (
 );
 ```
 
-로케이션 열은 있지만 값이 없다. 즉 입력할 때 VALUES에 location 열에 해당하는 값이 없다. 따라서 열과 값이 맞지 않는다는 에러 메세지를 볼 수 있다.
+값을 입력할 때 VALUES에 location 열에 해당하는 값이 없다. 따라서 열과 값이 맞지 않는다는 에러 메세지를 볼 수 있다.
 
 ```bash
 MariaDB [gregs_list]> INSERT INTO my_contacts(
@@ -213,6 +213,8 @@ MariaDB [gregs_list]> INSERT INTO my_contacts(
 ERROR 1136 (21S01): Column count doesn't match value count at row 1
 ```
 
+에러를 고칠려면 Technical Writer', 와 'Single', 사이에 'Palo Alto, CA', 를 추가해주면 된다.
+
 ```sql
 INSERT INTO my_contacts(
     last_name, first_name, gender, birthday, profession, location, status, interests, seeking
@@ -222,7 +224,7 @@ VALUES (
 );
 ```
 
-열 리스트에 email이 없지만 값은 존재한다. 이번에는 열은 없지만 값이 있는 경우로 마찬가지로 열과 값이 서로 맞지 않는다는 에러 메세지가 출력된다.
+이번에는 email 열이 없지만 email 열에 해당하는 값이 있는 경우이다. 마찬가지로 열과 값이 서로 맞지 않는다는 에러 메세지가 출력된다.
 
 ```bash
 MariaDB [gregs_list]> INSERT INTO my_contacts(
@@ -234,6 +236,8 @@ MariaDB [gregs_list]> INSERT INTO my_contacts(
 ERROR 1136 (21S01): Column count doesn't match value count at row 1
 ```
 
+에러를 고칠려면 first_name, 과 gender 사이에 email, 을 추가해주면 된다.
+
 ```sql
 INSERT INTO my_contacts(
     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
@@ -243,7 +247,7 @@ VALUES (
 );
 ```
 
-'Technical Writer' 'Palo Alto, CA' 사이에 , 빠졌다. 즉 값이 열 개수에 비해 하나 부족하다. 따라서 열과 값의 개수가 맞지 않는다는 에러 메세지가 출력된다.
+'Technical Writer' 'Palo Alto, CA' 사이에 , 빠졌다. 즉 값이 열 개수에 비해 값의 개수가 하나 부족하다. 따라서 열과 값의 개수가 맞지 않는다는 에러 메세지가 출력된다.
 
 ```bash
 MariaDB [gregs_list]> INSERT INTO my_contacts(
@@ -254,6 +258,8 @@ MariaDB [gregs_list]> INSERT INTO my_contacts(
     -> );
 ERROR 1136 (21S01): Column count doesn't match value count at row 1
 ```
+
+에러를 고치려면 'Technical Writer' 'Palo Alto, CA' 사이에 ,를 추가해주면 된다.
 
 ```sql
 INSERT INTO my_contacts(
@@ -277,6 +283,8 @@ MariaDB [gregs_list]> INSERT INTO my_contacts(
     '> ';
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 5
 ```
+
+에러를 고치려면 'Relationship, Friends 다음에 ;을 쓰기 전에 '를 붙여준다.
 
 ## INSERT 문 변형
 
