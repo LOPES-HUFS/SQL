@@ -208,6 +208,9 @@ SELECT drink_name FROM easy_drinks WHERE main IN ('soda', 'sprite','tonic water'
 
 ```sql
 SELECT drink_name FROM easy_drinks WHERE main NOT IN ('soda', 'sprite','tonic water');
+
+NULL 값의 경우 IN, NOT IN 모두 포함되지 않는다.
+
 SELECT drink_name, second FROM easy_drinks WHERE NOT amount1 BETWEEN 1 AND 1.5;
 SELECT drink_name FROM easy_drinks WHERE NOT main LIKE '%juice';
 ```
