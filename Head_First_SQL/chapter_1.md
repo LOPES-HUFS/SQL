@@ -378,7 +378,7 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 4 rows in set (0.001 sec)
 ```
 
-## NULL 값 제어하기
+## NULL 값 다루기 
 
 앞서 일부 열에만 값을 입력했는데 이럴 경우 값이 입력이 되지 않은 열의 값은 NULL 값이 된다. 따라서 이 값들을 제어 해야한다. 먼저 기존의 테이블을 삭제해주고 새로 테이블을 만들어보자.
 
@@ -391,7 +391,7 @@ MariaDB [gregs_list]> DROP TABLE my_contacts;
 Query OK, 0 rows affected (0.006 sec)
 ```
 
-테이블을 만들 때 데이터 타입 설정 다음에 NOT NULL을 추가해주면 NULL 값을 제어할 수 있다. 단 이럴 경우 이 열에는 반드시 값을 넣어주어야 한다.
+테이블을 만들 때 데이터 타입 설정 다음에 NOT NULL을 추가해주면 NULL 값을 제어할 수 있다. 단 이럴 경우 이 열에는 반드시 값을 넣어주어야 한다. 만약 NOT NULL을 추가하지 않는다면, 필수 입력 값이 아니라는 의미로 값에 NULL이 들어갈 수 있다.
 
 ```sql
 CREATE TABLE my_contacts(
