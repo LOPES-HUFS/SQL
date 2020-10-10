@@ -1,0 +1,31 @@
+# Docker에서 MariaDB 사용하기
+
+## Docker를 사용해서 MariaDB 설치하기
+
+다음 링크를 참고합니다.
+
+## MariaDB 사용하기
+
+docker에서 실행중인 MariaDB에 접속하려면 다음과 같이 하면 됩니다.
+
+```bash
+docker exec -it mariadb /bin/bash
+```
+
+그러면 다음과 같은 결과가 나오고 `mariadb`로 들어갈 수 있습니다.
+
+```bash
+❯ docker exec -it mariadb /bin/bash
+root@ad0bb5de3d3f:/#
+```
+
+만약 위와 같이 작동하지 않는다면 `docker ps -a`을 입력했을 때 이미 작동하고 있는 경우가 있습니다(아래 참조). 아래와 같이 강제 종료를 시킨 다음에 다시 mariadb CONTAINER를 실행해주세요!
+
+```bash
+❯ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                  PORTS                    NAMES
+e144fdbab9be        mariadb             "docker-entrypoint.s…"   2 weeks ago         Exited (0) 7 days ago   0.0.0.0:3306->3306/tcp   mariadb
+# 작동이 안 되면, 다 멈추고 재 시작합니다.
+❯ docker rm $(docker ps -a -q) -f
+❯ docker run --name mariadb -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=RT27hDosK mariadb
+```
