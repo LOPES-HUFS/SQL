@@ -2,7 +2,8 @@
 
 데이터는 테이블 형태의 열과 행으로 나타낼 수 있다. 데이터 베이스는 테이블들의 저장소로 테이블과 관련된 SQL관련 구성 요소를 담고 있는 저장소이다. 쿼리는 데이터 베이스에 정보를 요청하는 것이다. 열은 테이블의 구성요소 중 하나로 데이터의 카테고리나 속성 정보가 열이 될 수 있다. 예를 들면 결혼 여부가 열이되고 그 값에는 기혼이나 미혼이 들어간다. 필드라고 부르기도 한다. 행은 테이블의 구성요소 중 하나로 데이터가 나타내는 한 객체에 대한 속성을 나타내는 열 집합이다. 예를 들면 사람에 대한 테이블이라면, 그 사람의 이름, 직업, 이메일 등의 값을 알 수 있다. 레코드라고 부르기도 한다. 데이터 베이스 안의 테이블들은 서로 연결되어야 한다.
 
-`CREATE DATABASE`는 사용할 데이터베이스를 만드는 명령어입니다. `USE`는 만든 데이터베이스를 사용하는 명령어입니다.
+- `CREATE DATABASE`는 사용할 데이터베이스를 만드는 명령어
+- `USE`는 만든 데이터베이스를 사용하는 명령어
 
 ```sql
 CREATE DATABASE gregs_list;
@@ -23,12 +24,15 @@ Database changed
 
 `VARCHAR`은 변하는 문자형으로 텍스트를 저장하는데 이용됨 () 안 숫자는 그 숫자 자리까지 저장할 수 있다는 것을 의미한다. 단 한글의 경우 2byte이기에 1byte 괄호 안 숫자의 그 절반까지만 입력가능하다. 총 255자리 까지 저장가능하다. `CHAR` or `CHARACTER` 데이터가 정해진 길이인 문자열 저장 형식이다. `DATETIME` or `TIMESTAMP` 날짜와 시간을 저장하는 형식이다. `TIME` 시간을 저장하는 형식이다. `DATE` 날짜만 저장하는 형식이다. `BLOB` 큰 덩어리의 문자 데이터를 저장하는 형식이다. `DEC` or `DECIMAL` 십진 자리수를 저장하는 형식이다. `INT` or `INTEGER` 정수를 저장하는 형식이다.
 
+- `CREATE TABLE`는 테이블을 만드는 명령어
+
 ```sql
 CREATE TABLE doughnut_list(
     doughnut_name VARCHAR(10),
     doughnut_type VARCHAR(6)
 );
 ```
+
 결과는 다음과 같다.
 
 ```bash
@@ -68,7 +72,7 @@ MariaDB [gregs_list]> CREATE TABLE my_contacts(
 Query OK, 0 rows affected (0.009 sec)
 ```
 
-DESC는 생성된 테이블의 정보를 보는 명령어이다.
+- `DESC`는 생성된 테이블의 정보를 보는 명령어
 
 ```sql
 DESC my_contacts;
@@ -94,7 +98,9 @@ MariaDB [gregs_list]> DESC my_contacts;
 9 rows in set (0.002 sec)
 ```
 
-새로운 열을 추가하려면 기존의 테이블을 지우고 다시 만들어야 한다. DROP TABLE은 생성된 테이블을 지우는 명령어이다.
+새로운 열을 추가하려면 기존의 테이블을 지우고 다시 만들어야 한다.
+
+- `DROP TABLE`은 생성된 테이블을 지우는 명령어
 
 ```sql
 DROP TABLE my_contacts;
@@ -145,7 +151,7 @@ Query OK, 0 rows affected (0.011 sec)
 
 ## INSERT 문 만들기
 
-INSERT INTO문은 데이터를 테이블에 넣는 명령어이다. 이때 입력되는 값들은 열이름과 같은 순서로 입력되어야 한다.
+`INSERT INTO`문은 데이터를 테이블에 넣는 명령어이다. 이때 입력되는 값들은 열이름과 같은 순서로 입력되어야 한다.
 
 ```sql
 INSERT INTO my_contacts(
