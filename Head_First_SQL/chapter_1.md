@@ -22,7 +22,9 @@ Database changed
 
 ## 테이블을 만드는 방법 CREATE TABLE
 
-`VARCHAR`은 변하는 문자형으로 텍스트를 저장하는데 이용됨 () 안 숫자는 그 숫자 자리까지 저장할 수 있다는 것을 의미한다. 단 한글의 경우 2byte이기에 1byte 괄호 안 숫자의 그 절반까지만 입력가능하다. 총 255자리 까지 저장가능하다. `CHAR` or `CHARACTER` 데이터가 정해진 길이인 문자열 저장 형식이다. `DATETIME` or `TIMESTAMP` 날짜와 시간을 저장하는 형식이다. `TIME` 시간을 저장하는 형식이다. `DATE` 날짜만 저장하는 형식이다. `BLOB` 큰 덩어리의 문자 데이터를 저장하는 형식이다. `DEC` or `DECIMAL` 십진 자리수를 저장하는 형식이다. `INT` or `INTEGER` 정수를 저장하는 형식이다.
+`CREATE TABLE` 명령어는 데이터 베이스 안에 테이블을 만드는 명령어이다. 테이블을 만들어야 데이터 베이스 안에 데이터를 저장할 수 있다. 테이블을 구성하는 데이터 타입들에 대해 알아보자.
+
+`VARCHAR`은 변하는 문자형으로 텍스트를 저장하는데 이용됨 () 안 숫자는 그 숫자 자리까지 저장할 수 있다는 것을 의미한다. 단 한글의 경우 2byte이기에 1byte 괄호 안 숫자의 그 절반까지만 입력가능하다. 총 255자리 까지 저장 가능하다. `CHAR` or `CHARACTER` 데이터가 정해진 길이인 문자열 저장 형식이다. `DATETIME` or `TIMESTAMP` 날짜와 시간을 저장하는 형식이다. `TIME` 시간을 저장하는 형식이다. `DATE` 날짜만 저장하는 형식이다. `BLOB` 큰 덩어리의 문자 데이터를 저장하는 형식이다. `DEC` or `DECIMAL` 십진 자리수를 저장하는 형식이다. `INT` or `INTEGER` 정수를 저장하는 형식이다.
 
 - `CREATE TABLE`는 테이블을 만드는 명령어
 
@@ -42,6 +44,8 @@ MariaDB [gregs_list]> CREATE TABLE doughnut_list(
     -> );
 Query OK, 0 rows affected (0.010 sec)
 ```
+
+my_contacts 라는 이름의 테이블을 만들면 다음과 같다.
 
 ```sql
 CREATE TABLE my_contacts(
@@ -173,6 +177,8 @@ Query OK, 1 row affected (0.005 sec)
 ```
 
 ## 연필을 깎으며
+
+문제가 있는 INSERT 문을 쳐보고 에러를 확인해보자.
 
 로케이션 열은 있지만 값이 없다.
 
