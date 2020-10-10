@@ -1,13 +1,13 @@
 # 1장 데이터와 테이블
 
-데이터를 테이블 형태의 열과 행으로 나타낼 수 있다. 데이터 베이스는 테이블들의 저장소로 테이블과 관련된 SQL관련 구성 요소를 담고 있는 저장소이다. 쿼리는 데이터 베이스에 정보를 요청하는 것이다. 열은 테이블의 구성요소 중 하나로 데이터의 카테고리나 속성 정보가 열이 될 수 있다. 예를 들면 결혼 여부가 열이되고 그 값에는 기혼이나 미혼이 들어간다. 필드라고 부르기도 한다. 행은 테이블의 구성요소 중 하나로 데이터가 나타내는 한 객체에 대한 속성을 나타내는 열 집합이다. 예를 들면 사람에 대한 테이블이라면, 그 사람의 이름, 직업, 이메일 등의 값을 알 수 있다. 레코드라고 부르기도 한다. 데이터 베이스 안의 테이블들은 서로 연결되어야 한다.
+데이터는 테이블 형태의 열과 행으로 나타낼 수 있다. 데이터 베이스는 테이블들의 저장소로 테이블과 관련된 SQL관련 구성 요소를 담고 있는 저장소이다. 쿼리는 데이터 베이스에 정보를 요청하는 것이다. 열은 테이블의 구성요소 중 하나로 데이터의 카테고리나 속성 정보가 열이 될 수 있다. 예를 들면 결혼 여부가 열이되고 그 값에는 기혼이나 미혼이 들어간다. 필드라고 부르기도 한다. 행은 테이블의 구성요소 중 하나로 데이터가 나타내는 한 객체에 대한 속성을 나타내는 열 집합이다. 예를 들면 사람에 대한 테이블이라면, 그 사람의 이름, 직업, 이메일 등의 값을 알 수 있다. 레코드라고 부르기도 한다. 데이터 베이스 안의 테이블들은 서로 연결되어야 한다.
 
 ```sql
 CREATE DATABASE gregs_list;
 USE gregs_list;
 ```
 
-결과는 다음과 같습니다.
+결과는 다음과 같다.
 
 ```bash
 MariaDB [(none)]> CREATE DATABASE gregs_list;
@@ -27,6 +27,15 @@ CREATE TABLE doughnut_list(
     doughnut_type VARCHAR(6)
 );
 ```
+결과는 다음과 같다.
+
+```bash
+MariaDB [gregs_list]> CREATE TABLE doughnut_list(
+    ->     doughnut_name VARCHAR(10),
+    ->     doughnut_type VARCHAR(6)
+    -> );
+Query OK, 0 rows affected (0.010 sec)
+```
 
 ```sql
 CREATE TABLE my_contacts(
@@ -42,15 +51,30 @@ CREATE TABLE my_contacts(
 );
 ```
 
-`DESC`는 생성된 테이블의 정보를 보는 명령어입니다.
+```bash
+MariaDB [gregs_list]> CREATE TABLE my_contacts(
+    ->     last_name VARCHAR(30),
+    ->     first_name VARCHAR(20),
+    ->     email VARCHAR(50),
+    ->     birthday Date,
+    ->     profession VARCHAR(50),
+    ->     location VARCHAR(50),
+    ->     status VARCHAR(20),
+    ->     interests VARCHAR(100),
+    ->     seeking VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.009 sec)
+```
+
+DESC는 생성된 테이블의 정보를 보는 명령어이다.
 
 ```sql
 DESC my_contacts;
 ```
 
-결과는 다음과 같습니다.
+DESC 결과는 다음과 같이 출력된다. 각 열에 대한 정보가 출력되는데 열 이름, 열의 데이터 타입, NULL 값 여부 등이 표시된다.
 
-```sql
+```bash
 MariaDB [gregs_list]> DESC my_contacts;
 +------------+--------------+------+-----+---------+-------+
 | Field      | Type         | Null | Key | Default | Extra |
@@ -65,14 +89,23 @@ MariaDB [gregs_list]> DESC my_contacts;
 | interests  | varchar(100) | YES  |     | NULL    |       |
 | seeking    | varchar(100) | YES  |     | NULL    |       |
 +------------+--------------+------+-----+---------+-------+
-9 rows in set (0.005 sec)
+9 rows in set (0.002 sec)
 ```
 
-DROP TABLE은 생성된 테이블을 지우는 명령어이다.
+새로운 열을 추가하려면 기존의 테이블을 지우고 다시 만들어야 한다. DROP TABLE은 생성된 테이블을 지우는 명령어이다.
 
 ```sql
 DROP TABLE my_contacts;
 ```
+
+테이블을 삭제할 때는 안에 데이터가 있든 없든 테이블 전체가 삭제되므로 주의해야 한다.
+
+```bash
+MariaDB [gregs_list]> DROP TABLE my_contacts;
+Query OK, 0 rows affected (0.007 sec)
+```
+
+기존의 테이블을 지웠으면, 이제 gender 열을 추가한 새로운 테이블을 만들어 준다.
 
 ```sql
 CREATE TABLE my_contacts(
@@ -89,9 +122,28 @@ CREATE TABLE my_contacts(
 );
 ```
 
+코드의 출력 결과는 다음과 같다.
+
+```bash
+MariaDB [gregs_list]> CREATE TABLE my_contacts(
+    ->     last_name VARCHAR(30),
+    ->     first_name VARCHAR(20),
+    ->     email VARCHAR(50),
+    ->     gender CHAR(1),
+    ->     birthday Date,
+    ->     profession VARCHAR(50),
+    ->     location VARCHAR(50),
+    ->     status VARCHAR(20),
+    ->     interests VARCHAR(100),
+    ->     seeking VARCHAR(100)
+    -> );
+
+Query OK, 0 rows affected (0.011 sec)
+```
+
 ## INSERT 문 만들기
 
-INSERT INTO문은 데이터를 테이블에 넣는 명령어로 값들은 열이름과 같은 순서로 입력되어야 한다.
+INSERT INTO문은 데이터를 테이블에 넣는 명령어이다. 이때 입력되는 값들은 열이름과 같은 순서로 입력되어야 한다.
 
 ```sql
 INSERT INTO my_contacts(
@@ -100,6 +152,16 @@ INSERT INTO my_contacts(
 VALUES (
     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
 );
+```
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+    -> )
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+    -> );
+Query OK, 1 row affected (0.005 sec)
 ```
 
 ## 연필을 깎으며
