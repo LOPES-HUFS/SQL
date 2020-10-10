@@ -67,6 +67,19 @@ MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE main = 'sprite';
 SELECT * FROM easy_drinks WHERE main > 'soda';
 ```
 
+알파벳 순서가 soda 보다 큰 경우만 쿼리하는 것이다. 결과는 다음과 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks WHERE main > 'soda';
++------------+-------------+---------+-----------------+---------+------------------------------------------------------------+
+| drink_name | main        | amount1 | second          | amount2 | directions                                                 |
++------------+-------------+---------+-----------------+---------+------------------------------------------------------------+
+| Blackthorn | tonic water |    1.50 | pineapple juice |    1.00 | stir with ice, strain into cocktail glass with lemon twist |
+| Lime  Fizz | sprite      |    1.50 | lime juice      |    1.00 | stir with ice, strain into cocktail glass                  |
++------------+-------------+---------+-----------------+---------+------------------------------------------------------------+
+2 rows in set (0.001 sec)
+```
+
 ```sql
 SELECT * FROM easy_drinks WHERE amount2 > '1.00';
 ```
