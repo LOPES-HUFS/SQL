@@ -192,8 +192,6 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 
 문제가 있는 INSERT 문을 쳐보고 에러를 확인해보자.
 
-로케이션 열은 있지만 값이 없다.
-
 ```sql
 INSERT INTO my_contacts(
     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
@@ -203,7 +201,17 @@ VALUES (
 );
 ```
 
-열 리스트에 email이 없지만 값은 존재한다.
+로케이션 열은 있지만 값이 없다. 즉 입력할 때 VALUES에 location 열에 해당하는 값이 없다. 따라서 열과 값이 맞지 않는다는 에러 메세지를 볼 수 있다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+    -> )
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer',  'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+    -> );
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+```
 
 ```sql
 INSERT INTO my_contacts(
@@ -214,7 +222,17 @@ VALUES (
 );
 ```
 
-'Technical Writer' 'Palo Alto, CA' 사이에 , 빠짐
+열 리스트에 email이 없지만 값은 존재한다. 이번에는 열은 없지만 값이 있는 경우로 마찬가지로 열과 값이 서로 맞지 않는다는 에러 메세지가 출력된다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     last_name, first_name, gender, birthday, profession, location, status, interests, seeking
+    -> )
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+    -> );
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+```
 
 ```sql
 INSERT INTO my_contacts(
@@ -225,7 +243,17 @@ VALUES (
 );
 ```
 
-'Relationship, Friends 따옴표가 빠짐
+'Technical Writer' 'Palo Alto, CA' 사이에 , 빠졌다. 즉 값이 열 개수에 비해 하나 부족하다. 따라서 열과 값의 개수가 맞지 않는다는 에러 메세지가 출력된다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+    -> )
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer' 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+    -> );
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+```
 
 ```sql
 INSERT INTO my_contacts(
@@ -237,9 +265,68 @@ VALUES (
 
 ```
 
+'Relationship, Friends 따옴표가 빠졌다. 에러 메세지는 안나오지만 코드가 ;가 있어도 끝나지 않는다. 이 경우 `';`을 입력하면 문법에 맞지 않는다는 에러 메세지와 함께 빠져 나올 수 있다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+    -> )
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends
+    '> );
+    '> ';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 5
+```
+
 ## INSERT 문 변형
 
-INSERT INTO 문에서 열이름은 생략할 수 있다. 단 값 순서는 열과 맞아야함, 몇개의 열만 생략하는 것도 가능하다.
+INSERT INTO 문에서 열 입력 순서를 바꾸거나, 열이름은 생략할 수 있지만 단 값 입력 순서는 열과 맞아야한다. 몇개의 열만 생략하고 입력하는 것도 가능하다.
+
+열 순서 바꿔 입력하기
+
+```sql
+INSERT INTO my_contacts(
+    interests, first_name, last_name, gender, email, birthday, profession, location, status, seeking
+)
+VALUES (
+    'Kayaking, Reptiles', 'Jillian', 'Anderson', 'F', 'jill_anderson@breakneckpizza.com', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Relationship, Friends'
+);
+```
+
+열 순서가 interests 부터 시작하고, first_name이 다음 순서로 온다. 값도 마찬가지로 interests에 해당하는 'Kayaking, Reptiles' 가 먼저 입력이 된다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     interests, first_name, last_name, gender, email, birthday, profession, location, status, seeking
+    -> )
+    -> VALUES (
+    ->     'Kayaking, Reptiles', 'Jillian', 'Anderson', 'F', 'jill_anderson@breakneckpizza.com', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Relationship, Friends'
+    -> );
+Query OK, 1 row affected (0.002 sec)
+```
+
+열 이름 생략하고 입력하기
+
+```sql
+INSERT INTO my_contacts
+
+VALUES (
+    'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+   );
+```
+
+입력 시 열 이름을 생략하고 입력할 수 있다. 이때 값 입력 순서와 열 이름 순서는 같아야 한다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts
+    -> 
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+    ->    );
+Query OK, 1 row affected (0.003 sec)
+```
+
+몇 개의 열 생략하고 입력하기
 
 ```sql
 INSERT INTO my_contacts(
@@ -250,17 +337,53 @@ VALUES (
 );
 ```
 
-SELECT문으로 테이블 안 데이터를 불러올 수 있다.
+first_name, email,  profession, location 이 4개의 열만 입력하고 값을 입력할 수 있다. 마찬가지로 입력한 열 이름과 맞는 순서로 값을 입력해야한다.
+
+```bash
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     first_name, email,  profession, location
+    -> )
+    -> VALUES (
+    ->     'Pat', 'patpost@breakneckpizza.com', 'Postal Worker', 'Princeton, NJ'
+    -> );
+Query OK, 1 row affected (0.003 sec)
+```
+
+참고로 내가 넣은 자료를 확인하려면 `SELECT`을 사용하면 된다. 자세한 내용을 2장에서 나온다.
 
 ```sql
 SELECT * FROM my_contacts;
 ```
 
+테이블의 입력된 내용을 확인할 수 있다.
+
+```bash
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+| NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+4 rows in set (0.001 sec)
+```
+
 ## NULL 값 제어하기
+
+앞서 일부 열에만 값을 입력했는데 이럴 경우 값이 입력이 되지 않은 열의 값은 NULL 값이 된다. 따라서 이 값들을 제어 해야한다. 먼저 기존의 테이블을 삭제해주고 새로 테이블을 만들어보자.
 
 ```sql
 DROP TABLE my_contacts;
 ```
+
+```bash
+MariaDB [gregs_list]> DROP TABLE my_contacts;
+Query OK, 0 rows affected (0.006 sec)
+```
+
+테이블을 만들 때 데이터 타입 설정 다음에 NOT NULL을 추가해주면 NULL 값을 제어할 수 있다. 단 이럴 경우 이 열에는 반드시 값을 넣어주어야 한다.
 
 ```sql
 CREATE TABLE my_contacts(
@@ -268,6 +391,8 @@ CREATE TABLE my_contacts(
     first_name VARCHAR(20) NOT NULL
 );
 ```
+
+이제 다시 임시 테이블을 제거하고 NULL 값을 제어하는 my_contacts 테이블 만들어보면 다음과 같다.
 
 ```sql
 DROP TABLE my_contacts;
@@ -286,6 +411,26 @@ CREATE TABLE my_contacts(
     interests VARCHAR(100) NOT NULL,
     seeking VARCHAR(100) NOT NULL
 );
+```
+
+MariaDB [gregs_list]> CREATE TABLE my_contacts(
+    ->     last_name VARCHAR(30) NOT NULL,
+    ->     first_name VARCHAR(20) NOT NULL,
+    ->     email VARCHAR(50) NOT NULL,
+    ->     gender CHAR(1) NOT NULL,
+    ->     birthday Date NOT NULL,
+    ->     profession VARCHAR(50) NOT NULL,
+    ->     location VARCHAR(50) NOT NULL,
+    ->     status VARCHAR(20) NOT NULL,
+    ->     interests VARCHAR(100) NOT NULL,
+    ->     seeking VARCHAR(100) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.010 sec)
+
+이제 NULL 값을 제어한 도넛 리스트도 다시 만들어 보자. doughnut_cost 열에 디폴트 값으로 1.00이 추가되어 있다. 이것은 값이 입력되지 않는다면 1.00을 사용한다는 의미이다.
+
+```sql
+DROP TABLE doughnut_list;
 ```
 
 ```sql

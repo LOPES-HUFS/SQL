@@ -44,17 +44,19 @@ MariaDB [gregs_list]> SELECT * FROM easy_drinks;
 
 ## 특정 조건 찾기
 
-DEC의 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함
+데이터 타입이 DEC인 경우 ''사용해도 바로 찾아주지만, 글자는 '' 필수로 넣어주어야 함  
+'*'은 해당 테이블의 모든 열을 반환함
 
 ```sql
 SELECT * FROM easy_drinks WHERE main = 'sprite';
 SELECT * FROM easy_drinks WHERE main > 'soda';
+SELECT * FROM easy_drinks WHERE amount2 > '1.00';
 SELECT * FROM easy_drinks WHERE amount2 > 1.00;
 ```
 
 ## 작은따옴표가 포함된 정보
 
-내용 안의 작은따옴표에 \ 붙여서 추가하기
+'은 SQL의 문법으로 사용되기 때문에 텍스트로 사용되는 경우 내용 안의 작은따옴표에 \ 붙여서 추가하기.
 
 ```sql
 INSERT INTO easy_drinks
@@ -65,7 +67,7 @@ VALUES
 ## 특정 열의 값만 가져오기
 
 ```sql
-SELECT drink_name, main, second FROM easy_drinks; # 열 전체보기
+SELECT drink_name, main, second FROM easy_drinks; # 특정 열 전체보기
 SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda'; # 해당 조건의 열 전체보기
 ```
 
@@ -87,12 +89,12 @@ SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
 
 ## 비교 연산자
 
-= : 같다  
-<> : 같지 않다  
-< : 조건보다 작다 (미만)  
-> : 조건보다 크다 (초과)  
-<= : 조건과 같거나 작다 (이하)  
->= : 조건과 같거나 크다 (이상)  
+- '=' : 같다  
+- '<>' : 같지 않다  
+- '<' : 조건보다 작다 (미만)  
+- '>' : 조건보다 크다 (초과)  
+- '<=' : 조건과 같거나 작다 (이하)  
+- '>=' : 조건과 같거나 크다 (이상)  
 
 ## 비교연산자로 문자열 처리
 
@@ -109,7 +111,7 @@ SELECT drink_name, second FROM easy_drinks WHERE drink_name < 'C';
 ```sql
 INSERT INTO easy_drinks
 VALUES
-('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL)
+('Blue sun' , NULL, 1.5, 'blueberry juice', 0.75, NULL);
 ```
 
 ### NULL 포함된 데이터 찾기
