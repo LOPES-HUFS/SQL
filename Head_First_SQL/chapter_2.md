@@ -19,7 +19,7 @@ SELECT * FROM easy_drinks WHERE main > 'soda';
 SELECT * FROM easy_drinks WHERE amount2 > 1.00;
 
 ## 작은따옴표가 포함된 정보
-## 내용 안의 작은따옴표에 \ 붙여서 추가하기
+### 내용 안의 작은따옴표에 \ 붙여서 추가하기
 INSERT INTO easy_drinks
 VALUES
 ('Indian\'s Summer' , 'cherry juice', 2, 'pineapple juice', 7, 'serve over ice with straw')
@@ -30,6 +30,20 @@ SELECT drink_name, main, second FROM easy_drinks; # 열 전체보기
 SELECT drink_name, main, second FROM easy_drinks WHERE main = 'soda'; # 해당 조건의 열 전체보기
 
 
-## 쿼리들의 결합
-
+## 쿼리들의 결합 (AND, OR)
+### AND
 SELECT drink_name FROM easy_drinks WHERE main = 'soda' AND amount1 > 1;
+SELECT drink_name, second FROM easy_drinks WHERE amount1 > 1 AND amount2 > 1;
+### OR
+SELECT drink_name FROM easy_drinks WHERE main = 'soda' OR amount1 > 1;
+SELECT drink_name, second FROM easy_drinks WHERE amount1 < 2 OR amount2 > 5;
+
+## 비교 연산자
+= : 같다  
+<> : 같지 않다  
+< : 조건보다 작다 (미만)  
+> : 조건보다 크다 (초과)  
+<= : 조건과 같거나 작다 (이하)  
+>= : 조건과 같거나 크다 (이상)  
+
+## 비교연산자로 문자열 처리
