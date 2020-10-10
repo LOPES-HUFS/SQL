@@ -42,10 +42,30 @@ CREATE TABLE my_contacts(
 );
 ```
 
-DESC는 생성된 테이블의 정보를 보는 명령어이다.
+`DESC`는 생성된 테이블의 정보를 보는 명령어입니다.
 
 ```sql
 DESC my_contacts;
+```
+
+결과는 다음과 같습니다.
+
+```sql
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| last_name  | varchar(30)  | YES  |     | NULL    |       |
+| first_name | varchar(20)  | YES  |     | NULL    |       |
+| email      | varchar(50)  | YES  |     | NULL    |       |
+| birthday   | date         | YES  |     | NULL    |       |
+| profession | varchar(50)  | YES  |     | NULL    |       |
+| location   | varchar(50)  | YES  |     | NULL    |       |
+| status     | varchar(20)  | YES  |     | NULL    |       |
+| interests  | varchar(100) | YES  |     | NULL    |       |
+| seeking    | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+9 rows in set (0.005 sec)
 ```
 
 DROP TABLE은 생성된 테이블을 지우는 명령어이다.
