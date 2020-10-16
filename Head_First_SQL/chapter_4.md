@@ -78,7 +78,7 @@ VALUES
 
 ```
 
-```
+```sql
 MariaDB [fish_list]> INSERT INTO fish_records  
     -> VALUES
     -> ('George', 'Perry', 'bass, largemouth', 'Montgomery Lake', 'GA', '22 lb 4 oz', '6/2/1932'),
@@ -94,7 +94,6 @@ MariaDB [fish_list]> INSERT INTO fish_records
 Query OK, 10 rows affected (0.005 sec)
 Records: 10  Duplicates: 0  Warnings: 0
 ```
-
 
 ## 연필을 깎으며
 
@@ -292,7 +291,7 @@ SHOW CREATE TABLE my_contacts;
 1 row in set (0.008 sec)
 ```
 
-이제 기본키가 있는 테이블을 생성해 보자. 아래와 같이 contact_id 열을 추가한 후 PRIMARY KEY 명령어로 기본키를 만들 수 있다. 
+이제 기본키가 있는 테이블을 생성해 보자. 아래와 같이 contact_id 열을 추가한 후 PRIMARY KEY 명령어로 기본키를 만들 수 있다.
 
 ```sql
 DROP TABLE my_contacts;
@@ -363,12 +362,12 @@ Query OK, 0 rows affected (0.015 sec)
 
 ```sql
 INSERT INTO name_lists (id, first_name, last_name)
-VALUES (NULL, 'Marcia', 'Bredy'); 
+VALUES (NULL, 'Marcia', 'Bredy');
 
 INSERT INTO name_lists (id, first_name, last_name)
 VALUES (1, 'Jan', 'Bredy');
 
-INSERT INTO name_lists 
+INSERT INTO name_lists
 VALUES (2, 'Bobby', 'Bredy');
 
 INSERT INTO name_lists (first_name, last_name)
@@ -377,7 +376,6 @@ VALUES ('Cindy', 'Bredy');
 INSERT INTO name_lists (id, first_name, last_name)
 VALUES (99, 'Peter', 'Bredy');
 ```
-
 
 ```sql
 MariaDB [gregs_list]> INSERT INTO name_lists (id, first_name, last_name)
@@ -388,7 +386,7 @@ MariaDB [gregs_list]> INSERT INTO name_lists (id, first_name, last_name)
     -> VALUES (1, 'Jan', 'Bredy');
 ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
 
-MariaDB [gregs_list]> INSERT INTO name_lists 
+MariaDB [gregs_list]> INSERT INTO name_lists
     -> VALUES (2, 'Bobby', 'Bredy');
 Query OK, 1 row affected (0.005 sec)
 
@@ -420,7 +418,7 @@ MariaDB [gregs_list]> SELECT *  FROM name_lists;
 
 ## 기존 테이블에 기본키 추가하기 ALTER
 
-아래 코드는 DROP TABLE 명령어를 사용하지 않고 기존 테이블에 새로운 열만 추가하는 방법이다. 
+아래 코드는 DROP TABLE 명령어를 사용하지 않고 기존 테이블에 새로운 열만 추가하는 방법이다.
 
 ```sql
 ALTER TABLE my_contacts
