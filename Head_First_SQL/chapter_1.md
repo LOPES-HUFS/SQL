@@ -201,7 +201,7 @@ VALUES (
 );
 ```
 
-값을 입력할 때 VALUES에 location 열에 해당하는 값이 없다. 따라서 열과 값이 맞지 않는다는 에러 메세지를 볼 수 있다.
+위의 명령어로 자료를 추가하고자 할때, 에러가 나는 이유는 값을 입력할 때 location 열에 해당하는 값을 같이 입력하지 않았기 때문이다. 따라서 열과 값이 맞지 않는다는 다음과 같은 에러 메세지를 볼 수 있다.
 
 ```bash
 MariaDB [gregs_list]> INSERT INTO my_contacts(
@@ -213,7 +213,7 @@ MariaDB [gregs_list]> INSERT INTO my_contacts(
 ERROR 1136 (21S01): Column count doesn't match value count at row 1
 ```
 
-에러를 고칠려면 Technical Writer', 와 'Single', 사이에 'Palo Alto, CA', 를 추가해주면 된다.
+에러를 고칠려면 Technical Writer', 와 'Single', 사이에 location 열에 해당하는 값, 'Palo Alto, CA'를 다음과 같이 추가해 주면 된다.
 
 ```sql
 INSERT INTO my_contacts(
@@ -327,7 +327,7 @@ VALUES (
 
 ```bash
 MariaDB [gregs_list]> INSERT INTO my_contacts
-    -> 
+    ->
     -> VALUES (
     ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
     ->    );
@@ -378,7 +378,7 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 4 rows in set (0.001 sec)
 ```
 
-## NULL 값 다루기 
+## NULL 값 다루기
 
 앞서 일부 열에만 값을 입력했는데 이럴 경우 값이 입력이 되지 않은 열의 값은 NULL 값이 된다. 따라서 이 값들을 제어 해야한다. 먼저 기존의 테이블을 삭제해주고 새로 테이블을 만들어보자.
 
