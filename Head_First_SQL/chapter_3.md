@@ -223,7 +223,7 @@ MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
 UPDATE clown_info SET activities = 'yelling, dancing' WHERE name = 'Clarabelle';
 ```
 
-위 코드를 입력하면 광대 'Clarabelle'의 활동을 'yelling, dancing'로 수정한다. 그러면  `Clarabelle`에 대한 정보가 아래와 같이 변경된 것을 확인할 수 있다.
+명령어 `SET`은 변경할 카테고리와 값을 받아준다. 따라서 위 코드를 입력하면 광대 'Clarabelle'의 활동을 'yelling, dancing'로 수정한다. 그러면  `Clarabelle`에 대한 정보가 아래와 같이 변경된 것을 확인할 수 있다.
 
 ```sql
 MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
@@ -237,3 +237,7 @@ MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
 
 **WARNING**
 주의해야 할 점은 WHERE로 특정 레코드를 지정해주지 않으면 모든 레코드의 데이터가 변경된다는 것이다.
+
+## 3장 Summary
+
+3장에서는 광대의 최근 방문 장소를 업데이트하는 테이블을 통해서 기존 테이블에 존재하는 자료들의 값을 변경하는 방법에 대해서 살펴보았다. 처음 살펴본 방법은 기존 레코드를 삭제하고 새로운 레코드를 추가헸지만, 명령어 `UPDATE`를 사용하면 레코드 삭제 없이 레코드를 수정할 수 있었다.
