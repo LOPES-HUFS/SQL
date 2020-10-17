@@ -139,7 +139,7 @@ SQL은 관계형 데이터 베이스 관리를 위한 언어이다. 관계형이
 
 원자적 데이터란 데이터가 쪼개질 수 없는 가장 작은 부분들로 이루어졌다는 의미이다. 원자적 데이터를 만들기 위한 방법은 다음과 같습니다. 원자적 데이터의 규칙: 원자적 데이터로 구성된 열은 그 열에 같은 타입의 데이터 여러개를 가질 수 없다. 원자적 데이터로 구성된 테이블은 같은 타입의 데이터를 여러 열에 가질 수 없다. 단 테이블을 사용하는 목적에 따라 원자적 데이터 테이블의 형태가 달라질 수 있다.
 
-예를 들면 피자 배달부에게 주소는 하나의 전체 주소의 경우가 더 편리하여 더 나눌 필요가 없는 원자적 데이터가 되지만, 부동산 업자에게는 주소의 이름과 숫자가 나누어진 것이 원자적 데이터가 된다. 아래 코드들은 피자 배달부의 경우와 부동산 업자의 경우에 원자적 데이터 테이블을 만드는 것이다.
+예를 들면 피자 배달부에게 주소는 하나의 전체 주소의 경우가 더 편리하여 더 나눌 필요가 없는 원자적 데이터가 되며, 쿼리의 경우도 피자 배달부에게는 주문 번호가 중요하기에 주문 번호를 기준으로 쿼리를 주게 된다. 아래 코드는 피자 배달부가 원자적 데이터 테이블을 만드는 경우이다.
 
 ```sql
 CREATE DATABASE pizza;
@@ -200,6 +200,8 @@ MariaDB [pizza]> SELECT address FROM pizza_deliveries WHERE order_number = 252;
 1 row in set (0.005 sec)
 ```
 
+부동산 업자에게는 주소의 이름과 숫자가 나누어진 것이 원자적 데이터가 된다. 쿼리의 경우 거리 이름을 기준으로 쿼리를 주게 된다. 아래 코드들은 부동산 업자의 경우에 원자적 데이터 테이블을 만드는 것이다.
+
 ```sql
 CREATE DATABASE real_estates;
 USE real_estates;
@@ -245,6 +247,8 @@ MariaDB [real_estates]> INSERT INTO real_estate
 Query OK, 10 rows affected (0.007 sec)
 Records: 10  Duplicates: 0  Warnings: 0
 ```
+
+반면 부동산 업자에게는 
 
 ```sql
 SELECT price, property_type FROM real_estate WHERE street_name = 'SQL Street';
