@@ -460,10 +460,20 @@ INSERT INTO my_contacts(
 VALUES (
     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
 );
+
+SELECT * FROM my_contacts;
 ```
 
-```bash
+기존 테이블에는 기본키가 없는 것을 확인할 수 있다.
 
+```bash
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+1 row in set (0.001 sec)
 ```
 
 새로운 열을 추가하는 명령어는 ALTER TABLE과 ADD COLUMN 명령어로 이루어진다. 아래 코드에서 FIRST는 첫번째 열로 추가해준다는 명령어이며, 여기서 따로 열 순서를 지정하지 않을 경우 마지막 열로 들어간다.
