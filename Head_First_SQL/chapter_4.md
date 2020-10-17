@@ -1,5 +1,6 @@
-
 # 4장 정규화
+
+같은 자료를 관찰해도 다른 테이블이 만들어 질 수 있다. 데이터를 사용하는 목적에 따라 다른 테이블이 만들어질 수 있다.
 
 ```sql
 CREATE DATABASE fish_list;
@@ -15,6 +16,8 @@ Database changed
 MariaDB [fish_list]>
 ```
 
+예를 들면 물고기를 학문적으로 다루기 위해서는 species 열이 중요하다. 아래와 같이 species 열을 테이블 설계에 포함시킨다.
+
 ```sql
 CREATE TABLE fish_info(common VARCHAR(30), species VARCHAR(30), location VARCHAR(30), weight VARCHAR(30));
 ```
@@ -27,35 +30,37 @@ Query OK, 0 rows affected (0.060 sec)
 ```sql
 INSERT INTO fish_info  
 VALUES
-('bass, largemouth',  'M. sakmoides', 'Montgomery Lake, GA', '22 lb 4 oz'),
-('walleye',  'S. vitreus', 'Old Hickory Lake, TN', '25 lb 0 oz'),
-('trout, cutthroat',  'O. Clarki', 'Pyramid Lake, NV', '41 lb 0 oz'),
-('perch, yellow',  'P. Flavescens', 'Boredentown, NJ', '4 lb 3 oz'),
-('bluegill',  'L. Macrochirus', 'Ketana Lake, AL', '4 lb 13 oz'),
-('gar, longnose',  'L. Osseus', 'Trinity River, TX', '50 lb 5 oz'),
-('crappie, white',  'P. annularis', 'Enid Dam, MS', '5 lb 3 oz'),
-('pickerel, grass',  'E. americanus', 'Dewart Lake, IN', '1 lb 0 oz'),
-('goldfish',  'C. auratus', 'Lake Hodges, CA', '6 lb 10 oz'),
-('salmon, chinook',  'O. Tshawytscha', 'Kenai River, AK', '97 lb 4 oz');
+('bass, largemouth', 'M. sakmoides', 'Montgomery Lake, GA', '22 lb 4 oz'),
+('walleye', 'S. vitreus', 'Old Hickory Lake, TN', '25 lb 0 oz'),
+('trout, cutthroat', 'O. Clarki', 'Pyramid Lake, NV', '41 lb 0 oz'),
+('perch, yellow', 'P. Flavescens', 'Boredentown, NJ', '4 lb 3 oz'),
+('bluegill', 'L. Macrochirus', 'Ketana Lake, AL', '4 lb 13 oz'),
+('gar, longnose', 'L. Osseus', 'Trinity River, TX', '50 lb 5 oz'),
+('crappie, white', 'P. annularis', 'Enid Dam, MS', '5 lb 3 oz'),
+('pickerel, grass', 'E. americanus', 'Dewart Lake, IN', '1 lb 0 oz'),
+('goldfish', 'C. auratus', 'Lake Hodges, CA', '6 lb 10 oz'),
+('salmon, chinook', 'O. Tshawytscha', 'Kenai River, AK', '97 lb 4 oz');
 
 ```
 
 ```bash
 MariaDB [fish_list]> INSERT INTO fish_info  
     -> VALUES
-    -> ('bass, largemouth',  'M. sakmoides', 'Montgomery Lake, GA', '22 lb 4 oz'),
-    -> ('walleye',  'S. vitreus', 'Old Hickory Lake, TN', '25 lb 0 oz'),
-    -> ('trout, cutthroat',  'O. Clarki', 'Pyramid Lake, NV', '41 lb 0 oz'),
-    -> ('perch, yellow',  'P. Flavescens', 'Boredentown, NJ', '4 lb 3 oz'),
-    -> ('bluegill',  'L. Macrochirus', 'Ketana Lake, AL', '4 lb 13 oz'),
-    -> ('gar, longnose',  'L. Osseus', 'Trinity River, TX', '50 lb 5 oz'),
-    -> ('crappie, white',  'P. annularis', 'Enid Dam, MS', '5 lb 3 oz'),
-    -> ('pickerel, grass',  'E. americanus', 'Dewart Lake, IN', '1 lb 0 oz'),
-    -> ('goldfish',  'C. auratus', 'Lake Hodges, CA', '6 lb 10 oz'),
-    -> ('salmon, chinook',  'O. Tshawytscha', 'Kenai River, AK', '97 lb 4 oz');
+    -> ('bass, largemouth', 'M. sakmoides', 'Montgomery Lake, GA', '22 lb 4 oz'),
+    -> ('walleye', 'S. vitreus', 'Old Hickory Lake, TN', '25 lb 0 oz'),
+    -> ('trout, cutthroat', 'O. Clarki', 'Pyramid Lake, NV', '41 lb 0 oz'),
+    -> ('perch, yellow', 'P. Flavescens', 'Boredentown, NJ', '4 lb 3 oz'),
+    -> ('bluegill', 'L. Macrochirus', 'Ketana Lake, AL', '4 lb 13 oz'),
+    -> ('gar, longnose', 'L. Osseus', 'Trinity River, TX', '50 lb 5 oz'),
+    -> ('crappie, white', 'P. annularis', 'Enid Dam, MS', '5 lb 3 oz'),
+    -> ('pickerel, grass', 'E. americanus', 'Dewart Lake, IN', '1 lb 0 oz'),
+    -> ('goldfish', 'C. auratus', 'Lake Hodges, CA', '6 lb 10 oz'),
+    -> ('salmon, chinook', 'O. Tshawytscha', 'Kenai River, AK', '97 lb 4 oz');
 Query OK, 10 rows affected (0.046 sec)
 Records: 10  Duplicates: 0  Warnings: 0
 ```
+
+반면에 물고기를 잡은 기록이 중요한 경우 테이블을 설계할 때 잡은 사람의 이름과 날짜가 테이블 설계에 들어가게 돤다.
 
 ```sql
 CREATE TABLE fish_records(first_name VARCHAR(30), last_name VARCHAR(30), common VARCHAR(30), location VARCHAR(30),state VARCHAR(2), weight VARCHAR(30), date VARCHAR(30));
@@ -96,6 +101,8 @@ Records: 10  Duplicates: 0  Warnings: 0
 ```
 
 ## 연필을 깎으며
+
+목적이 다르기에 만들어진 테이블에 대한 같은 목적의 쿼리 방법도 달라집니다. 주(state) 라는 열이 있는 fish_records 테이블에는 주를 통해 쿼리를 할 수 있습니다. 반면 location 만 있는 fish_info 테이블에서는 만약 NJ라는 글자가 들어간 장소가 있다면 쿼리 결과가 달라질 수 있습니다. 
 
 ```sql
 select * FROM fish_info WHERE location LIKE '%NJ';
