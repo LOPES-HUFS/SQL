@@ -436,7 +436,7 @@ MariaDB [gregs_list]> SELECT *  FROM name_lists;
 
 ## 기존 테이블에 기본키 추가하기 ALTER
 
-아래 코드는 1장에서 만든 테이블을 만드는 코드이다. 이제 이 테이블에 contact_id 열을 추가하고, 기본키로 지정을 해주는 작업을 해보자. 
+아래 코드는 1장에서 만든 테이블을 만드는 코드이다. 이제 이 테이블에 contact_id 열을 추가하고, 기본키로 지정을 해주는 작업을 해보자.
 
 ```sql
 DROP TABLE my_contacts;
@@ -465,6 +465,7 @@ VALUES (
 ```bash
 
 ```
+
 새로운 열을 추가하는 명령어는 ALTER TABLE과 ADD COLUMN 명령어로 이루어진다. 아래 코드에서 FIRST는 첫번째 열로 추가해준다는 명령어이며, 여기서 따로 열 순서를 지정하지 않을 경우 마지막 열로 들어간다.
 
 ```sql
