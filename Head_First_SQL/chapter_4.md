@@ -436,7 +436,47 @@ MariaDB [gregs_list]> SELECT *  FROM name_lists;
 
 ## 기존 테이블에 기본키 추가하기 ALTER
 
-아래 코드는 1장에서 만든 DROP TABLE 명령어를 사용하지 않고 기존 테이블에 새로운 열만 추가하는 방법이다. FIRST는 첫번째 열로 추가해준다는 명령어이며, 따로 열 순서를 지정하지 않을 경우 마지막 줄로 들어간다.
+아래 코드는 1장에서 만든 테이블을 만드는 코드이다. 이제 이 테이블에 contact_id 열을 추가하고, 기본키로 지정을 해주는 작업을 해보자.
+
+```sql
+DROP TABLE my_contacts;
+
+CREATE TABLE my_contacts(
+    last_name varchar(30) default NULL,
+    first_name varchar(20) default NULL,
+    email varchar(50) default NULL,
+    gender char(1) default NULL,
+    birthday date default NULL,
+    profession varchar(50) default NULL,
+    location varchar(50) default NULL,
+    status varchar(20) default NULL,
+    interests varchar(100) default NULL,
+    seeking varchar(100) default NULL
+    );
+
+INSERT INTO my_contacts(
+    last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+)
+VALUES (
+    'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+);
+
+SELECT * FROM my_contacts;
+```
+
+기존 테이블에는 기본키가 없는 것을 확인할 수 있다.
+
+```bash
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
++-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+1 row in set (0.001 sec)
+```
+
+새로운 열을 추가하는 명령어는 ALTER TABLE과 ADD COLUMN 명령어로 이루어진다. 아래 코드에서 FIRST는 첫번째 열로 추가해준다는 명령어이며, 여기서 따로 열 순서를 지정하지 않을 경우 마지막 열로 들어간다.
 
 ```sql
 ALTER TABLE my_contacts
@@ -452,7 +492,7 @@ Query OK, 0 rows affected (0.043 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
 
-기존 테이블에 들어 있던 데이터에 id 열이 생기고 id가 1이 부여된 것을 확인할 수 있습니다.
+기존 테이블에 들어 있던 데이터에 id 열이 생기고 id가 1이 부여된 것을 확인할 수 있다.
 
 ```sql
 SELECT * FROM my_contacts;

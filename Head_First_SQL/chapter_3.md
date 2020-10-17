@@ -153,7 +153,7 @@ MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Zippo';
 +-------+----------------+-----------------------------+------------------+
 ```
 
-참고로 `WHERE`없이 명령어 `DELETE`만 입력하면 모든 행이 지워지니 주의하기 바란다.
+참고로 `WHERE`없이 `DELETE FROM table name`만 입력하면 모든 행이 지워지니 주의하기 바란다.
 
 ## INSERT & DELETE
 
