@@ -333,7 +333,7 @@ MariaDB [gregs_list]> CREATE TABLE my_contacts(
 Query OK, 0 rows affected (0.013 sec)
 ```
 
-id 1부터 n까지 숫자를 자동증가하게 만들려면 AUTO_INCREMENT를 추가하면 된다.
+id 1부터 n까지 숫자를 자동증가하게 만들려면 명령어 AUTO_INCREMENT를 뒤에 추가하면 된다.
 
 ```sql
 DROP TABLE my_contacts;
