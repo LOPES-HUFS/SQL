@@ -307,6 +307,45 @@ MariaDB [gregs_list]> SHOW CREATE TABLE my_contacts;
 1 row in set (0.008 sec)
 ```
 
+기존에 1장에서 만든 테이블을 만들어보자.
+
+```sql
+CREATE TABLE my_contacts(
+    last_name VARCHAR(30),
+    first_name VARCHAR(20),
+    email VARCHAR(50),
+    gender CHAR(1),
+    birthday Date,
+    profession VARCHAR(50),
+    location VARCHAR(50),
+    status VARCHAR(20),
+    interests VARCHAR(100),
+    seeking VARCHAR(100)
+);
+
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| last_name  | varchar(30)  | YES  |     | NULL    |       |
+| first_name | varchar(20)  | YES  |     | NULL    |       |
+| email      | varchar(50)  | YES  |     | NULL    |       |
+| gender     | char(1)      | YES  |     | NULL    |       |
+| birthday   | date         | YES  |     | NULL    |       |
+| profession | varchar(50)  | YES  |     | NULL    |       |
+| location   | varchar(50)  | YES  |     | NULL    |       |
+| status     | varchar(20)  | YES  |     | NULL    |       |
+| interests  | varchar(100) | YES  |     | NULL    |       |
+| seeking    | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+```
+
+
+
 이제 기본키가 있는 테이블을 생성해 보자. 아래와 같이 contact_id 열을 추가한 후 PRIMARY KEY 명령어로 기본키를 만들 수 있다.
 
 ```sql
