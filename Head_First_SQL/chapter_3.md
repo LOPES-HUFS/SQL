@@ -37,7 +37,12 @@ VALUES
 값들을 추가한 후 아래의 코드를 입력하면 값이 추가된 테이블을 확인할 수 있다.
 
 ```sql
-MariaDB [gregs_list]> SELECT * FROM clown_info;
+ SELECT * FROM clown_info;
+```
+
+결과는 다음과 같다.
+
+```sql
 +------------+----------------------------+---------------------------------------+-----------------------+
 | name       | last_seen                  | appearance                            | activities            |
 +------------+----------------------------+---------------------------------------+-----------------------+
@@ -101,10 +106,15 @@ SELECT * FROM clown_info WHERE name = 'Zippo';
 DELETE FROM clown_info WHERE activities = 'dancing';
 ```
 
-그후 다시  `zippo`의 데이터를 불러오면 하나만 남은 것을 확인할 수 있다.
+그후 다시 아래의 코드를 입력하여 `zippo`의 레코드를 확인해보자.
 
 ```sql
-MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Zippo';
+SELECT * FROM clown_info WHERE name = 'Zippo';
+```
+
+`zippo`의 데이터가 하나만 남은 것을 확인할 수 있다.
+
+```sql
 +-------+----------------+-----------------------------+------------------+
 | name  | last_seen      | appearance                  | activities       |
 +-------+----------------+-----------------------------+------------------+
@@ -175,6 +185,11 @@ WHERE name = 'Clarabelle';
 
 ```sql
 MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
+```
+
+그러면  `Clarabelle`에 대한 정보가 변경된 것을 확인할 수 있다.
+
+```sql
 +------------+-----------------------+---------------------------------------+------------------+
 | name       | last_seen             | appearance                            | activities       |
 +------------+-----------------------+---------------------------------------+------------------+
