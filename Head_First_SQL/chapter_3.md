@@ -166,7 +166,7 @@ INSERT INTO clown_info
     VALUES ('Clarabelle','Belmont Senior Certer', 'F, pink hair, huge flower, blue dress', 'dancing');
 ```
 
-- DELETE: 이전의 레코드 삭제
+- `DELETE`: 이전의 레코드 삭제
 
 ```sql
 DELETE FROM clown_info WHERE name = 'Clarabelle' AND activities = 'yelling, dancing';
