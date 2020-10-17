@@ -393,6 +393,8 @@ INSERT INTO name_lists (id, first_name, last_name)
 VALUES (99, 'Peter', 'Bredy');
 ```
 
+위에서 1번 코드는 작동되며, 기본키가 NULL로 들어갈 수 있는 이유는 AUTO_INCREMENT 때문에 자동으로 기본키가 1로 지정되기 때문이다. 2번 코드의 경우 에러가 발생한다. 왜냐하면, 기본키로 이미 1이 있는 상태에서 기본키가 1인 데이터를 추가할 수 없기 때문이다. 3번 코드의 경우 작동이 잘 된다. 기본키가 2인 데이터는 기존 테이블에 없기 때문이다.
+
 ```bash
 MariaDB [gregs_list]> INSERT INTO name_lists (id, first_name, last_name)
     -> VALUES (NULL, 'Marcia', 'Bredy');
@@ -434,7 +436,7 @@ MariaDB [gregs_list]> SELECT *  FROM name_lists;
 
 ## 기존 테이블에 기본키 추가하기 ALTER
 
-아래 코드는 DROP TABLE 명령어를 사용하지 않고 기존 테이블에 새로운 열만 추가하는 방법이다.
+아래 코드는 1장에서 만든 DROP TABLE 명령어를 사용하지 않고 기존 테이블에 새로운 열만 추가하는 방법이다. FIRST는 첫번째 열로 추가해준다는 명령어이며, 따로 열 순서를 지정하지 않을 경우 마지막 줄로 들어간다.
 
 ```sql
 ALTER TABLE my_contacts
