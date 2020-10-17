@@ -344,6 +344,45 @@ MariaDB [gregs_list]> DESC my_contacts;
 +------------+--------------+------+-----+---------+-------+
 ```
 
+아래와 같이 default NULL 을 추가해도 같은 결과를 얻을 수 있다.
+
+```sql
+DROP TABLE my_contacts;
+
+CREATE TABLE my_contacts(
+    last_name varchar(30) default NULL,
+    first_name varchar(20) default NULL,
+    email varchar(50) default NULL,
+    gender char(1) default NULL,
+    birthday date default NULL,
+    profession varchar(50) default NULL,
+    location varchar(50) default NULL,
+    status varchar(20) default NULL,
+    interests varchar(100) default NULL,
+    seeking varchar(100) default NULL
+    );
+
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| last_name  | varchar(30)  | YES  |     | NULL    |       |
+| first_name | varchar(20)  | YES  |     | NULL    |       |
+| email      | varchar(50)  | YES  |     | NULL    |       |
+| gender     | char(1)      | YES  |     | NULL    |       |
+| birthday   | date         | YES  |     | NULL    |       |
+| profession | varchar(50)  | YES  |     | NULL    |       |
+| location   | varchar(50)  | YES  |     | NULL    |       |
+| status     | varchar(20)  | YES  |     | NULL    |       |
+| interests  | varchar(100) | YES  |     | NULL    |       |
+| seeking    | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+```
+
 이제 기본키가 있는 테이블을 생성해 보자. 아래와 같이 contact_id 열을 추가한 후 PRIMARY KEY 명령어로 기본키를 만들 수 있다.
 
 ```sql
@@ -381,6 +420,31 @@ MariaDB [gregs_list]> CREATE TABLE my_contacts(
     ->     PRIMARY KEY (contact_id)
     ->     );
 Query OK, 0 rows affected (0.013 sec)
+```
+
+```sql
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| contact_id | int(11)      | NO   | PRI | NULL    |       |
+| last_name  | varchar(30)  | YES  |     | NULL    |       |
+| first_name | varchar(20)  | YES  |     | NULL    |       |
+| email      | varchar(50)  | YES  |     | NULL    |       |
+| gender     | char(1)      | YES  |     | NULL    |       |
+| birthday   | date         | YES  |     | NULL    |       |
+| profession | varchar(50)  | YES  |     | NULL    |       |
+| location   | varchar(50)  | YES  |     | NULL    |       |
+| status     | varchar(20)  | YES  |     | NULL    |       |
+| interests  | varchar(100) | YES  |     | NULL    |       |
+| seeking    | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+11 rows in set (0.002 sec)
+
 ```
 
 id 1부터 n까지 숫자를 자동증가하게 만들려면 명령어 AUTO_INCREMENT를 뒤에 추가하면 된다.
