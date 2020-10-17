@@ -159,11 +159,11 @@ MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Zippo';
 
 어떤 레코드를 변경하기 위해서는 새로운 레코드를 추가하고 이전의 레코드를 삭제하면 된다. 광대 `Clarabelle`의 정보를 변경해보자.
 
-- INSERT: 새로운 레코드 추가 (행동의 차이가 있음)
+- `INSERT`: 새로운 레코드 추가 (행동의 차이가 있음)
 
 ```sql
 INSERT INTO clown_info
-VALUES ('Clarabelle','Belmont Senior Certer', 'F, pink hair, huge flower, blue dress', 'dancing');
+    VALUES ('Clarabelle','Belmont Senior Certer', 'F, pink hair, huge flower, blue dress', 'dancing');
 ```
 
 - DELETE: 이전의 레코드 삭제
@@ -195,32 +195,38 @@ MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
 ```
 
 **NOTE**
-안전하게 삭제하는 방법  
+안전하게 삭제하는 방법
+
 만약 WHERE 명령어를 잘못 준 상태로 DELETE를 사용한다면 의도치 않게 다른 데이터들이 삭제될 수 있다. 따라서 SELECT을 사용하여 사용하려는 WHERE 명령어가 원하는 데이터만 가져오는지 확인한 후에 DELETE을 사용하는 것이 안전하다. 따라서 순서는 다음과 같다.
 
- 1. SELECT을 사용하여 변경하려는 데이터 확인
- 2. INSERT를 사용하여 변경된 데이터 추가
- 3. DELETE을 사용하여 이전 데이터 삭제
+ 1. `SELECT`을 사용하여 변경하려는 데이터 확인
+ 2. `INSERT`를 사용하여 변경된 데이터 추가
+ 3. `DELETE`을 사용하여 이전 데이터 삭제
 
 ## UPDATE
 
-레코드를 삭제하지 않고 기존 레코드를 변경할 수는 없을까? UPDATE 명령어는 기존 레코드의 데이터 일부를 변경해준다.
+레코드를 삭제하지 않고 기존 레코드를 변경할 수는 없을까? `UPDATE`는 기존 레코드의 데이터 일부를 변경해준다. 원래 데이터는 다음과 같다.
 
-```sql
-UPDATE clown_info
-SET activities = 'yelling, dancing'
-WHERE name = 'Clarabelle';
+```bash
+MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
++------------+-----------------------+---------------------------------------+------------+
+| name       | last_seen             | appearance                            | activities |
++------------+-----------------------+---------------------------------------+------------+
+| Clarabelle | Belmont Senior Certer | F, pink hair, huge flower, blue dress | dancing    |
++------------+-----------------------+---------------------------------------+------------+
+1 row in set (0.001 sec)
 ```
 
-위 코드를 입력하면 광대 'Clarabelle'의 활동을 'yelling, dancing'로 수정한다. 아래의 코드를 입력하여 확입해보자.
+`UPDATE`는 사용해보자.
+
+```sql
+UPDATE clown_info SET activities = 'yelling, dancing' WHERE name = 'Clarabelle';
+```
+
+위 코드를 입력하면 광대 'Clarabelle'의 활동을 'yelling, dancing'로 수정한다. 그러면  `Clarabelle`에 대한 정보가 아래와 같이 변경된 것을 확인할 수 있다.
 
 ```sql
 MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Clarabelle';
-```
-
-그러면  `Clarabelle`에 대한 정보가 변경된 것을 확인할 수 있다.
-
-```sql
 +------------+-----------------------+---------------------------------------+------------------+
 | name       | last_seen             | appearance                            | activities       |
 +------------+-----------------------+---------------------------------------+------------------+
