@@ -19,7 +19,7 @@ MariaDB [fish_list]>
 CREATE TABLE fish_info(common VARCHAR(30), species VARCHAR(30), location VARCHAR(30), weight VARCHAR(30));
 ```
 
-```sql
+```bash
 MariaDB [fish_list]> CREATE TABLE fish_info(common VARCHAR(30), species VARCHAR(30), location VARCHAR(30), weight VARCHAR(30));
 Query OK, 0 rows affected (0.060 sec)
 ```
@@ -40,7 +40,7 @@ VALUES
 
 ```
 
-```sql
+```bash
 MariaDB [fish_list]> INSERT INTO fish_info  
     -> VALUES
     -> ('bass, largemouth',  'M. sakmoides', 'Montgomery Lake, GA', '22 lb 4 oz'),
@@ -78,7 +78,7 @@ VALUES
 
 ```
 
-```sql
+```bash
 MariaDB [fish_list]> INSERT INTO fish_records  
     -> VALUES
     -> ('George', 'Perry', 'bass, largemouth', 'Montgomery Lake', 'GA', '22 lb 4 oz', '6/2/1932'),
@@ -102,7 +102,7 @@ select * FROM fish_info WHERE location LIKE '%NJ';
 select * FROM fish_records WHERE state='NJ';
 ```
 
-```sql
+```bash
 MariaDB [fish_list]> select * FROM fish_info WHERE location LIKE '%NJ';
 +---------------+---------------+-----------------+-----------+
 | common        | species       | location        | weight    |
@@ -112,7 +112,7 @@ MariaDB [fish_list]> select * FROM fish_info WHERE location LIKE '%NJ';
 1 row in set (0.010 sec)
 ```
 
-```sql
+```bash
 MariaDB [fish_list]> select * FROM fish_records WHERE state='NJ';
 +------------+-----------+---------------+-------------+-------+-----------+----------+
 | first_name | last_name | common        | location    | state | weight    | date     |
@@ -137,7 +137,7 @@ USE pizza;
 CREATE TABLE pizza_deliveries(order_number INT, address VARCHAR(30));
 ```
 
-```sql
+```bash
 MariaDB [pizza]> CREATE TABLE pizza_deliveries(order_number INT, address VARCHAR(30));
 Query OK, 0 rows affected (0.016 sec)
 ```
@@ -158,7 +158,7 @@ VALUES
 
 ```
 
-```sql
+```bash
 MariaDB [pizza]> INSERT INTO pizza_deliveries  
     -> VALUES
     -> ('246',  '59 N. Ajax Rapids'),
@@ -179,7 +179,7 @@ Records: 10  Duplicates: 0  Warnings: 0
 SELECT address FROM pizza_deliveries WHERE order_number = 252;
 ```
 
-```sql
+```bash
 MariaDB [pizza]> SELECT address FROM pizza_deliveries WHERE order_number = 252;
 +--------------------------+
 | address                  |
@@ -197,7 +197,7 @@ CREATE TABLE real_estate(street_number INT, street_name VARCHAR(30), property_ty
 
 ```
 
-```sql
+```bash
 MariaDB [real_estates]> CREATE TABLE real_estate(street_number INT, street_name VARCHAR(30), property_type VARCHAR(30), price INT);
 Query OK, 0 rows affected (0.015 sec)
 ```
@@ -218,7 +218,7 @@ VALUES
 
 ```
 
-```sql
+```bash
 MariaDB [real_estates]> INSERT INTO real_estate  
     -> VALUES
     -> ('59', 'N. Ajax Rapids', 'condo',189000),
@@ -239,7 +239,7 @@ Records: 10  Duplicates: 0  Warnings: 0
 SELECT price, property_type FROM real_estate WHERE street_name = 'SQL Street';
 ```
 
-```sql
+```bash
 MariaDB [real_estates]> SELECT price, property_type FROM real_estate WHERE street_name = 'SQL Street';
 +--------+---------------+
 | price  | property_type |
@@ -271,7 +271,10 @@ USE gregs_list;
 SHOW CREATE TABLE my_contacts;
 ```
 
-```sql
+```bash
+
+MariaDB [gregs_list]> SHOW CREATE TABLE my_contacts;
+
 +-------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Table       | Create Table                                                                                                                                                                                                                                                                                                                                                                                               |
 +-------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -312,9 +315,22 @@ CREATE TABLE my_contacts(
     );
 ```
 
-```sql
-MariaDB [gregs_list]> CREATE TABLE my_contacts(     contact_id INT NOT NULL,     last_name varchar(30) default NULL,     first_name varchar(20) default NULL,     email varchar(50) default NULL,     gender char(1) default NULL,     birthday date default NULL,     profession varchar(50) default NULL,     location varchar(50) default NULL,     status varchar(20) default NULL,     interests varchar(100) default NULL,     seeking varchar(100) default NULL,     PRIMARY KEY (contact_id)     ) ;
-Query OK, 0 rows affected (0.016 sec)
+```bash
+MariaDB [gregs_list]> CREATE TABLE my_contacts(
+    ->     contact_id INT NOT NULL,
+    ->     last_name varchar(30) default NULL,
+    ->     first_name varchar(20) default NULL,
+    ->     email varchar(50) default NULL,
+    ->     gender char(1) default NULL,
+    ->     birthday date default NULL,
+    ->     profession varchar(50) default NULL,
+    ->     location varchar(50) default NULL,
+    ->     status varchar(20) default NULL,
+    ->     interests varchar(100) default NULL,
+    ->     seeking varchar(100) default NULL,
+    ->     PRIMARY KEY (contact_id)
+    ->     );
+Query OK, 0 rows affected (0.013 sec)
 ```
 
 id 1부터 n까지 숫자를 자동증가하게 만들려면 명령어 AUTO_INCREMENT를 뒤에 추가하면 된다.
@@ -349,7 +365,7 @@ CREATE TABLE name_lists(
 );
 ```
 
-```sql
+```bash
 
 MariaDB [gregs_list]> CREATE TABLE name_lists(
     ->     id INT NOT NULL AUTO_INCREMENT,
@@ -377,7 +393,7 @@ INSERT INTO name_lists (id, first_name, last_name)
 VALUES (99, 'Peter', 'Bredy');
 ```
 
-```sql
+```bash
 MariaDB [gregs_list]> INSERT INTO name_lists (id, first_name, last_name)
     -> VALUES (NULL, 'Marcia', 'Bredy');
 Query OK, 1 row affected (0.006 sec)
@@ -403,7 +419,7 @@ Query OK, 1 row affected (0.004 sec)
 SELECT *  FROM name_lists;
 ```
 
-```sql
+```bash
 MariaDB [gregs_list]> SELECT *  FROM name_lists;
 +----+------------+-----------+
 | id | first_name | last_name |
@@ -426,7 +442,7 @@ ADD COLUMN contact_id INT NOT NULL AUTO_INCREMENT FIRST,
 ADD PRIMARY KEY (contact_id);
 ```
 
-```sql
+```bash
 MariaDB [gregs_list]> ALTER TABLE my_contacts
     -> ADD COLUMN contact_id INT NOT NULL AUTO_INCREMENT FIRST,
     -> ADD PRIMARY KEY (contact_id);
@@ -440,7 +456,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 SELECT * FROM my_contacts;
 ```
 
-```sql
+```bash
 MariaDB [gregs_list]> SELECT * FROM my_contacts;
 +------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
 | contact_id | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |

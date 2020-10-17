@@ -17,32 +17,33 @@ CREATE TABLE clown_info(name VARCHAR(20), last_seen VARCHAR(50), appearance VARC
 
 ## 테이블에 데이터 입력하기
 
-아래의 코드를 사용하여 레코드 값들을 입력한다.
+아래의 코드를 사용하여 레코드 값들을 한꺼번에 입력해보자.
 
 ```sql
 INSERT INTO clown_info
-VALUES
-('Elsie', 'Cherry Hill Sennior Center','F, red hair, green dress, huge feet', 'balloons, little car'),
-('Pickles','Jack Green\'s Party','M, orange hair, blue suit, huge feet','mime'),
-('Sunggles', 'Ball-Mart','F, yellow shirt, baggy red pants','horn, umbrella'),
-('Mr.Hobo','BG Circus','M, cigar, black hair, tiny hat','violin'),
-('Clarabelle','Belmont Senior Certer', 'F, pink hair, huge flower, blue dress', 'yelling, dancing'),
-('Scooter','Oakland Hospital','M, blue hair, red suit, huge nose', 'balloons'),
-('Zippo','Millstone Mall', 'F, orange suit, baggy pants','dancing'),
-('Babe','Earl\'s Autos','F, all pink and sparkly', 'balancing, little car'),
-('Bonzo',NULL,'M, in drag, polka dotted dress', 'singing, dancing'),
-('Sniffles','Tracy\'s','M, green and puple suit, pointy nose',NULL);
+    VALUES
+        ('Elsie', 'Cherry Hill Sennior Center', 'F, red hair, green dress, huge feet', 'balloons, little car'),
+        ('Pickles', 'Jack Green\'s Party', 'M, orange hair, blue suit, huge feet', 'mime'),
+        ('Sunggles', 'Ball-Mart', 'F, yellow shirt, baggy red pants', 'horn, umbrella'),
+        ('Mr.Hobo', 'BG Circus','M, cigar, black hair, tiny hat', 'violin'),
+        ('Clarabelle', 'Belmont Senior Certer', 'F, pink hair, huge flower, blue dress', 'yelling, dancing'),
+        ('Scooter', 'Oakland Hospital', 'M, blue hair, red suit, huge nose', 'balloons'),
+        ('Zippo', 'Millstone Mall', 'F, orange suit, baggy pants', 'dancing'),
+        ('Babe', 'Earl\'s Autos', 'F, all pink and sparkly', 'balancing, little car'),
+        ('Bonzo', NULL, 'M, in drag, polka dotted dress', 'singing, dancing'),
+        ('Sniffles', 'Tracy\'s', 'M, green and puple suit, pointy nose', NULL);
 ```
 
 값들을 추가한 후 아래의 코드를 입력하면 값이 추가된 테이블을 확인할 수 있다.
 
 ```sql
- SELECT * FROM clown_info;
+SELECT * FROM clown_info;
 ```
 
 결과는 다음과 같다.
 
-```sql
+```bash
+MariaDB [gregs_list]> SELECT * FROM clown_info;
 +------------+----------------------------+---------------------------------------+-----------------------+
 | name       | last_seen                  | appearance                            | activities            |
 +------------+----------------------------+---------------------------------------+-----------------------+
@@ -66,12 +67,38 @@ VALUES
 
 ```sql
 INSERT INTO clown_info
-VALUES
-('Zippo','Millstone Mall', 'F, orange suit, baggy pants','dancing, singing'),
-('Sunggles', 'Ball-Mart','F, yellow shirt, baggy blue pants','horn, umbrella'),
-('Bonzo','Dickson Park','M, in drag, polka dotted dress', 'singing, dancing'),
-('Sniffles','Tracy\'s','M, green and puple suit, pointy nose', 'little car'),
-('Mr.Hobo','Eric Gray\'s Party','M, cigar, black hair, tiny hat','violin');
+    VALUES
+        ('Zippo', 'Millstone Mall', 'F, orange suit, baggy pants', 'dancing, singing'),
+        ('Sunggles', 'Ball-Mart', 'F, yellow shirt, baggy blue pants', 'horn, umbrella'),
+        ('Bonzo', 'Dickson Park', 'M, in drag, polka dotted dress', 'singing, dancing'),
+        ('Sniffles', 'Tracy\'s', 'M, green and puple suit, pointy nose', 'little car'),
+        ('Mr.Hobo', 'Eric Gray\'s Party', 'M, cigar, black hair, tiny hat', 'violin');
+```
+
+추가한 것을 확인해보자.
+
+```bash
+MariaDB [gregs_list]> SELECT * FROM clown_info;
++------------+----------------------------+---------------------------------------+-----------------------+
+| name       | last_seen                  | appearance                            | activities            |
++------------+----------------------------+---------------------------------------+-----------------------+
+| Elsie      | Cherry Hill Sennior Center | F, red hair, green dress, huge feet   | balloons, little car  |
+| Pickles    | Jack Green's Party         | M, orange hair, blue suit, huge feet  | mime                  |
+| Sunggles   | Ball-Mart                  | F, yellow shirt, baggy red pants      | horn, umbrella        |
+| Mr.Hobo    | BG Circus                  | M, cigar, black hair, tiny hat        | violin                |
+| Clarabelle | Belmont Senior Certer      | F, pink hair, huge flower, blue dress | yelling, dancing      |
+| Scooter    | Oakland Hospital           | M, blue hair, red suit, huge nose     | balloons              |
+| Zippo      | Millstone Mall             | F, orange suit, baggy pants           | dancing               |
+| Babe       | Earl's Autos               | F, all pink and sparkly               | balancing, little car |
+| Bonzo      | NULL                       | M, in drag, polka dotted dress        | singing, dancing      |
+| Sniffles   | Tracy's                    | M, green and puple suit, pointy nose  | NULL                  |
+| Zippo      | Millstone Mall             | F, orange suit, baggy pants           | dancing, singing      |
+| Sunggles   | Ball-Mart                  | F, yellow shirt, baggy blue pants     | horn, umbrella        |
+| Bonzo      | Dickson Park               | M, in drag, polka dotted dress        | singing, dancing      |
+| Sniffles   | Tracy's                    | M, green and puple suit, pointy nose  | little car            |
+| Mr.Hobo    | Eric Gray's Party          | M, cigar, black hair, tiny hat        | violin                |
++------------+----------------------------+---------------------------------------+-----------------------+
+15 rows in set (0.002 sec)
 ```
 
 ## 광대의 경로 추적하기
@@ -84,7 +111,8 @@ SELECT * FROM clown_info WHERE name = 'Zippo';
 
 아래의 결과를 볼 수 있다.
 
-```sql
+```bash
+MariaDB [gregs_list]> SELECT * FROM clown_info WHERE name = 'Zippo';
 +-------+----------------+-----------------------------+------------------+
 | name  | last_seen      | appearance                  | activities       |
 +-------+----------------+-----------------------------+------------------+
