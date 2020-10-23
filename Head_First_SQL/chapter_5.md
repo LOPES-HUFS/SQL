@@ -203,7 +203,7 @@ Query OK, 0 rows affected (0.006 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
 
-## 연습문제
+## 연습문제 (1)
 
 ```sql
 CREATE TABLE hooptie(
@@ -298,7 +298,7 @@ MariaDB [gregs_list]> UPDATE car_table
 Query OK, 1 row affected (0.003 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
-MariaDB [gregs_list]> 
+MariaDB [gregs_list]>
 MariaDB [gregs_list]> UPDATE car_table
     -> SET VIN = '3GYEK63NT2G28O668'
     -> WHERE car_id = 3;
@@ -375,7 +375,7 @@ MariaDB [gregs_list]> SELECT SUBSTRING_INDEX(location, ',', 1) FROM my_contacts;
 1 row in set (0.006 sec)
 ```
 
-## 연습문제
+## 연습문제 (2)
 
 5번째 문자열 부터 3개까지 뽑는 방법
 
@@ -399,7 +399,7 @@ SELECT UPPER('uSa');
 SELECT LOWER('spaGHEtti');
 ```
 
-대문자로 만들거나 소문자로 만들거나도 할 수 있다. 
+대문자로 만들거나 소문자로 만들거나도 할 수 있다.
 
 ```bash
 MariaDB [gregs_list]> SELECT UPPER('uSa');
@@ -510,7 +510,7 @@ VALUES('Chester, NJ'),
 
 ```sql
 UPDATE my_contacts
-SET state = RIGHT(location,2); 
+SET state = RIGHT(location,2);
 ```
 
 ```bash
