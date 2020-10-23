@@ -236,3 +236,395 @@ MariaDB [gregs_list]> SELECT * FROM test ORDER BY test;
 
 실험 결과 명령어 `ORDER BY`의 순서는 기호 - 숫자 - 알파벳이고, 알파벳의 경우 대소문자 구분을 하지 않는다.
 
+## 여러 열로 정렬하기
+
+만약에 하나의 열이 아니라 여러 개의 열을 기준으로 정리하고 싶다면 어떻게 쿼리를 보내야할까? 예를 들어서 `movie_table`을 `category`를 가장 큰 기준으로 정렬하고 이후 세부적으로는 `title`의 알파벳 순으로 정렬하고 싶다고 가정해보자.
+
+그러면 아래와 같이 쿼리를 보내면 된다.
+
+```sql
+SELECT * FROM movie_table
+    ORDER BY category, title DESC;
+```
+
+위 코드는 첫 번째로 오는 열인 `category`를 기준으로 레코드 순서를 정렬한다. 그 다음 카테고리가 겹치는 데이터들을 두 번째로 오는 `title`을 기준으로 정렬한다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM movie_table
+    ->     ORDER BY category, title;
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+| title                   | rating | drama | comedy | action | sf   | cartoon | category |
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+| Paraskavedekatriaphobia | R      | F     | F      | T      | T    | F       | action   |
+| Mad Clowns              | R      | F     | T      | F      | F    | F       | comedy   |
+| Take it back            | G      | F     | T      | F      | F    | F       | comedy   |
+| Angry Pirate            | PG     | T     | F      | F      | F    | F       | drama    |
+| End of the Line         | PG     | T     | F      | F      | T    | T       | drama    |
+| Big Adventure           | G      | F     | F      | F      | F    | T       | family   |
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+6 rows in set (0.001 sec)
+```
+
+위 테이블을 보면 `category`는 알파벳 순서대로 정렬되었으며, 같은 `category`값을 가진 데이터들은 `title`기준으로 정렬된 것을 확인할 수 있다.
+
+## 역순으로 정렬하기
+
+오름차순이 아니라 내림차순으로 정렬하고 싶을 때는 명령어 `DESC`를 `ORDER BY`에 오든 열 이름 뒤에 붙여주면 된다. 쿼리를 확인해보자.
+
+```sql
+SELECT * FROM movie_table
+    ORDER BY category, title DESC;
+```
+
+위의 쿼리는 `category`는 알파벳 순서대로 정렬하고 같은 `category`안의 데이터들은 `title` 역순으로 정렬하라고 명령한다. 그 결과는 다음과 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM movie_table
+    ->     ORDER BY category, title DESC;
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+| title                   | rating | drama | comedy | action | sf   | cartoon | category |
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+| Paraskavedekatriaphobia | R      | F     | F      | T      | T    | F       | action   |
+| Take it back            | G      | F     | T      | F      | F    | F       | comedy   |
+| Mad Clowns              | R      | F     | T      | F      | F    | F       | comedy   |
+| End of the Line         | PG     | T     | F      | F      | T    | T       | drama    |
+| Angry Pirate            | PG     | T     | F      | F      | F    | F       | drama    |
+| Big Adventure           | G      | F     | F      | F      | F    | T       | family   |
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+6 rows in set (0.001 sec)
+```
+
+만약 정렬하는 모든 열들을 내림차순으로 하고싶다면 어떻게 해야할까? 아래의 쿼리를 참고하자.
+
+```sql
+SELECT * FROM movie_table
+    ORDER BY category DESC, title DESC;
+```
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM movie_table
+    ->     ORDER BY category DESC, title DESC;
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+| title                   | rating | drama | comedy | action | sf   | cartoon | category |
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+| Big Adventure           | G      | F     | F      | F      | F    | T       | family   |
+| End of the Line         | PG     | T     | F      | F      | T    | T       | drama    |
+| Angry Pirate            | PG     | T     | F      | F      | F    | F       | drama    |
+| Take it back            | G      | F     | T      | F      | F    | F       | comedy   |
+| Mad Clowns              | R      | F     | T      | F      | F    | F       | comedy   |
+| Paraskavedekatriaphobia | R      | F     | F      | T      | T    | F       | action   |
++-------------------------+--------+-------+--------+--------+------+---------+----------+
+6 rows in set (0.001 sec)
+```
+
+하나만 내림차순으로 변경했던 테이블과 비교해보면 `category`도 역순으로 정렬된 것을 확인할 수 있다.
+
+## 쿼리로 계산하기
+
+지금부터는 숫자가 포함된 데이터를 다룰 예정이다. 기존에 생성했던 `easy_drinks` 테이블에 데이터 몇개만 추가하여 사용할 것이다. 아래의 코드를 통해 데이터를 생성하자.
+
+```sql
+INSERT INTO easy_drinks  
+VALUES
+('Blackthorn',  'tonic water', 3, 'pineapple juice', 9 ,'stir with ice, strain into cocktail glass with lemon twist'),
+('Blue moon' , 'soda', 4, 'blueberry juice', 0, 'stir with ice, strain into cocktail glass with lemon twist'),
+('Oh my Gosh' , 'peach nectar', 5, 'pineapple juice', 7, 'stir with ice, strain into shot glass'),
+('Lime  Fizz' , 'sprite', 6, 'lime juice', 1, 'stir with ice, strain into cocktail glass'),
+('Kiss on the Lips' , 'cherry juice', 2, 'pineapple juice', 0, 'serve over ice with straw');
+```
+
+그러면 `easy_drinks` 테이블은 아래와 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM easy_drinks;
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+| drink_name       | main         | amount1 | second          | amount2 | directions                                                 |
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+| Blackthorn       | tonic water  |    1.50 | pineapple juice |    1.00 | stir with ice, strain into cocktail glass with lemon twist |
+| Blue moon        | soda         |    1.50 | blueberry juice |    0.75 | stir with ice, strain into cocktail glass with lemon twist |
+| Oh my Gosh       | peach nectar |    1.00 | pineapple juice |    1.00 | stir with ice, strain into shot glass                      |
+| Lime  Fizz       | sprite       |    1.50 | lime juice      |    1.00 | stir with ice, strain into cocktail glass                  |
+| Kiss on the Lips | cherry juice |    2.00 | pineapple juice |    7.00 | serve over ice with straw                                  |
+| Indian's Summer  | cherry juice |    2.00 | pineapple juice |    7.00 | serve over ice with straw                                  |
+| Blue sun         | NULL         |    1.50 | blueberry juice |    0.75 | NULL                                                       |
+| Blackthorn       | tonic water  |    3.00 | pineapple juice |    9.00 | stir with ice, strain into cocktail glass with lemon twist |
+| Blue moon        | soda         |    4.00 | blueberry juice |    0.00 | stir with ice, strain into cocktail glass with lemon twist |
+| Oh my Gosh       | peach nectar |    5.00 | pineapple juice |    7.00 | stir with ice, strain into shot glass                      |
+| Lime  Fizz       | sprite       |    6.00 | lime juice      |    1.00 | stir with ice, strain into cocktail glass                  |
+| Kiss on the Lips | cherry juice |    2.00 | pineapple juice |    0.00 | serve over ice with straw                                  |
++------------------+--------------+---------+-----------------+---------+------------------------------------------------------------+
+12 rows in set (0.001 sec)
+```
+
+## 덧셈 명령어 SUM
+
+먼저 더하는 방법이다. 아래의 코드를 입력해보자.
+
+```sql
+SELECT SUM(amount1) FROM easy_drinks
+    WHERE drink_name = 'Oh my Gosh';
+```
+
+위 코드는 음료 이름이 'Oh my Gosh'인 레코드의 `amount1`을 합한 값을 보여준다. 결과는 아래와 같다.
+
+```sql
++--------------+
+| SUM(amount1) |
++--------------+
+|         6.00 |
++--------------+
+1 row in set (0.010 sec)
+```
+
+만약에 각각의 음료들의 `amount1`을 합한 값을 알고 싶다면 어떻게 해야할까? 그럴 때는 명령어 `GROUP BY`를 사용하면 된다. 명령어 `GROUP BY`는 지정되는 카테고리의 결과들을 총체적으로 보여준다.
+
+```sql
+SELECT drink_name,SUM(amount1) FROM easy_drinks
+    GROUP BY drink_name;
+```
+
+위 코드는 각 `drink_name`의 `amount1`합을 보여달라는 요청이다. 그 결과는 아래와 같다.
+
+```sql
+MariaDB [gregs_list]> SELECT drink_name,SUM(amount1) FROM easy_drinks GROUP BY drink_name;
++------------------+--------------+
+| drink_name       | SUM(amount1) |
++------------------+--------------+
+| Blackthorn       |         4.50 |
+| Blue moon        |         5.50 |
+| Blue sun         |         1.50 |
+| Indian's Summer  |         2.00 |
+| Kiss on the Lips |         4.00 |
+| Lime  Fizz       |         7.50 |
+| Oh my Gosh       |         6.00 |
++------------------+--------------+
+7 rows in set (0.004 sec)
+```
+
+## 평균 명렁어 AVG
+
+명령어 `AVG`는 평균을 구해준다. 즉, `SUM`과 사용방법은 동일하지만 더하는 것이 아니라 평균을 구해주는 것이다. 아래의 코드를 입력하고 결과를 확인해보자.
+
+```sql
+SELECT drink_name,AVG(amount1) FROM easy_drinks
+    GROUP BY drink_name;
+
++------------------+--------------+
+| drink_name       | AVG(amount1) |
++------------------+--------------+
+| Blackthorn       |     2.250000 |
+| Blue moon        |     2.750000 |
+| Blue sun         |     1.500000 |
+| Indian's Summer  |     2.000000 |
+| Kiss on the Lips |     2.000000 |
+| Lime  Fizz       |     3.750000 |
+| Oh my Gosh       |     3.000000 |
++------------------+--------------+
+7 rows in set (0.003 sec)
+```
+
+## MIN과 MAX
+
+최솟값으 구해주는 명령어 `MIN`과 최댓값을 구해주는 명령어인 `MAX`도 위의 연산 명령어들과 동일하다. 아래의 코드를 입력하고 결과를 확인해보자.
+
+### MIN test
+
+```sql
+SELECT drink_name,MIN(amount1) FROM easy_drinks
+    GROUP BY drink_name;
+
++------------------+--------------+
+| drink_name       | MIN(amount1) |
++------------------+--------------+
+| Blackthorn       |         1.50 |
+| Blue moon        |         1.50 |
+| Blue sun         |         1.50 |
+| Indian's Summer  |         2.00 |
+| Kiss on the Lips |         2.00 |
+| Lime  Fizz       |         1.50 |
+| Oh my Gosh       |         1.00 |
++------------------+--------------+
+7 rows in set (0.003 sec)
+```
+
+### MAX test
+
+```sql
+SELECT drink_name,MAX(amount1) FROM easy_drinks
+    GROUP BY drink_name;
+
++------------------+--------------+
+| drink_name       | MAX(amount1) |
++------------------+--------------+
+| Blackthorn       |         3.00 |
+| Blue moon        |         4.00 |
+| Blue sun         |         1.50 |
+| Indian's Summer  |         2.00 |
+| Kiss on the Lips |         2.00 |
+| Lime  Fizz       |         6.00 |
+| Oh my Gosh       |         5.00 |
++------------------+--------------+
+7 rows in set (0.001 sec)
+```
+
+## 개수를 세어주는 명령어 COUNT
+
+명령어 `COUNT`는 해당 테이블의 레코드 개수를 확인할 수 있다. 아래의 코드를 입력해보자.
+
+```sql
+SELECT COUNT(drink_name) FROM easy_drinks;
+
++-------------------+
+| COUNT(drink_name) |
++-------------------+
+|                12 |
++-------------------+
+1 row in set (0.001 sec)
+```
+
+총 12개의 레코드가 있다고 반환한다. 그렇다면 만약에 NULL값이 있어도 개수로 인식할까? NULL이 포함된 데이터를 추가하여 다시 개수를 세어보자.
+
+```sql
+--NULL 추가--
+INSERT INTO easy_drinks  
+VALUES
+(NULL,  'tonic water', 3, 'pineapple juice', 9 ,'stir with ice, strain into cocktail glass with lemon twist');
+
+--테이블 확인--
+MariaDB [gregs_list]> SELECT drink_name FROM easy_drinks;
++------------------+
+| drink_name       |
++------------------+
+| Blackthorn       |
+| Blue moon        |
+| Oh my Gosh       |
+| Lime  Fizz       |
+| Kiss on the Lips |
+| Indian's Summer  |
+| Blue sun         |
+| Blackthorn       |
+| Blue moon        |
+| Oh my Gosh       |
+| Lime  Fizz       |
+| Kiss on the Lips |
+| NULL             |
++------------------+
+13 rows in set (0.001 sec)
+
+--다시 COUNT--
+MariaDB [gregs_list]> SELECT COUNT(drink_name) FROM easy_drinks;
++-------------------+
+| COUNT(drink_name) |
++-------------------+
+|                12 |
++-------------------+
+1 row in set (0.001 sec)
+```
+
+보다시피 NULL값은 카운트되지 않는다.
+
+## 중복 제거하는 명령어 DISTINCT
+
+명령어 `DISTINCT`는 해당 데이터의 고유값들만 보여준다.
+
+```sql
+SELECT DISTINCT drink_name FROM easy_drinks;
+
+| drink_name       |
++------------------+
+| Blackthorn       |
+| Blue moon        |
+| Oh my Gosh       |
+| Lime  Fizz       |
+| Kiss on the Lips |
+| Indian's Summer  |
+| Blue sun         |
+| NULL             |
++------------------+
+8 rows in set (0.001 sec)
+```
+
+여기서는 NULL값도 포함되는 것을 확인할 수 있다.
+
+만약 중복 제거된 고유값이 몇 개인지 알고 싶다면 아래처럼 쿼리를 주자.
+
+```sql
+SELECT COUNT(DISTINCT drink_name) FROM easy_drinks;
+
++----------------------------+
+| COUNT(DISTINCT drink_name) |
++----------------------------+
+|                          7 |
++----------------------------+
+1 row in set (0.003 sec)
+```
+
+역시나 명령어 `COUNT`는 NULL값을 세지 않는다.
+
+## 결과 개수를 제한하는 명령어 LIMIT
+
+만약 내가 가장 `main`의 양이 많은 음료 2개만 알고 싶다고 하자. 그러면 아래와 같이 코드를 입력하면 된다.
+
+```sql
+SELECT drink_name,SUM(amount1) FROM easy_drinks
+    GROUP BY drink_name
+    ORDER BY SUM(amount1) DESC;
+```
+
+위 코드의 결과는 다음과 같다.
+
+```sql
++------------------+--------------+
+| drink_name       | SUM(amount1) |
++------------------+--------------+
+| Lime  Fizz       |         7.50 |
+| Oh my Gosh       |         6.00 |
+| Blue moon        |         5.50 |
+| Blackthorn       |         4.50 |
+| Kiss on the Lips |         4.00 |
+| NULL             |         3.00 |
+| Indian's Summer  |         2.00 |
+| Blue sun         |         1.50 |
++------------------+--------------+
+```
+
+위 결과는 순서를 잘 보여주지만 2개 이상을 보여준다. 만약 정확히 2개만 보고 싶을 때는 명령어 `LIMIT`을 사용하여 개수를 제한하자.
+
+```sql
+SELECT drink_name,SUM(amount1) FROM easy_drinks
+    GROUP BY drink_name
+    ORDER BY SUM(amount1) DESC
+    LIMIT 2;
+
++------------+--------------+
+| drink_name | SUM(amount1) |
++------------+--------------+
+| Lime  Fizz |         7.50 |
+| Oh my Gosh |         6.00 |
++------------+--------------+
+2 rows in set (0.002 sec)
+```
+
+원하는 정보만 바로 받아볼 수 있다.
+
+만약 특정 구간만을 제한하고 싶다면 어떻게 해야 할까? 아래의 코드는 `main`의 양이 많은 음료 중에서 3등부터 5등까지만 보여준다.
+
+```sql
+SELECT drink_name,SUM(amount1) FROM easy_drinks
+    GROUP BY drink_name
+    ORDER BY SUM(amount1) DESC
+    LIMIT 2,3;
+```
+
+위 코드는 3번째부터 아래로 3개의 데이터를 보여달라는 의미이다. SQL에서는 0부터 순서로 시작하기 떄문에 2가 세 번째 레코드를 의미한다. 결과는 다음과 같다.
+
+```sql
++------------------+--------------+
+| drink_name       | SUM(amount1) |
++------------------+--------------+
+| Blue moon        |         5.50 |
+| Blackthorn       |         4.50 |
+| Kiss on the Lips |         4.00 |
++------------------+--------------+
+3 rows in set (0.001 sec)
+```
