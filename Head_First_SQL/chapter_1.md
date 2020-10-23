@@ -214,6 +214,7 @@ ERROR 1136 (21S01): Column count doesn't match value count at row 1
 ```
 
 에러를 고칠려면 Technical Writer', 와 'Single', 사이에 location 열에 해당하는 값, 'Palo Alto, CA'를 다음과 같이 추가해 주면 된다.
+
 ```sql
 INSERT INTO my_contacts(
     last_name, first_name, gender, birthday, profession, location, status, interests, seeking
