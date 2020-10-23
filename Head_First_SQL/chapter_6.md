@@ -12,7 +12,9 @@
 USE gregs_list;
 
 --테이블 생성--
-CREATE TABLE movie_table(titile VARCHAR(100), rating VARCHAR(3), drama CHAR(1), comedy CHAR(1), action CHAR(1), sf CHAR(1), cartoon CHAR(1), category VARCHAR(100));
+CREATE TABLE movie_table(title VARCHAR(100), rating VARCHAR(3),
+     drama CHAR(1), comedy CHAR(1), action CHAR(1), sf CHAR(1),
+     cartoon CHAR(1), category VARCHAR(100));
 
 --데이터 입력--
 INSERT INTO movie_table
