@@ -390,7 +390,7 @@ MariaDB [gregs_list]> DROP TABLE my_contacts;
 Query OK, 0 rows affected (0.006 sec)
 ```
 
-테이블을 만들 때 데이터 타입 설정 다음에 NOT NULL을 추가해주면 NULL 값을 제어할 수 있다. 단 이럴 경우 이 열에는 반드시 값을 넣어주어야 한다. 만약 NOT NULL을 추가하지 않는다면, 필수 입력 값이 아니라는 의미로 값에 NULL이 들어갈 수 있다. NOT NULL을 적어주지 않을 경우 값에 NULL 값이 추가되어도 되며, default 값이 설정되어 있다면, 그 값을 비워두어도 NULL 값이 되지 않고 defualt 값으로 설정된다. 
+테이블을 만들 때 데이터 타입 설정 다음에 NOT NULL을 추가해주면 NULL 값을 제어할 수 있다. 단 이럴 경우 이 열에는 반드시 값을 넣어주어야 한다. 만약 NOT NULL을 추가하지 않는다면, 필수 입력 값이 아니라는 의미로 값에 NULL이 들어갈 수 있다. NOT NULL을 적어주지 않을 경우 값에 NULL 값이 추가되어도 되며, default 값이 설정되어 있다면, 그 값을 비워두어도 NULL 값이 되지 않고 defualt 값으로 설정된다.
 
 ```sql
 CREATE TABLE my_contacts(
