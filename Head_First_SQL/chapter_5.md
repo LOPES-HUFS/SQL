@@ -834,16 +834,16 @@ MariaDB [gregs_list]> SELECT LENGTH('San Antonio, TX ');
 업데이트 문과 함께 사용하여 내용을 추가해보자.
 
 ```sql
-UPDATE my_contacts
-SET state = RIGHT(location, 2);
+UPDATE my_contacts SET state = RIGHT(location, 2);
 ```
 
 ```bash
-MariaDB [gregs_list]> UPDATE my_contacts
-    -> SET state = RIGHT(location, 2);
-Query OK, 1 row affected (0.005 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
+MariaDB [gregs_list]> UPDATE my_contacts SET state = RIGHT(location, 2);
+Query OK, 2 rows affected (0.005 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
 ```
+
+contact_id, location, city, state 열만 존재하게 약식으로 my_contacts 테이블을 다시 만들자.
 
 ```sql
 DROP TABLE my_contacts;
@@ -861,21 +861,18 @@ VALUES('Chester, NJ'),
 ('Katy, TX'),
 ('San Mateo, CA');
 
-
 ```
 
 전체를 한번에 입력하려면 다음과 같이 하면 된다.
 
 ```sql
-UPDATE my_contacts
-SET state = RIGHT(location,2);
+UPDATE my_contacts SET state = RIGHT(location,2);
 ```
 
 ```bash
-MariaDB [gregs_list]> UPDATE my_contacts
-    -> SET state = RIGHT(location,2);
-Query OK, 2 rows affected (0.003 sec)
-Rows matched: 3  Changed: 2  Warnings: 0
+MariaDB [gregs_list]> UPDATE my_contacts SET state = RIGHT(location,2);
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
 ```
 
 아래와 같이 한 줄씩 입력할 수도 있다. 단 WHERE 문을 조심히 입력하지 않으면 잘못 입력될 수도 있으니 주의해야한다.
@@ -892,4 +889,24 @@ WHERE contact_id = 2;
 UPDATE my_contacts
 SET state = RIGHT('San Mateo,CA',2)
 WHERE contact_id = 3;
+```
+
+```bash
+MariaDB [gregs_list]> UPDATE my_contacts
+    -> SET state = RIGHT('Chester,NJ',2)
+    -> WHERE contact_id = 1;
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE my_contacts
+    -> SET state = RIGHT('Katy,TX',2)
+    -> WHERE contact_id = 2;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE my_contacts
+    -> SET state = RIGHT('San Mateo,CA',2)
+    -> WHERE contact_id = 3;
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
 ```
