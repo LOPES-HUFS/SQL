@@ -405,6 +405,8 @@ CREATE TABLE my_contacts(
 DROP TABLE my_contacts;
 ```
 
+- `DROP TABLE`는 만든 테이블을 지우는 명령어, 명령어 뒤에 지울 테이블 이름을 입력하면 된다.
+
 ```sql
 CREATE TABLE my_contacts(
     last_name VARCHAR(30) NOT NULL,
@@ -420,6 +422,9 @@ CREATE TABLE my_contacts(
 );
 ```
 
+실행하면 다음과 같다.
+
+```bash
 MariaDB [gregs_list]> CREATE TABLE my_contacts(
     ->     last_name VARCHAR(30) NOT NULL,
     ->     first_name VARCHAR(20) NOT NULL,
@@ -433,6 +438,7 @@ MariaDB [gregs_list]> CREATE TABLE my_contacts(
     ->     seeking VARCHAR(100) NOT NULL
     -> );
 Query OK, 0 rows affected (0.010 sec)
+```
 
 이제 NULL 값을 제어한 도넛 리스트도 다시 만들어 보자. doughnut_cost 열에 디폴트 값으로 1.00이 추가되어 있다. 이것은 값이 입력되지 않는다면 1.00을 사용한다는 의미이다.
 
