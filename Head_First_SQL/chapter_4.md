@@ -105,12 +105,12 @@ Records: 10  Duplicates: 0  Warnings: 0
 목적이 다르기에 만들어진 테이블에 대한 같은 목적의 쿼리 방법도 달라진다. 주(state) 라는 열이 있는 fish_records 테이블에는 주를 통해 쿼리를 할 수 있다. 반면 location 만 있는 fish_info 테이블에서는 만약 NJ라는 글자가 들어간 장소가 있다면 쿼리 결과가 달라질 수 있다.
 
 ```sql
-select * FROM fish_info WHERE location LIKE '%NJ';
-select * FROM fish_records WHERE state='NJ';
+SELECT * FROM fish_info WHERE location LIKE '%NJ';
+SELECT * FROM fish_records WHERE state='NJ';
 ```
 
 ```bash
-MariaDB [fish_list]> select * FROM fish_info WHERE location LIKE '%NJ';
+MariaDB [fish_list]> SELECT * FROM fish_info WHERE location LIKE '%NJ';
 +---------------+---------------+-----------------+-----------+
 | common        | species       | location        | weight    |
 +---------------+---------------+-----------------+-----------+
@@ -120,7 +120,7 @@ MariaDB [fish_list]> select * FROM fish_info WHERE location LIKE '%NJ';
 ```
 
 ```bash
-MariaDB [fish_list]> select * FROM fish_records WHERE state='NJ';
+MariaDB [fish_list]> SELECT * FROM fish_records WHERE state='NJ';
 +------------+-----------+---------------+-------------+-------+-----------+----------+
 | first_name | last_name | common        | location    | state | weight    | date     |
 +------------+-----------+---------------+-------------+-------+-----------+----------+
@@ -575,6 +575,13 @@ VALUES (
     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
 );
 
+INSERT INTO my_contacts(
+    first_name, email, profession, location
+)
+VALUES(
+    'Pat', 'patpost@breakneckpizza.com', 'Postal Worker', 'Princeton, NJ'
+);
+
 SELECT * FROM my_contacts;
 ```
 
@@ -586,8 +593,9 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
 +-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
 | Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+| NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
 +-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
-1 row in set (0.001 sec)
+2 rows in set (0.003 sec)
 ```
 
 새로운 열을 추가하는 명령어는 ALTER TABLE과 ADD COLUMN 명령어로 이루어진다. 아래 코드에서 FIRST는 첫번째 열로 추가해준다는 명령어이며, 여기서 따로 열 순서를 지정하지 않을 경우 마지막 열로 들어간다.
@@ -618,6 +626,7 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 | contact_id | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
 +------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
 |          1 | Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+|          2 | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
 +------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
-1 row in set (0.001 sec)
+2 rows in set (0.001 sec)
 ```
