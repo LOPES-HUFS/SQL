@@ -121,7 +121,7 @@ ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10) FIRST;
 ```
 
-전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 마지막 열로 만들어진다.
+전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 마지막 열로 만들어진다. 참고로 maria DB에서는 MY SQL과 달리 위치 지정에 FIRST 이외에 SECOND나 THIRD와 같은 다른 숫자는 지정되지 않는다. 마찬가지로 MY SQL의 BEFORE 명령어도 maria DB에서는 사용하지 않고 오직 AFTER만 사용한다. 
 
 ```sql
 ALTER TABLE my_contacts
