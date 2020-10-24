@@ -40,6 +40,51 @@ VALUES(
     'Pat', 'patpost@breakneckpizza.com', 'Postal Worker', 'Princeton, NJ'
 );
 
+ALTER TABLE my_contacts
+ADD COLUMN contact_id INT NOT NULL AUTO_INCREMENT FIRST,
+ADD PRIMARY KEY (contact_id);
+```
+
+```bash
+MariaDB [gregs_list]> DROP TABLE my_contacts;
+Query OK, 0 rows affected (0.006 sec)
+
+
+MariaDB [gregs_list]> CREATE TABLE my_contacts(
+    ->     last_name varchar(30) default NULL,
+    ->     first_name varchar(20) default NULL,
+    ->     email varchar(50) default NULL,
+    ->     gender char(1) default NULL,
+    ->     birthday date default NULL,
+    ->     profession varchar(50) default NULL,
+    ->     location varchar(50) default NULL,
+    ->     status varchar(20) default NULL,
+    ->     interests varchar(100) default NULL,
+    ->     seeking varchar(100) default NULL
+    ->     );
+Query OK, 0 rows affected (0.016 sec)
+
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+    -> )
+    -> VALUES (
+    ->     'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+    -> );
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [gregs_list]> INSERT INTO my_contacts(
+    ->     first_name, email, profession, location
+    -> )
+    -> VALUES(
+    ->     'Pat', 'patpost@breakneckpizza.com', 'Postal Worker', 'Princeton, NJ'
+    -> );
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts
+    -> ADD COLUMN contact_id INT NOT NULL AUTO_INCREMENT FIRST,
+    -> ADD PRIMARY KEY (contact_id);
+Query OK, 0 rows affected (0.018 sec)
+Records: 0  Duplicates: 0  Warnings: 0
 ```
 
 만들어진 테이블을 확인하면 아래와 같다.
@@ -63,6 +108,13 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 
 ```sql
 ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
+```
+
+```bash
+MariaDB [gregs_list]> ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
+Query OK, 0 rows affected (0.008 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
 ```
 
 전화번호 열을 추가한 테이블의 구조는 다음과 같다.
@@ -107,6 +159,16 @@ DESC my_contacts;
 테이블 구조 상 first_name 다음에 phone이 생긴 것을 확인할 수 있다.
 
 ```bash
+MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts
+    -> ADD COLUMN phone VARCHAR(10)
+    -> AFTER first_name;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
 MariaDB [gregs_list]> DESC my_contacts;
 +------------+--------------+------+-----+---------+----------------+
 | Field      | Type         | Null | Key | Default | Extra          |
@@ -144,6 +206,15 @@ DESC my_contacts;
 테이블 구조를 확인해보면 다음과 같이 첫번째 열에 전화번호 열이 추가된것을 알 수 있다.
 
 ```bash
+MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
+Query OK, 0 rows affected (0.009 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts
+    -> ADD COLUMN phone VARCHAR(10) FIRST;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
 MariaDB [gregs_list]> DESC my_contacts;
 +------------+--------------+------+-----+---------+----------------+
 | Field      | Type         | Null | Key | Default | Extra          |
@@ -171,16 +242,21 @@ ALTER TABLE my_contacts DROP COLUMN phone;
 
 ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
 
-ALTER TABLE my_contacts
-ADD COLUMN phone VARCHAR(10)
-AFTER seeking;
-
 DESC my_contacts;
 ```
 
 테이블 구조를 확인해보면 마지막 줄에 전화번호 열이 추가된 것을 확인할 수 있다.
 
 ```bash
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
+Query OK, 0 rows affected (0.008 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
+Query OK, 0 rows affected (0.008 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
 MariaDB [gregs_list]> DESC my_contacts;
 +------------+--------------+------+-----+---------+----------------+
 | Field      | Type         | Null | Key | Default | Extra          |
@@ -201,6 +277,48 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.002 sec)
 ```
 
+```sql
+ALTER TABLE my_contacts DROP COLUMN phone;
+
+ALTER TABLE my_contacts
+ADD COLUMN phone VARCHAR(10)
+AFTER seeking;
+
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts
+    -> ADD COLUMN phone VARCHAR(10)
+    -> AFTER seeking;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.004 sec)
+
+```
+
 전화번호 열을 두 번째 열로 만들고 싶으면 AFTER contact_id 같이 1번째 열 이름 후라는 명령어를 이용하면 된다. 3번째로 만들고 싶으면 마찬가지로 AFTER last_name을 해주면 된다.
 
 ```sql
@@ -214,6 +332,16 @@ DESC my_contacts;
 ```
 
 ```bash
+MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
+Query OK, 0 rows affected (0.008 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> ALTER TABLE my_contacts
+    -> ADD COLUMN phone VARCHAR(10)
+    -> AFTER contact_id;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
 MariaDB [gregs_list]> DESC my_contacts;
 +------------+--------------+------+-----+---------+----------------+
 | Field      | Type         | Null | Key | Default | Extra          |
@@ -247,8 +375,8 @@ CHANGE, MODIFY, DROP 명령어의 경우 데이터가 변경되거나 삭제되�
 CREATE TABLE projekts(
     number INT(11),
     desciptionofproj VARCHAR(50),
-    contractoronjob VARCHAR(10);
-)
+    contractoronjob VARCHAR(10)
+);
 
 INSERT INTO projekts(
     VALUES
@@ -284,6 +412,10 @@ Records: 4  Duplicates: 0  Warnings: 0
 만들어진 테이블을 확인한다.
 
 ```sql
+DESC projekts;
+```
+
+```bash
 MariaDB [gregs_list]> DESC projekts;
 +------------------+-------------+------+-----+---------+-------+
 | Field            | Type        | Null | Key | Default | Extra |
@@ -377,8 +509,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 프로젝트가 중단되어 프로젝트 시작일 열이 필요가 없어졌다. 이제 필요 없는 열을 지워야한다. 열을 삭제하는 것은 DROP COLUMN 명령어로 할 수 있다. 참고로 지금은 데이터를 입력하지 않아 사라지지 않았지만 열을 삭제하면 해당 열 안에 있는 데이터도 모두 같이 사라진다.
 
 ```sql
-ALTER TABLE project_list
-DROP COLUMN start_date;
+ALTER TABLE project_list DROP COLUMN start_date;
 ```
 
 ```bash
