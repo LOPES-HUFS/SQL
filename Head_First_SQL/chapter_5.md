@@ -162,7 +162,7 @@ ALTER TABLE my_contacts DROP COLUMN phone;
 
 - `DROP COLUMN`: `ALTER TABLE`과 사용하면 열을 제거할 수 있다.
 
-이제 first_name 뒤에 phone 열을 추가해보자.
+이제 first_name 열 뒤에 phone 열을 추가해보자.
 
 ```sql
 ALTER TABLE my_contacts
