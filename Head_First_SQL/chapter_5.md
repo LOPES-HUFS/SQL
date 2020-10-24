@@ -386,7 +386,6 @@ INSERT INTO projekts(
         (4, 'roofing', 'Jackson')
 );
 
-DESC projekts;
 ```
 
 ```bash
@@ -409,10 +408,12 @@ Query OK, 4 rows affected (0.004 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 ```
 
-만들어진 테이블을 확인한다.
+만들어진 테이블의 구조와 데이터를 확인한다.
 
 ```sql
 DESC projekts;
+
+SELECT * FROM projekts;
 ```
 
 ```bash
@@ -425,6 +426,17 @@ MariaDB [gregs_list]> DESC projekts;
 | contractoronjob  | varchar(10) | YES  |     | NULL    |       |
 +------------------+-------------+------+-----+---------+-------+
 3 rows in set (0.004 sec)
+
+MariaDB [gregs_list]> SELECT * FROM projekts;
++--------+-------------------------+-----------------+
+| number | desciptionofproj        | contractoronjob |
++--------+-------------------------+-----------------+
+|      1 | outside house painting  | Murphy          |
+|      2 | kitchen remodel         | Valdez          |
+|      3 | wood floor installation | Keller          |
+|      4 | roofing                 | Jackson         |
++--------+-------------------------+-----------------+
+4 rows in set (0.001 sec)
 ```
 
 RENAME TO: 테이블의 이름을 바꾸는 방법이다.
@@ -436,8 +448,7 @@ ALTER TABLE projekts RENAME TO project_list;
 RENAME TO 명령어를 사용해 테이블 이름을 프로젝트 리스트로 변경해준다.
 
 ```bash
-MariaDB [gregs_list]> ALTER TABLE projekts
-    -> RENAME TO project_list;
+MariaDB [gregs_list]> ALTER TABLE projekts RENAME TO project_list;
 Query OK, 0 rows affected (0.008 sec)
 ```
 
@@ -453,7 +464,7 @@ ADD PRIMARY KEY (proj_id);
 MariaDB [gregs_list]> ALTER TABLE project_list
     -> CHANGE COLUMN number proj_id INT NOT NULL AUTO_INCREMENT,
     -> ADD PRIMARY KEY (proj_id);
-Query OK, 4 rows affected (0.034 sec)
+Query OK, 4 rows affected (0.028 sec)              
 Records: 4  Duplicates: 0  Warnings: 0
 ```
 
@@ -482,8 +493,7 @@ ALTER TABLE project_list MODIFY COLUMN proj_desc VARCHAR(120);
 ```
 
 ```bash
-MariaDB [gregs_list]> ALTER TABLE project_list
-    -> MODIFY COLUMN proj_desc VARCHAR(120);
+MariaDB [gregs_list]> ALTER TABLE project_list MODIFY COLUMN proj_desc VARCHAR(120);
 Query OK, 0 rows affected (0.007 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
@@ -556,6 +566,38 @@ MariaDB [gregs_list]> INSERT INTO hooptie(
     -> );
 Query OK, 3 rows affected (0.005 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
+
+만들어진 테이블과 데이터를 확인한다.
+
+```sql
+DESC hooptie;
+SELECT * FROM hooptie;
+```
+
+```bash
+MariaDB [gregs_list]> DESC hooptie;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| color   | varchar(10) | YES  |     | NULL    |       |
+| year    | int(4)      | YES  |     | NULL    |       |
+| make    | varchar(10) | YES  |     | NULL    |       |
+| mo      | varchar(10) | YES  |     | NULL    |       |
+| howmuch | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.004 sec)
+
+MariaDB [gregs_list]> SELECT * FROM hooptie;
++--------+------+---------+----------+-----------+
+| color  | year | make    | mo       | howmuch   |
++--------+------+---------+----------+-----------+
+| silver | 1998 | Porsche | Boxter   | 17992.540 |
+| NULL   | 2000 | Jaguar  | XJ       | 15995     |
+| red    | 2002 | Cadilac | Escalade | 40215.9   |
++--------+------+---------+----------+-----------+
+3 rows in set (0.001 sec)
+
 ```
 
 ```sql
