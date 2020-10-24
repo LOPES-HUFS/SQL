@@ -45,6 +45,8 @@ ADD COLUMN contact_id INT NOT NULL AUTO_INCREMENT FIRST,
 ADD PRIMARY KEY (contact_id);
 ```
 
+다음을 실행하면 다음과 같다.
+
 ```bash
 MariaDB [gregs_list]> DROP TABLE my_contacts;
 Query OK, 0 rows affected (0.006 sec)
@@ -104,11 +106,19 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 2 rows in set (0.001 sec)
 ```
 
-이제 ALTER TABLE ADD COLOMN 명령어로 전화번호 열을 추가해보자.
+이제 `ALTER TABLE` 명령어를 사용해서 열을 추가해보자.
+
+- `ALTER TABLE`: 테이블 안의 데이터를 유지하면서 테이블의 이름과 구조를 변경하는 명령어
+
+전화번호 열을 추가하기 위해서는 `ALTER TABLE`에 `ADD COLOMN` 명령어를 추가하여 아래와 같이 실행하면 된다.
+
+- `ADD COLOMN`: `ALTER TABLE`와 함께 사용하여 열을 추가한다.
 
 ```sql
 ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
 ```
+
+실행 결과는 다음과 같다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
@@ -117,7 +127,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 ```
 
-전화번호 열을 추가한 테이블의 구조는 다음과 같다.
+전화번호 열을 추가한 my_contacts 테이블의 구조는 다음과 같다.
 
 ```sql
 DESC my_contacts;
@@ -144,14 +154,55 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.005 sec)
 ```
 
-기존에 전화번호 열을 추가한 상태에서 열 순서를 바꿔서 새로 만들려면 DROP COLUMN이나 이후 설명할 MODIFY를 사용하면 된다. 만들어진 열을 지우고 새롭게 first_name 다음에 전화번호 열을 추가해보자.
+지금까지 만든 phone 열은 맨 마지막에 있다. 앞에서치럼 추가하면 맨 뒤로 들어간다. 이를 first_name 열 뒤에 넣어보자. 우선 앞에서 만든 phone 열은 우선 제거하자.
+
+```sql
+ALTER TABLE my_contacts DROP COLUMN phone;
+```
+
+- `DROP COLUMN`: `ALTER TABLE`과 사용하면 열을 제거할 수 있다.
+
+이제 first_name 뒤에 phone 열을 추가해보자.
+
+```sql
+ALTER TABLE my_contacts
+    ADD COLUMN phone VARCHAR(10)
+    AFTER first_name;
+```
+
+- `AFTER`: `ALTER TABLE`과 `ADD COLUMN`을 같이 사용하면 특정 열 뒤에 열을 추가할 수 있다.
+
+다음과 같이 first_name 뒤에 phone 열이 추가된 것을 확인할 수 있다.
+
+```sql
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.006 sec)
+```
+
+위에서처럼 전화번호 열을 추가한 상태에서 열 순서를 바꿔서 새로 만들려면 DROP COLUMN이나 이후 설명할 MODIFY를 사용하면 된다. 만들어진 열을 지우고 새롭게 first_name 다음에 전화번호 열을 추가해보자.
 
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
 
 ALTER TABLE my_contacts
-ADD COLUMN phone VARCHAR(10)
-AFTER first_name;
+    ADD COLUMN phone VARCHAR(10)
+    AFTER first_name;
 
 DESC my_contacts;
 ```
@@ -187,7 +238,6 @@ MariaDB [gregs_list]> DESC my_contacts;
 | seeking    | varchar(100) | YES  |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
 12 rows in set (0.002 sec)
-
 ```
 
 열 순서를 지정하는 방법들에 대해 알아보자.
@@ -628,8 +678,6 @@ MariaDB [gregs_list]> ALTER TABLE hooptie
 Query OK, 3 rows affected (0.021 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
-
-기존 데이터에 값을 추가할 때는 INSERT INTO가 아닌 업데이트(UPDATE)를 사용합니다.
 
 ```sql
 UPDATE car_table
