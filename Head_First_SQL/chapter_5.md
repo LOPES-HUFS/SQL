@@ -2,20 +2,128 @@
 
 기존에 그렉의 테이블에 전화번호 열을 추가해보자.
 
+우선 작업을 하기 위해서 우선 아래와 같이 `USE`을 사용해서 `gregs_list` DB를 사용하도록 설정하자.
+
 ```sql
 USE gregs_list;
 ```
 
-그렉 리스트 라는 데이터 베이스를 불러오면 4장에서 만들었던 my_contacts 테이블이 남아있습니다. 이 테이블에 전화번호 열을 추가하면 된다.
+`gregs_list`에는 4장에서 만들었던 `my_contacts`테이블이 남아있다. 이 테이블에 전화번호 열을 추가해보자. 기존에 4장에서 만들었던 `my_contacts` 테이블을 새롭게 만들어보자.
 
 ```sql
-ALTER TABLE my_contacts
-ADD COLUMN phone VARCHAR(10);
+DROP TABLE my_contacts;
+
+CREATE TABLE my_contacts(
+    last_name varchar(30) default NULL,
+    first_name varchar(20) default NULL,
+    email varchar(50) default NULL,
+    gender char(1) default NULL,
+    birthday date default NULL,
+    profession varchar(50) default NULL,
+    location varchar(50) default NULL,
+    status varchar(20) default NULL,
+    interests varchar(100) default NULL,
+    seeking varchar(100) default NULL
+    );
+
+INSERT INTO my_contacts(
+    last_name, first_name, email, gender, birthday, profession, location, status, interests, seeking
+)
+VALUES (
+    'Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', 'F', '1980-09-05', 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'
+);
+
+INSERT INTO my_contacts(
+    first_name, email, profession, location
+)
+VALUES(
+    'Pat', 'patpost@breakneckpizza.com', 'Postal Worker', 'Princeton, NJ'
+);
+
+```
+
+```sql
+SELECT * FROM my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| contact_id | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
++------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+|          1 | Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+|          2 | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
++------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+2 rows in set (0.001 sec)
+```
+
+이 테이블의 데이터 구조는 다음과 같이 하면 살펴볼 수 있다.
+
+```sql
+DESC my_contacts;
+```
+
+결과는 다음과 같다.
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| last_name  | varchar(30)  | YES  |     | NULL    |       |
+| first_name | varchar(20)  | YES  |     | NULL    |       |
+| email      | varchar(50)  | YES  |     | NULL    |       |
+| gender     | char(1)      | YES  |     | NULL    |       |
+| birthday   | date         | YES  |     | NULL    |       |
+| profession | varchar(50)  | YES  |     | NULL    |       |
+| location   | varchar(50)  | YES  |     | NULL    |       |
+| status     | varchar(20)  | YES  |     | NULL    |       |
+| interests  | varchar(100) | YES  |     | NULL    |       |
+| seeking    | varchar(100) | YES  |     | NULL    |       |
+| phone      | varchar(10)  | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+11 rows in set (0.020 sec)
+```
+
+이제 ALTER TABLE ADD COLOMN 명령어로 전화번호 열을 추가해보자.
+
+```sql
+ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
+```
+
+전화번호 열을 추가한 테이블의 구조는 다음과 같다.
+
+```sql
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.005 sec)
 ```
 
 열 순서를 first_name 뒤로 배치하려면 위의 코드 대신에 아래 코드를 치면 된다.
+기존에 전화번호 열을 추가한 상태에서 열 순서를 바꿔서 새로 만들려면 DROP COLUMN이나 이후 설명할 MODIFY를 사용하면 된다.
 
 ```sql
+ALTER TABLE my_contacts DROP COLUMN phone;
+
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER first_name;
