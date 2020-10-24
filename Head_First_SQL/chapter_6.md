@@ -563,7 +563,7 @@ SELECT COUNT(DISTINCT drink_name) FROM easy_drinks;
 
 ## 결과 개수를 제한하는 명령어 LIMIT
 
-만약 내가 가장 `main`의 양이 많은 음료 2개만 알고 싶다고 하자. 그러면 아래와 같이 코드를 입력하면 된다.
+만약 내가 `amount1`의 합이 가장 큰 음료 2개만 알고 싶다고 하자. 그러면 아래와 같이 코드를 입력하면 된다.
 
 ```sql
 SELECT drink_name,SUM(amount1) FROM easy_drinks
@@ -607,7 +607,7 @@ SELECT drink_name,SUM(amount1) FROM easy_drinks
 
 원하는 정보만 바로 받아볼 수 있다.
 
-만약 특정 구간만을 제한하고 싶다면 어떻게 해야 할까? 아래의 코드는 `main`의 양이 많은 음료 중에서 3등부터 5등까지만 보여준다.
+만약 특정 구간만을 제한하고 싶다면 어떻게 해야 할까? 아래의 코드는 `amount1`의 합이 큰 음료 중에서 3등부터 5등까지만 보여준다.
 
 ```sql
 SELECT drink_name,SUM(amount1) FROM easy_drinks
