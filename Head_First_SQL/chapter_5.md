@@ -6,11 +6,52 @@
 USE gregs_list;
 ```
 
-그렉 리스트 라는 데이터 베이스를 불러오면 4장에서 만들었던 my_contacts 테이블이 남아있습니다. 이 테이블에 전화번호 열을 추가하면 된다.
+그렉 리스트 라는 데이터 베이스를 불러오면 4장에서 만들었던 my_contacts 테이블이 남아있다. 이 테이블에 전화번호 열을 추가하면 된다.
+기존에 4장에서 만들었던 my_contacts 테이블의 정보는 다음과 같다.
+
+```sql
+SELECT * FROM my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+| contact_id | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
++------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+|          1 | Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
+|          2 | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
++------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
+2 rows in set (0.001 sec)
+```
 
 ```sql
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10);
+```
+
+```sql
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.005 sec)
 ```
 
 열 순서를 first_name 뒤로 배치하려면 위의 코드 대신에 아래 코드를 치면 된다.
@@ -19,6 +60,27 @@ ADD COLUMN phone VARCHAR(10);
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER first_name;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.002 sec)
 ```
 
 열 순서를 지정하는 방법들에 대해 알아보자.
