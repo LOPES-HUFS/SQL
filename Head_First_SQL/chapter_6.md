@@ -244,7 +244,7 @@ MariaDB [gregs_list]> SELECT * FROM test ORDER BY test;
 
 ```sql
 SELECT * FROM movie_table
-    ORDER BY category, title DESC;
+    ORDER BY category, title;
 ```
 
 위 코드는 첫 번째로 오는 열인 `category`를 기준으로 레코드 순서를 정렬한다. 그 다음 카테고리가 겹치는 데이터들을 두 번째로 오는 `title`을 기준으로 정렬한다.
