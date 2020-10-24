@@ -257,6 +257,8 @@ INSERT INTO projekts(
         (3, 'wood floor installation', 'Keller'),
         (4, 'roofing', 'Jackson')
 );
+
+DESC projekts;
 ```
 
 ```bash
@@ -296,8 +298,7 @@ MariaDB [gregs_list]> DESC projekts;
 RENAME TO: 테이블의 이름을 바꾸는 방법이다.
 
 ```sql
-ALTER TABLE projekts
-RENAME TO project_list;
+ALTER TABLE projekts RENAME TO project_list;
 ```
 
 RENAME TO 명령어를 사용해 테이블 이름을 프로젝트 리스트로 변경해준다.
@@ -345,8 +346,7 @@ Records: 4  Duplicates: 0  Warnings: 0
 만약 열에 100자리 보다 더 많은 문자열을 저장하게 하고 싶다면 MODIFY를 사용하면 된다.
 
 ```sql
-ALTER TABLE project_list
-MODIFY COLUMN proj_desc VARCHAR(120);
+ALTER TABLE project_list MODIFY COLUMN proj_desc VARCHAR(120);
 ```
 
 ```bash
