@@ -1,13 +1,14 @@
 # 5장 ALTER
 
-기존에 그렉의 테이블에 전화번호 열을 추가해보자.
+데이터를 변경하면서도 데이터를 잃지 않고 기존 그렉의 테이블에 전화번호 열을 추가하기 하려면 `ALTER` 명령어를 사용하면 된다.
+
+우선 작업을 하기 위해서 우선 아래와 같이 `USE`을 사용해서 `gregs_list` DB를 사용하도록 설정하자.
 
 ```sql
 USE gregs_list;
 ```
 
-그렉 리스트 라는 데이터 베이스를 불러오면 4장에서 만들었던 my_contacts 테이블이 남아있다. 이 테이블에 전화번호 열을 추가하면 된다.
-기존에 4장에서 만들었던 my_contacts 테이블의 정보는 다음과 같다.
+`gregs_list`에는 4장에서 만들었던 `my_contacts`테이블이 남아있다. 이 테이블에 전화번호 열을 추가해보자. 기존에 4장에서 만들었던 `my_contacts` 테이블에 어떤 데이터가 들어있는지 확인해보자.
 
 ```sql
 SELECT * FROM my_contacts;
@@ -22,6 +23,34 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 |          2 | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
 +------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
 2 rows in set (0.001 sec)
+```
+
+이 이 테이블의 데이터 구조는 다음과 같이 하면 살펴볼 수 있다.
+
+```sql
+DESC my_contacts;
+```
+
+결과는 다음과 같다.
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| last_name  | varchar(30)  | YES  |     | NULL    |       |
+| first_name | varchar(20)  | YES  |     | NULL    |       |
+| email      | varchar(50)  | YES  |     | NULL    |       |
+| gender     | char(1)      | YES  |     | NULL    |       |
+| birthday   | date         | YES  |     | NULL    |       |
+| profession | varchar(50)  | YES  |     | NULL    |       |
+| location   | varchar(50)  | YES  |     | NULL    |       |
+| status     | varchar(20)  | YES  |     | NULL    |       |
+| interests  | varchar(100) | YES  |     | NULL    |       |
+| seeking    | varchar(100) | YES  |     | NULL    |       |
+| phone      | varchar(10)  | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+11 rows in set (0.020 sec)
 ```
 
 ```sql
