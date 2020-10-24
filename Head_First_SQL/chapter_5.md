@@ -464,7 +464,7 @@ ADD PRIMARY KEY (proj_id);
 MariaDB [gregs_list]> ALTER TABLE project_list
     -> CHANGE COLUMN number proj_id INT NOT NULL AUTO_INCREMENT,
     -> ADD PRIMARY KEY (proj_id);
-Query OK, 4 rows affected (0.028 sec)              
+Query OK, 4 rows affected (0.028 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 ```
 
