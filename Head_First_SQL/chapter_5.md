@@ -2,7 +2,7 @@
 
 기존에 그렉의 테이블에 전화번호 열을 추가해보자.
 
-우선 작업을 하기 위해서 우선 아래와 같이 `USE`을 사용해서 `gregs_list` DB를 사용하도록 설정하자.
+우선 작업을 하기 위해서 아래와 같이 `USE`을 사용해서 `gregs_list` DB를 사용하도록 설정하자.
 
 ```sql
 USE gregs_list;
@@ -42,6 +42,8 @@ VALUES(
 
 ```
 
+만들어진 테이블을 확인하면 아래와 같다.
+
 ```sql
 SELECT * FROM my_contacts;
 ```
@@ -55,34 +57,6 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 |          2 | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
 +------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
 2 rows in set (0.001 sec)
-```
-
-이 테이블의 데이터 구조는 다음과 같이 하면 살펴볼 수 있다.
-
-```sql
-DESC my_contacts;
-```
-
-결과는 다음과 같다.
-
-```bash
-MariaDB [gregs_list]> DESC my_contacts;
-+------------+--------------+------+-----+---------+-------+
-| Field      | Type         | Null | Key | Default | Extra |
-+------------+--------------+------+-----+---------+-------+
-| last_name  | varchar(30)  | YES  |     | NULL    |       |
-| first_name | varchar(20)  | YES  |     | NULL    |       |
-| email      | varchar(50)  | YES  |     | NULL    |       |
-| gender     | char(1)      | YES  |     | NULL    |       |
-| birthday   | date         | YES  |     | NULL    |       |
-| profession | varchar(50)  | YES  |     | NULL    |       |
-| location   | varchar(50)  | YES  |     | NULL    |       |
-| status     | varchar(20)  | YES  |     | NULL    |       |
-| interests  | varchar(100) | YES  |     | NULL    |       |
-| seeking    | varchar(100) | YES  |     | NULL    |       |
-| phone      | varchar(10)  | YES  |     | NULL    |       |
-+------------+--------------+------+-----+---------+-------+
-11 rows in set (0.020 sec)
 ```
 
 이제 ALTER TABLE ADD COLOMN 명령어로 전화번호 열을 추가해보자.
@@ -127,6 +101,30 @@ ALTER TABLE my_contacts DROP COLUMN phone;
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER first_name;
+```
+
+테이블 구조 상 first_name 다음에 phone이 생긴 것을 확인할 수 있다.
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.002 sec)
+
 ```
 
 열 순서를 지정하는 방법들에 대해 알아보자.
