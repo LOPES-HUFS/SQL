@@ -44,7 +44,7 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 6 rows in set (0.001 sec)
 ```
 
-`category`는 각 영화의 장르를 나타낸다. 하지만 위에 보면 열의 `category`가 전부 `NULL`값으로 되어 있다. 해당 열에 값들을 채워보자. 각 영화의 장르는 앞 열의 값들을 통해 알 수 있다. 예를 들어 `Big Adventure`의 경우 열 `cartoon`의 값만 `T` 즉, True 이므로 cartoon 인 것을 알 수 있다. 이를 쿼리로 나타내면 다음과 같다.
+`category`는 각 영화의 장르를 나타낸다. 하지만 위에 보면 열의 `category`가 전부 `NULL`값으로 되어 있다. 해당 열에 값들을 채워보자. 각 영화의 장르는 앞 열의 값들을 통해 알 수 있다. 예를 들어 `Big Adventure`의 경우 열 `cartoon`의 값만 `T` 즉, True 이므로 장르가 cartoon 인 것을 알 수 있다. 이를 쿼리로 나타내면 다음과 같다.
 
 ```sql
 UPDATE movie_table SET category = 'drama' WHERE drama = 'T';
