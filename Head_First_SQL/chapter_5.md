@@ -629,6 +629,8 @@ Query OK, 3 rows affected (0.021 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
 
+기존 데이터에 값을 추가할 때는 INSERT INTO가 아닌 업데이트(UPDATE)를 사용합니다.
+
 ```sql
 UPDATE car_table
 SET VIN = 'RNKLK66N33G213481'
