@@ -1,84 +1,16 @@
 # 5장 ALTER
 
-데이터를 변경하면서도 데이터를 잃지 않고 기존 그렉의 테이블에 전화번호 열을 추가하기 하려면 `ALTER` 명령어를 사용하면 된다.
+기존에 그렉의 테이블에 전화번호 열을 추가해보자.
 
-우선 작업을 하기 위해서 우선 아래와 같이 `USE`을 사용해서 `gregs_list` DB를 사용하도록 설정하자.
 ```sql
 USE gregs_list;
 ```
 
-`gregs_list`에는 4장에서 만들었던 `my_contacts`테이블이 남아있다. 이 테이블에 전화번호 열을 추가해보자. 기존에 4장에서 만들었던 `my_contacts` 테이블에 어떤 데이터가 들어있는지 확인해보자.
-
-```sql
-SELECT * FROM my_contacts;
-```
-
-```bash
-MariaDB [gregs_list]> SELECT * FROM my_contacts;
-+------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
-| contact_id | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               |
-+------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
-|          1 | Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends |
-|          2 | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  |
-+------------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+
-2 rows in set (0.001 sec)
-```
-이 이 테이블의 데이터 구조는 다음과 같이 하면 살펴볼 수 있다.
-
-```sql
-DESC my_contacts;
-```
-
-결과는 다음과 같다.
-
-```bash
-MariaDB [gregs_list]> DESC my_contacts;
-+------------+--------------+------+-----+---------+-------+
-| Field      | Type         | Null | Key | Default | Extra |
-+------------+--------------+------+-----+---------+-------+
-| last_name  | varchar(30)  | YES  |     | NULL    |       |
-| first_name | varchar(20)  | YES  |     | NULL    |       |
-| email      | varchar(50)  | YES  |     | NULL    |       |
-| gender     | char(1)      | YES  |     | NULL    |       |
-| birthday   | date         | YES  |     | NULL    |       |
-| profession | varchar(50)  | YES  |     | NULL    |       |
-| location   | varchar(50)  | YES  |     | NULL    |       |
-| status     | varchar(20)  | YES  |     | NULL    |       |
-| interests  | varchar(100) | YES  |     | NULL    |       |
-| seeking    | varchar(100) | YES  |     | NULL    |       |
-| phone      | varchar(10)  | YES  |     | NULL    |       |
-+------------+--------------+------+-----+---------+-------+
-11 rows in set (0.020 sec)
-```
+그렉 리스트 라는 데이터 베이스를 불러오면 4장에서 만들었던 my_contacts 테이블이 남아있습니다. 이 테이블에 전화번호 열을 추가하면 된다.
 
 ```sql
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10);
-```
-
-```sql
-DESC my_contacts;
-```
-
-```bash
-MariaDB [gregs_list]> DESC my_contacts;
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
-| last_name  | varchar(30)  | YES  |     | NULL    |                |
-| first_name | varchar(20)  | YES  |     | NULL    |                |
-| email      | varchar(50)  | YES  |     | NULL    |                |
-| gender     | char(1)      | YES  |     | NULL    |                |
-| birthday   | date         | YES  |     | NULL    |                |
-| profession | varchar(50)  | YES  |     | NULL    |                |
-| location   | varchar(50)  | YES  |     | NULL    |                |
-| status     | varchar(20)  | YES  |     | NULL    |                |
-| interests  | varchar(100) | YES  |     | NULL    |                |
-| seeking    | varchar(100) | YES  |     | NULL    |                |
-| phone      | varchar(10)  | YES  |     | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
-12 rows in set (0.005 sec)
 ```
 
 열 순서를 first_name 뒤로 배치하려면 위의 코드 대신에 아래 코드를 치면 된다.
@@ -87,27 +19,6 @@ MariaDB [gregs_list]> DESC my_contacts;
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER first_name;
-```
-
-```bash
-MariaDB [gregs_list]> DESC my_contacts;
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
-| last_name  | varchar(30)  | YES  |     | NULL    |                |
-| first_name | varchar(20)  | YES  |     | NULL    |                |
-| phone      | varchar(10)  | YES  |     | NULL    |                |
-| email      | varchar(50)  | YES  |     | NULL    |                |
-| gender     | char(1)      | YES  |     | NULL    |                |
-| birthday   | date         | YES  |     | NULL    |                |
-| profession | varchar(50)  | YES  |     | NULL    |                |
-| location   | varchar(50)  | YES  |     | NULL    |                |
-| status     | varchar(20)  | YES  |     | NULL    |                |
-| interests  | varchar(100) | YES  |     | NULL    |                |
-| seeking    | varchar(100) | YES  |     | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
-12 rows in set (0.002 sec)
 ```
 
 열 순서를 지정하는 방법들에 대해 알아보자.
@@ -119,7 +30,7 @@ ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10) FIRST;
 ```
 
-전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 마지막 열로 만들어진다. 참고로 maria DB에서는 MY SQL과 달리 위치 지정에 FIRST 이외에 SECOND나 THIRD와 같은 다른 숫자는 지정되지 않는다. 마찬가지로 MY SQL의 BEFORE 명령어도 maria DB에서는 사용하지 않고 오직 AFTER만 사용한다.
+전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 마지막 열로 만들어진다.
 
 ```sql
 ALTER TABLE my_contacts
