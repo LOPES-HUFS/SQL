@@ -68,7 +68,7 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 6 rows in set (0.001 sec)
 ```
 
-열 `drama`의 값이 'T'인 레코드 `Angry Pirate`는 `category` 값으로 "drama"로 변경되었으며, 레코드 `End of the Line`는 `category` 값으로 "cartoon"로 변경되었다.
+열 `drama`의 값이 'T'인 레코드 `Angry Pirate`는 `category` 값이 "drama"로 변경되었으며, 레코드 `End of the Line`는 `category` 값이 "cartoon"로 변경되었다.
 
 하지만 `End of the Line`를 주목해보자. 해당 레코드는 열 `drama`에만 True의 값을 가지는 것은 아니라 열 `sf`, `cartoon`에서도 True 값을 가진다.
 
