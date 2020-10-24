@@ -8,7 +8,7 @@
 USE gregs_list;
 ```
 
-`gregs_list`에는 4장에서 만들었던 `my_contacts`테이블이 남아있다. 이 테이블에 전화번호 열을 추가해보자. 기존에 4장에서 만들었던 `my_contacts` 테이블을 새롭게 만들어보자.
+`gregs_list`에는 4장에서 만들었던 `my_contacts`테이블이 남아있다. 기존에 4장에서 만들었던 `my_contacts` 테이블을 지우고 새롭게 만들어보자.
 
 ```sql
 DROP TABLE my_contacts;
@@ -101,6 +101,8 @@ ALTER TABLE my_contacts DROP COLUMN phone;
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER first_name;
+
+DESC my_contacts;
 ```
 
 테이블 구조 상 first_name 다음에 phone이 생긴 것을 확인할 수 있다.
@@ -132,15 +134,41 @@ MariaDB [gregs_list]> DESC my_contacts;
 첫 번째로 지정하려면 FIRST를 추가하면 된다.
 
 ```sql
+ALTER TABLE my_contacts DROP COLUMN phone;
+
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10) FIRST;
+
+DESC my_contacts;
+```
+
+테이블 구조를 확인해보면 다음과 같이 첫번째 열 
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.002 sec)
 ```
 
 전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 마지막 열로 만들어진다.
 
 ```sql
-ALTER TABLE my_contacts
-ADD COLUMN phone VARCHAR(10);
+ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
 
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
