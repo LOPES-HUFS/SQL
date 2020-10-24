@@ -92,8 +92,7 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.005 sec)
 ```
 
-열 순서를 first_name 뒤로 배치하려면 위의 코드 대신에 아래 코드를 치면 된다.
-기존에 전화번호 열을 추가한 상태에서 열 순서를 바꿔서 새로 만들려면 DROP COLUMN이나 이후 설명할 MODIFY를 사용하면 된다.
+기존에 전화번호 열을 추가한 상태에서 열 순서를 바꿔서 새로 만들려면 DROP COLUMN이나 이후 설명할 MODIFY를 사용하면 된다. 만들어진 열을 지우고 새롭게 first_name 다음에 전화번호 열을 추가해보자.
 
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
@@ -142,7 +141,7 @@ ADD COLUMN phone VARCHAR(10) FIRST;
 DESC my_contacts;
 ```
 
-테이블 구조를 확인해보면 다음과 같이 첫번째 열 
+테이블 구조를 확인해보면 다음과 같이 첫번째 열에 전화번호 열이 추가된것을 알 수 있다.
 
 ```bash
 MariaDB [gregs_list]> DESC my_contacts;
@@ -165,22 +164,74 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.002 sec)
 ```
 
-전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 마지막 열로 만들어진다.
+전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 AFTER 명령어를 통해 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 전화번호 열이 마지막 열로 만들어진다.
 
 ```sql
+ALTER TABLE my_contacts DROP COLUMN phone;
+
 ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
 
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER seeking;
+
+DESC my_contacts;
+```
+
+테이블 구조를 확인해보면 마지막 줄에 전화번호 열이 추가된 것을 확인할 수 있다.
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.002 sec)
 ```
 
 전화번호 열을 두 번째 열로 만들고 싶으면 AFTER contact_id 같이 1번째 열 이름 후라는 명령어를 이용하면 된다. 3번째로 만들고 싶으면 마찬가지로 AFTER last_name을 해주면 된다.
 
 ```sql
+ALTER TABLE my_contacts DROP COLUMN phone;
+
 ALTER TABLE my_contacts
 ADD COLUMN phone VARCHAR(10)
 AFTER contact_id;
+
+DESC my_contacts;
+```
+
+```bash
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.002 sec)
 ```
 
 ## ALTER 테이블의 명령어
