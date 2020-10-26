@@ -326,7 +326,7 @@ MariaDB [gregs_list]> DESC my_contacts;
 
 ```
 
-전화번호 열을 두 번째 열로 만들고 싶으면 AFTER contact_id 같이 1번째 열 이름 후라는 명령어를 이용하면 된다. 3번째로 만들고 싶으면 마찬가지로 AFTER last_name을 해주면 된다.
+만약 phone 열을 두 번째 열로 만들고 싶으면 `AFTER contact_id` 같이 1번째 열 이름 후라는 명령어를 이용하면 된다. 참고로 `MySQL`에는 `SECOND`와 같은 것을 출가하여 직접 두 번째 열로 추가할 수도 있다. 3번째 열에 추가하려면마찬가지로 `AFTER last_name`을 해주면 된다.
 
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
@@ -369,14 +369,14 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.002 sec)
 ```
 
-## ALTER 테이블의 명령어
+## ALTER 테이블의 명령어 정리
 
-CHANGE: 테이블 내에 열 이름과 데이터 타입을 변경할 수 있다.
-MODIFY: 테이블 내에 열의 데이터 타입이나 위치를 변경할 수 있다.
-ADD: 테이블 내에 새로운 열을 추가할 수 있다.
-DROP: 테이블 내에 열을 제거한다.
+- `CHANGE`: 테이블 내에 열 이름과 데이터 타입을 변경할 수 있다.
+- `MODIFY`: 테이블 내에 열의 데이터 타입이나 위치를 변경할 수 있다.
+- `ADD`: 테이블 내에 새로운 열을 추가할 수 있다.
+- `DROP`: 테이블 내에 열을 제거한다.
 
-CHANGE, MODIFY, DROP 명령어의 경우 데이터가 변경되거나 삭제되기 때문에 데이터 손실이 발생할 수 있다.
+참고로 `CHANGE`, `MODIFY`, `DROP` 명령어의 경우 데이터가 변경되거나 삭제되기 때문에 데이터 손실이 발생할 수 있다.
 
 ```sql
 CREATE TABLE projekts(
