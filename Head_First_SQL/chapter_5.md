@@ -89,7 +89,7 @@ Query OK, 0 rows affected (0.018 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
 
-만들어진 테이블을 확인하면 아래와 같다.
+만들어진 테이블을 확인하면 아래와 같다. 현재 2명의 자료가 들어있다.
 
 ```sql
 SELECT * FROM my_contacts;
@@ -154,7 +154,7 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.005 sec)
 ```
 
-지금까지 만든 phone 열은 맨 마지막에 있다. 앞에서치럼 추가하면 맨 뒤로 들어간다. 이를 first_name 열 뒤에 넣어보자. 우선 앞에서 만든 phone 열은 우선 제거하자.
+지금까지 만든 phone 열은 맨 마지막에 있다. 앞에서처럼 추가하면 맨 뒤로 들어간다. 이를 first_name 열 뒤에 넣어보자. 우선 앞에서 만든 phone 열은 우선 제거하자.
 
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
