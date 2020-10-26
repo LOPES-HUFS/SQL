@@ -195,51 +195,6 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.006 sec)
 ```
 
-위에서처럼 전화번호 열을 추가한 상태에서 열 순서를 바꿔서 새로 만들려면 DROP COLUMN이나 이후 설명할 MODIFY를 사용하면 된다. 만들어진 열을 지우고 새롭게 first_name 다음에 전화번호 열을 추가해보자.
-
-```sql
-ALTER TABLE my_contacts DROP COLUMN phone;
-
-ALTER TABLE my_contacts
-    ADD COLUMN phone VARCHAR(10)
-    AFTER first_name;
-
-DESC my_contacts;
-```
-
-테이블 구조 상 first_name 다음에 phone이 생긴 것을 확인할 수 있다.
-
-```bash
-MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
-Query OK, 0 rows affected (0.011 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-MariaDB [gregs_list]> ALTER TABLE my_contacts
-    -> ADD COLUMN phone VARCHAR(10)
-    -> AFTER first_name;
-Query OK, 0 rows affected (0.010 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-MariaDB [gregs_list]> DESC my_contacts;
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
-| last_name  | varchar(30)  | YES  |     | NULL    |                |
-| first_name | varchar(20)  | YES  |     | NULL    |                |
-| phone      | varchar(10)  | YES  |     | NULL    |                |
-| email      | varchar(50)  | YES  |     | NULL    |                |
-| gender     | char(1)      | YES  |     | NULL    |                |
-| birthday   | date         | YES  |     | NULL    |                |
-| profession | varchar(50)  | YES  |     | NULL    |                |
-| location   | varchar(50)  | YES  |     | NULL    |                |
-| status     | varchar(20)  | YES  |     | NULL    |                |
-| interests  | varchar(100) | YES  |     | NULL    |                |
-| seeking    | varchar(100) | YES  |     | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
-12 rows in set (0.002 sec)
-```
-
 열 순서를 지정하는 방법들에 대해 알아보자.
 
 첫 번째로 지정하려면 FIRST를 추가하면 된다.
