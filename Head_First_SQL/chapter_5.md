@@ -197,6 +197,8 @@ MariaDB [gregs_list]> DESC my_contacts;
 
 만약 phone 열을 첫 번째 열로 추가하려면 어떻게 하면 될까? 첫 번째로 지정하려면 아래와 같이 `FIRST`를 추가하면 된다. 앞에서 만든 phone 열을 지우고 추가해보겠다.
 
+- `FIRST`: `ALTER TABLE`과 사용하면 첫 번째 열로 특정 열을 추가할 수 있다.
+
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
 
@@ -238,7 +240,7 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.002 sec)
 ```
 
-전화번호 열을 마지막 열에 추가하려면, 아무것도 추가하지 않으면 자동으로 마지막 열로 추가된다. 물론 AFTER 명령어를 통해 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 전화번호 열이 마지막 열로 만들어진다.
+phone 열을 마지막 열에 추가하려면 어떻게 하면 될까? 명령어를 추가하지 않고 다음과 같이 하면 된다
 
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
@@ -248,7 +250,7 @@ ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10);
 DESC my_contacts;
 ```
 
-테이블 구조를 확인해보면 마지막 줄에 전화번호 열이 추가된 것을 확인할 수 있다.
+테이블 구조를 확인해보면 마지막 줄에 phone 열이 추가된 것을 확인할 수 있다.
 
 ```bash
 
@@ -280,12 +282,14 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.002 sec)
 ```
 
+물론 `AFTER` 명령어를 통해 마지막 열 전의 열인 seeking 다음 열로 순서를 지정해도 전화번호 열이 마지막 열로 만들어진다.
+
+- `AFTER`: `ALTER TABLE`과 사용하면 첫 번째 열로 특정 열을 특정 열 뒤에 추가할 수 있다.
+
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
 
-ALTER TABLE my_contacts
-ADD COLUMN phone VARCHAR(10)
-AFTER seeking;
+ALTER TABLE my_contacts ADD COLUMN phone VARCHAR(10) AFTER seeking;
 
 DESC my_contacts;
 ```
