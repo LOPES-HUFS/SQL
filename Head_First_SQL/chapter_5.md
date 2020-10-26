@@ -195,9 +195,7 @@ MariaDB [gregs_list]> DESC my_contacts;
 12 rows in set (0.006 sec)
 ```
 
-열 순서를 지정하는 방법들에 대해 알아보자.
-
-첫 번째로 지정하려면 FIRST를 추가하면 된다.
+만약 phone 열을 첫 번째 열로 추가하려면 어떻게 하면 될까? 첫 번째로 지정하려면 아래와 같이 `FIRST`를 추가하면 된다. 앞에서 만든 phone 열을 지우고 추가해보겠다.
 
 ```sql
 ALTER TABLE my_contacts DROP COLUMN phone;
@@ -208,7 +206,7 @@ ADD COLUMN phone VARCHAR(10) FIRST;
 DESC my_contacts;
 ```
 
-테이블 구조를 확인해보면 다음과 같이 첫번째 열에 전화번호 열이 추가된것을 알 수 있다.
+테이블 구조를 확인해보면 다음과 같이 첫번째 열에 전화번호 열이 추가된 것을 알 수 있다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE my_contacts DROP COLUMN phone;
