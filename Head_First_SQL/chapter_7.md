@@ -52,7 +52,7 @@ AND appearance LIKE '%huge feet%';
 우리는 `clown_info`을 아래와 같은 단위로 살펴볼 것이다.
 
 ```bash
-[clown_info]   [info_activities]
+[clown_info]     [info_activities]
 - id(key) ㅡㅡㅡ  - id (foreign key)
 - name   ㅣ      - activity_id (foreign key) ㅡㅡㅡ [activities]
 -gender  ㅣ                                        - activity_id (key)
@@ -68,4 +68,4 @@ AND appearance LIKE '%huge feet%';
 
 ## 참조키 (foreign key)
 
-위 스키마에서 'foreign key'라고 쓰여있는 카테고리를 찾을 수 있다.
+각각의 테이블들을 살펴보기에 앞서 위 스키마에서 'foreign key'라고 쓰여있는 카테고리를 찾을 수 있다. 이는 참조키를 표시한 것인데, 참조키란 무엇이며 왜 사용하는걸까?
