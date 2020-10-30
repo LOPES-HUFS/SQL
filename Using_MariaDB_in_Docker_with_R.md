@@ -49,7 +49,7 @@ MariaDB [gregs_list]> SELECT * FROM my_contacts;
 2 rows in set (0.004 sec)
 ```
 
-## R
+## `RMariaDB` 설치하기
 
 R 에서 MariaDB에 접근하기 위해서는 `odbc` 패키지나 `RMariaDB`를 사용해야 합니다. 이에 관련된 내용은 [R Statistical Programming Using MariaDB as the Background Database - MariaDB Knowledge Base](https://mariadb.com/kb/en/r-statistical-programming-using-mariadb-as-the-background-database/#data-transfer-between-r-and-mariadb)을 참고하시면 됩니다. 여기서는 `RMariaDB`를 사용하도록 하겠습니다. 앞 링크에서 RMariaDB을 다음과 같이 소개하고 있습니다.
 > “RMariaDB” R library, is a modern 'MariaDB' client based on 'Rcpp'.
@@ -77,7 +77,7 @@ con <- dbConnect(
 dbListTables(con)
 ```
 
-앞의 코드가 실행된 결과는 다음과 같습니다. 현재 앞에서 입력한 `my_contacts` 테이블도 보이는 군요.
+앞의 코드가 실행된 결과는 다음과 같습니다. 현재 앞에서 입력한 `my_contacts` 테이블도 볼 수 있습니다.
 
 ```R
 > library(RMariaDB)
@@ -99,13 +99,15 @@ dbListTables(con)
 [1] "movie_table"   "easy_drinks"   "my_contacts"   "doughnut_list" "users"         "clown_info"
 ```
 
-## 데이터베이스에 입력된 것을 가져오기
+## R로 데이터베이스에 입력한 테이블을 살펴보기
 
-그러면 이제 
+이제 본격적으로 앞에서 데이터베이스에 저장한 테이블을 살펴보겠습니다. `dbReadTable()`을 사용하면 쉽게 테이블 내용을 확인하실 수 있습니다.
 
 ```R
 dbReadTable(con, "my_contacts")
 ```
+
+윗 코드를 실행하면 다음과 같습니다.
 
 ```R
 > dbReadTable(con, "my_contacts")
@@ -120,7 +122,7 @@ dbReadTable(con, "my_contacts")
 res <- dbSendQuery(con, "SELECT * FROM my_contacts")
 ```
 
-위의 코드를 실행하면 다음과 같습니다. `dbClearResult(res)`을 이용해서 사용하신 다음에 정리하고 마무리하지 않으시면 에러가 날 수 있습니다. 주의하세요!
+위의 코드를 실행하면 다음과 같습니다. `dbClearResult()`을 이용해서 사용하신 다음에 정리하고 마무리하지 않으시면 에러가 날 수 있습니다. 주의하세요!
 
 ```R
 > res <- dbSendQuery(con, "SELECT * FROM my_contacts")
