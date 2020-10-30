@@ -101,7 +101,7 @@ dbListTables(con)
 
 ## 데이터베이스에 입력된 것을 가져오기
 
-dl
+그러면 이제 
 
 ```R
 dbReadTable(con, "my_contacts")
@@ -163,7 +163,66 @@ while(!dbHasCompleted(res)){
 [1] 2
 ```
 
+`tidyverse`를 추가해서 사용하면 좀 더 쉽고 멋있게 처리할 수 있습니다. 다음 코드에서 볼 수 있는 것처럼 SQL를 사용하지 않고 `filter()`와 같은 것을 이용하여 쉽게 테이블에 있는 자료를 처리할 수 있습니다. 마지막 줄에서 `filter()`를 사용하여 first_name 열에 있는 "Pat"가 있는 줄을 뽑아올 수 있습니다.
+
+```R
+library(tidyverse)
+library(RMariaDB)
+library(dplyr, warn.conflicts = FALSE)
+con <- dbConnect(
+  drv = RMariaDB::MariaDB(),
+  username = "root",
+  password = "RT27hDosK",
+  host = "0.0.0.0",
+  port = 3306,
+  dbname = "gregs_list"
+)
+my_contacts <- tbl(con, "my_contacts")
+my_contacts
+my_contacts %>% filter(first_name == "Pat")
+```
+
+윗 코드를 실행하면 다음과 같습니다.
+
+```R
+> library(tidyverse)
+─ Attaching packages ─────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ─
+✔ ggplot2 3.3.0     ✔ purrr   0.3.4
+✔ tibble  3.0.1     ✔ dplyr   1.0.0
+✔ tidyr   1.1.0     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.5.0
+─ Conflicts ──────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ─
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+> library(RMariaDB)
+> library(dplyr, warn.conflicts = FALSE)
+> con <- dbConnect(
++   drv = RMariaDB::MariaDB(),
++   username = "root",
++   password = "RT27hDosK",
++   host = "0.0.0.0",
++   port = 3306,
++   dbname = "gregs_list"
++ )
+> my_contacts <- tbl(con, "my_contacts")
+> my_contacts
+# Source:   table<my_contacts> [?? x 12]
+# Database: mysql [root@0.0.0.0:NA/gregs_list]
+  contact_id phone last_name first_name email                            gender birthday   profession       location      status interests          seeking
+       <int> <chr> <chr>     <chr>      <chr>                            <chr>  <date>     <chr>            <chr>         <chr>  <chr>              <chr>
+1          1 <NA>  Anderson  Jillian    jill_anderson@breakneckpizza.com F      1980-09-05 Technical Writer Palo Alto, CA Single Kayaking, Reptiles Relationship, Friends
+2          2 <NA>  <NA>      Pat        patpost@breakneckpizza.com       <NA>   NA         Postal Worker    Princeton, NJ <NA>   <NA>               <NA>
+> my_contacts %>% filter(first_name == "Pat")
+# Source:   lazy query [?? x 12]
+# Database: mysql [root@0.0.0.0:NA/gregs_list]
+  contact_id phone last_name first_name email                      gender birthday   profession    location      status interests seeking
+       <int> <chr> <chr>     <chr>      <chr>                      <chr>  <date>     <chr>         <chr>         <chr>  <chr>     <chr>  
+1          2 <NA>  <NA>      Pat        patpost@breakneckpizza.com <NA>   NA         Postal Worker Princeton, NJ <NA>   <NA>      <NA>
+```
+
 ## 참고 자료
 
 - [Database Interface and MariaDB Driver • RMariaDB](https://rmariadb.r-dbi.org/index.html)
 - [R Statistical Programming Using MariaDB as the Background Database - MariaDB Knowledge Base](https://mariadb.com/kb/en/r-statistical-programming-using-mariadb-as-the-background-database/#data-transfer-between-r-and-mariadb)
+- [A Grammar of Data Manipulation • dplyr](https://dplyr.tidyverse.org/)
+- [A dplyr Back End for Databases • dbplyr](https://dbplyr.tidyverse.org/)
