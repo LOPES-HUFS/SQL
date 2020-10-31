@@ -476,33 +476,63 @@ MariaDB [gregs_list]> SELECT * FROM project_list;
 |      4 | roofing                 | Jackson         |
 +--------+-------------------------+-----------------+
 4 rows in set (0.004 sec)
+
+MariaDB [gregs_list]> DESC project_list;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| number           | int(11)     | YES  |     | NULL    |       |
+| desciptionofproj | varchar(50) | YES  |     | NULL    |       |
+| contractoronjob  | varchar(10) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+3 rows in set (0.006 sec)
 ```
 
-이제 이 테이블에 고유 아이디, 시작일, 계약회사의 이름과 전화번호, 예상 금액, 프로젝트 내용 설명 등의 열들을 추가하거나 기존의 열을 변경해주어야 한다. 기존에 있는 열에 프로젝트 내용 설명, 계약 회사의 이름, 고유 아이디로 사용할 숫자는 존재하고 있다. 따라서 이 3가지 열을 알맞은 이름과 역할로 변경해주어야 한다.
+테이블 이름을 'project_list'으로 고치고 다시 테이블을 보니, 첫 번째 열을 프로젝트 숫자이고 두 번째 열은 프로젝트 관련 내용이고 세 번째 열은 해당 프로젝트를 계약한 사람 이름 같습니다. 그리고 첫 번째 열을 고유한 숫자이기 때문에 기본키라고 할 수 있겠습니다. 그래서 다음과 같이 변경해야 할 것 같습니다.
+
+- 첫 번째 열: 'proj_id'로 열 이름 변경, 기본 키로 변경
+- 두 번째 열: 'proj_desc'로 열 이름 변경
+- 세 번째 열: 'con_name'으로 열 이름 변경
+
+우선 첫 번째 열 이름부터 변경해보자.
 
 ```sql
 ALTER TABLE project_list
-CHANGE COLUMN number proj_id INT NOT NULL AUTO_INCREMENT,
-ADD PRIMARY KEY (proj_id);
+    CHANGE COLUMN number proj_id
+    INT NOT NULL AUTO_INCREMENT,
+    ADD PRIMARY KEY (proj_id);
 ```
+
+윗 코드를 실행하면 다음과 같다. 잘 변경되었다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE project_list
-    -> CHANGE COLUMN number proj_id INT NOT NULL AUTO_INCREMENT,
-    -> ADD PRIMARY KEY (proj_id);
+    ->     CHANGE COLUMN number proj_id
+    ->     INT NOT NULL AUTO_INCREMENT,
+    ->     ADD PRIMARY KEY (proj_id);
 Query OK, 4 rows affected (0.028 sec)
 Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC project_list;
++------------------+-------------+------+-----+---------+----------------+
+| Field            | Type        | Null | Key | Default | Extra          |
++------------------+-------------+------+-----+---------+----------------+
+| proj_id          | int(11)     | NO   | PRI | NULL    | auto_increment |
+| desciptionofproj | varchar(50) | YES  |     | NULL    |                |
+| contractoronjob  | varchar(10) | YES  |     | NULL    |                |
++------------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.005 sec)
 ```
 
-나머지 2개의 열의 이름도 변경해보자.
+나머지도 변경해보자.
 
 ```sql
 ALTER TABLE project_list
-CHANGE COLUMN desciptionofproj proj_desc VARCHAR(100),
-CHANGE COLUMN contractoronjob con_name VARCHAR(30);
+    CHANGE COLUMN desciptionofproj proj_desc VARCHAR(100),
+    CHANGE COLUMN contractoronjob con_name VARCHAR(30);
 ```
 
-하나의 ALTER 문에서 여러 개의 열 이름을 변경할 수 있다.
+위와 같이 하면 `ALTER TABLE` 명령어 한 개로 여러 개의 열 이름을 변경할 수 있다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE project_list
@@ -510,19 +540,43 @@ MariaDB [gregs_list]> ALTER TABLE project_list
     -> CHANGE COLUMN contractoronjob con_name VARCHAR(30);
 Query OK, 4 rows affected (0.022 sec)
 Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC project_list;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| proj_id   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| proj_desc | varchar(100) | YES  |     | NULL    |                |
+| con_name  | varchar(30)  | YES  |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.004 sec)
 ```
 
-만약 열에 100자리 보다 더 많은 문자열을 저장하게 하고 싶다면 MODIFY를 사용하면 된다.
+만약 열에 100자리 보다 더 많은 문자열을 저장하게 하고 싶다면 다음과 같이 `MODIFY`를 사용하면 된다.
 
 ```sql
 ALTER TABLE project_list MODIFY COLUMN proj_desc VARCHAR(120);
 ```
 
+윗 코드를 사용하면 두 번째 열 유형(Type)이 변경된 것을 확인할 수 있다.
+
 ```bash
 MariaDB [gregs_list]> ALTER TABLE project_list MODIFY COLUMN proj_desc VARCHAR(120);
 Query OK, 0 rows affected (0.007 sec)
 Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC project_list;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| proj_id   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| proj_desc | varchar(120) | YES  |     | NULL    |                |
+| con_name  | varchar(30)  | YES  |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.001 sec)
 ```
+
+이제 이 테이블에 고유 아이디, 시작일, 계약회사의 이름과 전화번호, 예상 금액, 프로젝트 내용 설명 등의 열들을 추가하거나 기존의 열을 변경해주어야 한다. 기존에 있는 열에 프로젝트 내용 설명, 계약 회사의 이름, 고유 아이디로 사용할 숫자는 존재하고 있다. 따라서 이 3가지 열을 알맞은 이름과 역할로 변경해주어야 한다.
 
 시작일, 계약회사의 전화번호, 예상금액 열을 추가해보자.
 
