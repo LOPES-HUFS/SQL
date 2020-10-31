@@ -639,6 +639,8 @@ MariaDB [gregs_list]> DESC project_list;
 
 ## 연습문제 (1)
 
+테이블 변경 연습을 하기 위해서 테이블을 하나 만들자.
+
 ```sql
 CREATE TABLE hooptie(
     color VARCHAR(10),
@@ -655,6 +657,8 @@ INSERT INTO hooptie(
         ('red', 2002, 'Cadilac', 'Escalade', '40215.9')
 );
 ```
+
+윗 코드를 실행하면 다음과 같은 테이블이 만들어 진다.
 
 ```bash
 MariaDB [gregs_list]> CREATE TABLE hooptie(
@@ -674,16 +678,7 @@ MariaDB [gregs_list]> INSERT INTO hooptie(
     -> );
 Query OK, 3 rows affected (0.005 sec)
 Records: 3  Duplicates: 0  Warnings: 0
-```
 
-만들어진 테이블과 데이터를 확인한다.
-
-```sql
-DESC hooptie;
-SELECT * FROM hooptie;
-```
-
-```bash
 MariaDB [gregs_list]> DESC hooptie;
 +---------+-------------+------+-----+---------+-------+
 | Field   | Type        | Null | Key | Default | Extra |
@@ -694,7 +689,7 @@ MariaDB [gregs_list]> DESC hooptie;
 | mo      | varchar(10) | YES  |     | NULL    |       |
 | howmuch | varchar(10) | YES  |     | NULL    |       |
 +---------+-------------+------+-----+---------+-------+
-5 rows in set (0.004 sec)
+5 rows in set (0.001 sec)
 
 MariaDB [gregs_list]> SELECT * FROM hooptie;
 +--------+------+---------+----------+-----------+
@@ -705,8 +700,27 @@ MariaDB [gregs_list]> SELECT * FROM hooptie;
 | red    | 2002 | Cadilac | Escalade | 40215.9   |
 +--------+------+---------+----------+-----------+
 3 rows in set (0.001 sec)
-
 ```
+
+위에서 만든 테이블을 다음과 같이 변경해봅시다.
+
++--------+-------------------+---------+----------+--------+------+----------+
+| car_id | VIN               | make    | model    | color  | year | price    |
++--------+-------------------+---------+----------+--------+------+----------+
+|      1 | RNKLK66N33G213481 | Porsche | Boxter   | silver | 1998 | 17992.54 |
+|      2 | SAEDA44B175BO4113 | Jaguar  | XJ       | NULL   | 2000 | 15995.00 |
+|      3 | 3GYEK63NT2G28O668 | Cadilac | Escalade | red    | 2002 | 40215.90 |
++--------+-------------------+---------+----------+--------+------+----------+
+
+테이블에서 변경할 것들은 다음과 같다.
+
+- 'car_table'으로 테이블 이름 변경
+- 'car_id'이라는 열을 추가하고, 기본키로 설졍, 자동으로 유일무이한 정수값을 자동으로 넣게 설정
+- 'mo' 열 이름을 'model'로 이름 변경
+- 'howmuch' 열 이름을 'price'로 이름 변경
+- 'VIN'이라는 열을 'car_id' 열 뒤에 추가
+
+이 것들을 `ALTER TABLE` 한 줄로 처리해보자.
 
 ```sql
 ALTER TABLE hooptie
