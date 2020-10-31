@@ -946,6 +946,61 @@ MariaDB [gregs_list]> SELECT SUBSTRING_INDEX(location, ',', 1) FROM my_contacts;
 2 rows in set (0.011 sec)
 ```
 
+이제까지 작업한 것을 `UPDATE`을 이용하여 'state' 열에 추가해보자.
+
+```sql
+UPDATE my_contacts SET state = RIGHT(location, 2);
+```
+
+윗 코드를 실행하면, 아래와 같이 'state'열에 'location'에서 뽑아낸 것이 추가된 것을 확인할 수 있다.
+
+```SQL
+MariaDB [gregs_list]> UPDATE my_contacts SET state = RIGHT(location, 2);
+Query OK, 2 rows affected (0.013 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [gregs_list]> SELECT state FROM my_contacts;
++-------+
+| state |
++-------+
+| CA    |
+| NJ    |
++-------+
+2 rows in set (0.000 sec)
+```
+
+이번에는 `UPDATE`을 이용하여 'city' 열을 추가해보자.
+
+```sql
+UPDATE my_contacts SET city = SUBSTRING_INDEX(location, ',', 1);
+```
+
+윗 코드를 쓰면 'city'이 추가된다. 결과적으로 'location' 열에서 자료를 뽑아서 'city'와 'state' 열이 만들어진 것을 확인할 수 있다.
+
+```sql
+MariaDB [gregs_list]> UPDATE my_contacts SET city = SUBSTRING_INDEX(location, ',', 1);
+Query OK, 2 rows affected (0.020 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [gregs_list]> SELECT city FROM my_contacts;
++-----------+
+| city      |
++-----------+
+| Palo Alto |
+| Princeton |
++-----------+
+2 rows in set (0.000 sec)
+
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++------------+-------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+-----------+-------+
+| contact_id | phone | last_name | first_name | email                            | gender | birthday   | profession       | location      | status | interests          | seeking               | city      | state |
++------------+-------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+-----------+-------+
+|          1 | NULL  | Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer | Palo Alto, CA | Single | Kayaking, Reptiles | Relationship, Friends | Palo Alto | CA    |
+|          2 | NULL  | NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker    | Princeton, NJ | NULL   | NULL               | NULL                  | Princeton | NJ    |
++------------+-------+-----------+------------+----------------------------------+--------+------------+------------------+---------------+--------+--------------------+-----------------------+-----------+-------+
+2 rows in set (0.002 sec)
+```
+
 ## 연습문제 (2)
 
 5번째 문자열 부터 3개까지 뽑는 방법
