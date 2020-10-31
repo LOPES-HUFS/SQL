@@ -576,16 +576,16 @@ MariaDB [gregs_list]> DESC project_list;
 3 rows in set (0.001 sec)
 ```
 
-이제 'project_list'란 테이블 이름에 맞게 이 테이블에 고유 아이디, 시작일, 계약회사의 이름과 전화번호, 예상 금액, 프로젝트 내용 설명 등의 열들을 추가하거나 기존의 열을 변경해주어야 한다. 기존에 있는 열에 프로젝트 내용 설명, 계약 회사의 이름, 고유 아이디로 사용할 숫자는 존재하고 있다. 따라서 이 3가지 열을 알맞은 이름과 역할로 변경해주어야 한다.
-
-시작일, 계약회사의 전화번호, 예상금액 열을 추가해보자.
+이제 'project_list'란 테이블 이름에 맞게 이 테이블에 몇 가지 열을 추가해보자. 프로젝트를 계약한 사람을 번화 번호, 프로젝트 시작일, 그리고 예상 비용, 총 열 3개를 추기해야 할 것 같다.
 
 ```sql
 ALTER TABLE project_list
-ADD COLUMN con_phone VARCHAR(10),
-ADD COLUMN start_date DATE,
-ADD COLUMN est_cost DECIMAL(7,2);
+    ADD COLUMN con_phone VARCHAR(10),
+    ADD COLUMN start_date DATE,
+    ADD COLUMN est_cost DECIMAL(7,2);
 ```
+
+윗 코드를 실행하면 다음과 같다. 잘 만들어졌다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE project_list
@@ -594,19 +594,47 @@ MariaDB [gregs_list]> ALTER TABLE project_list
     -> ADD COLUMN est_cost DECIMAL(7,2);
 Query OK, 0 rows affected (0.006 sec)
 Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC project_list;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| proj_id    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| proj_desc  | varchar(120) | YES  |     | NULL    |                |
+| con_name   | varchar(30)  | YES  |     | NULL    |                |
+| con_phone  | varchar(10)  | YES  |     | NULL    |                |
+| start_date | date         | YES  |     | NULL    |                |
+| est_cost   | decimal(7,2) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.005 sec)
 ```
 
-프로젝트가 중단되어 프로젝트 시작일 열이 필요가 없어졌다. 이제 필요 없는 열을 지워야한다. 열을 삭제하는 것은 DROP COLUMN 명령어로 할 수 있다. 참고로 지금은 데이터를 입력하지 않아 사라지지 않았지만 열을 삭제하면 해당 열 안에 있는 데이터도 모두 같이 사라진다.
+만약 프로젝트가 중단되어 프로젝트 시작일 열이 필요가 없어졌다고 가정해 보자. 이제 필요 없는 열을 지워야한다. 열을 삭제하는 것은 `DROP COLUMN`으로 할 수 있다. 참고로 지금은 데이터를 입력하지 않아 사라질 것이 없지만, 특정 열을 삭제하면 해당 열 안에 있는 데이터도 모두 같이 사라진다.
+
+- `DROP COLUMN`: `ALTER TABLE`과 함께 사용하여 특정 열을 삭제한다.
 
 ```sql
 ALTER TABLE project_list DROP COLUMN start_date;
 ```
 
+윗 코드를 실행하면 지우고자 하는 열이 잘 지워진 것을 확인할 수 있다.
+
 ```bash
-MariaDB [gregs_list]> ALTER TABLE project_list
-    -> DROP COLUMN start_date;
-Query OK, 0 rows affected (0.006 sec)
+MariaDB [gregs_list]> ALTER TABLE project_list DROP COLUMN start_date;
+Query OK, 0 rows affected (0.011 sec)
 Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC project_list;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| proj_id   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| proj_desc | varchar(120) | YES  |     | NULL    |                |
+| con_name  | varchar(30)  | YES  |     | NULL    |                |
+| con_phone | varchar(10)  | YES  |     | NULL    |                |
+| est_cost  | decimal(7,2) | YES  |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+5 rows in set (0.003 sec)
 ```
 
 ## 연습문제 (1)
