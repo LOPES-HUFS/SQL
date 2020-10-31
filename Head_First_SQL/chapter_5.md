@@ -817,13 +817,52 @@ MariaDB [gregs_list]> SELECT * FROM car_table;
 
 ## 연필을 깎으며
 
-기존 그렉의 리스트 중 my_contacts 테이블에 도시와 주 열을 추가해보자. 이 두 열은 테이블 내에 로케이션(location) 열을 원자적 데이터로 만들기 위해서 두 개의 열로 분리하는 것이다.
+앞에서 만든 my_contacts 테이블을 살펴보자.
+
+```SQL
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+12 rows in set (0.003 sec)
+
+```
+
+여기서 'location'을 살펴보면, 주와 도시 이름이 같이 들어있는 것을 다음과 같이 확인할 수 있다.
+
+```SQL
+MariaDB [gregs_list]> SELECT location FROM my_contacts;
++---------------+
+| location      |
++---------------+
+| Palo Alto, CA |
+| Princeton, NJ |
++---------------+
+2 rows in set (0.002 sec)
+```
+
+이 'location' 열을 원자적 데이터로 만들기 위해서 두 개의 열로 분리할 필요가 있겠다. 그러면 우선 도시(city)와 주(state) 열을 추가하자.
 
 ```sql
 ALTER TABLE my_contacts
-ADD COLUMN city VARCHAR(50),
-ADD COLUMN state VARCHAR(2);
+    ADD COLUMN city VARCHAR(50),
+    ADD COLUMN state VARCHAR(2);
 ```
+
+윗 코드를 실행하면, 열 2개가 추가된 것을 확인할 수 있다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE my_contacts
@@ -831,13 +870,51 @@ MariaDB [gregs_list]> ALTER TABLE my_contacts
     -> ADD COLUMN state VARCHAR(2);
 Query OK, 0 rows affected (0.006 sec)
 Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
+| city       | varchar(50)  | YES  |     | NULL    |                |
+| state      | varchar(2)   | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+14 rows in set (0.003 sec)
 ```
 
-이제 만들어진 열에 내용을 집어 넣을 차례이다. 먼저 주의 내용부터 찾아보자. SELECT RIGHT를 사용하면 특정 열의 오른쪽에서 n 번째 내용을 찾을 수 있다. 즉 아래와 같이 로케이션 열에서 오른쪽부터 2글자를 선택하는 SELECT 문을 구성할 수 있다.
+이제 만들어진 열에 내용을 집어 넣을 차례이다. 다음과 같이 'location'열을 잘 살펴보면 끝에서 두 글자가 주(state)의 약자인 것을 확인할 수 있다.
+
+```SQL
+MariaDB [gregs_list]> SELECT location FROM my_contacts;
++---------------+
+| location      |
++---------------+
+| Palo Alto, CA |
+| Princeton, NJ |
++---------------+
+2 rows in set (0.002 sec)
+```
+
+`SELECT RIGHT`를 사용하면 특정 열의 오른쪽 끝에서 n번째까지의 글자는 뽑아낼 수 있다. 즉 아래와 같이 'location' 열 오른쪽 끝에서부터 2글자를 선택하는 `SELECT`문을 구성할 수 있다.
+
+- `RIGHT`: `SELECT`와 같이 사용하여 오른쪽 끝에서 n번째까지 글자를 선택할 수 있다.
 
 ```sql
 SELECT RIGHT(location, 2) FROM my_contacts;
 ```
+
+윗 코드를 실행하면, 오른쪽 끝에서 2글자만 뽑아내는 것을 확인할 수 있다.
 
 ```bash
 MariaDB [gregs_list]> SELECT RIGHT(location, 2) FROM my_contacts;
@@ -845,15 +922,18 @@ MariaDB [gregs_list]> SELECT RIGHT(location, 2) FROM my_contacts;
 | RIGHT(location, 2) |
 +--------------------+
 | CA                 |
+| NJ                 |
 +--------------------+
-1 row in set (0.004 sec)
+2 rows in set (0.011 sec)
 ```
 
-다음으로 도시의 내용을 찾아보자. 이번에도 SELECT RIGHT를 쓸 수 있지만, 콤마를 기준으로 앞에 문자열 부분을 추출하는 방법을 이용한다. 그 방법은 SUBSTRING_INDEX()를 이용하는 것이다. 문자열을 찾을 열 이름과 찾는 문자, 해당 문자가 여러개일 경우 몇번째 인지 등의 정보를 필요로 한다.
+다음으로 도시 명을 찾아보자. 이번에도 `SELECT RIGHT`를 쓸 수 있지만, 콤마(,)를 기준으로 앞에 문자열 부분을 추출하는 `SUBSTRING_INDEX`를 이용해보자. 콤마(,)가 많이 들어 있는 경우에는 몇 번째인지 설정할 필요가 있다. 아래 코드에서 '1'을 입력하지 않고, '2'를 입력한다면, 두 번째 콤마(,)를 찾고그 앞의 모든 것을 다 반환한다.
 
 ```sql
 SELECT SUBSTRING_INDEX(location, ',', 1) FROM my_contacts;
 ```
+
+윗 코드를 실행하면 콤마(,) 앞에 있는 도시 이름을 뽑아오는 것을 확인할 수 있다.
 
 ```bash
 MariaDB [gregs_list]> SELECT SUBSTRING_INDEX(location, ',', 1) FROM my_contacts;
@@ -861,8 +941,9 @@ MariaDB [gregs_list]> SELECT SUBSTRING_INDEX(location, ',', 1) FROM my_contacts;
 | SUBSTRING_INDEX(location, ',', 1) |
 +-----------------------------------+
 | Palo Alto                         |
+| Princeton                         |
 +-----------------------------------+
-1 row in set (0.006 sec)
+2 rows in set (0.011 sec)
 ```
 
 ## 연습문제 (2)
