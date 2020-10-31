@@ -716,23 +716,25 @@ MariaDB [gregs_list]> SELECT * FROM hooptie;
 - 'car_id'이라는 열을 추가하고, 기본키로 설졍, 자동으로 유일무이한 정수값을 자동으로 넣게 설정
 - 'mo' 열 이름을 'model'로 이름 변경
 - 'howmuch' 열 이름을 'price'로 이름 변경
-- 'VIN'이라는 열을 'car_id' 열 뒤에 추가
+- 'VIN'이라는 열을 'car_id' 열 뒤에 추가하고 내용 채우기
+- 'color'열을 'model'열 뒤에 넣기
+- 'year'열을 'color'열 뒤에 넣기
 
-이 것들을 `ALTER TABLE` 한 줄로 처리해보자.
+이 것들을 `ALTER TABLE` 한 줄로 처리해보자. 'VIN'이라는 열 내용은 다음에 처리하겠다.
 
 ```sql
 ALTER TABLE hooptie
-RENAME TO car_table,
-ADD COLUMN car_id INT NOT NULL AUTO_INCREMENT FIRST,
-ADD PRIMARY KEY (car_id),
-CHANGE COLUMN mo model VARCHAR(20),
-CHANGE COLUMN howmuch price DEC(7,2),
-ADD COLUMN VIN VARCHAR(17)
-AFTER car_id,
-MODIFY color varchar(10) AFTER model,
-MODIFY year int(4) AFTER color;
-
+    RENAME TO car_table,
+    ADD COLUMN car_id INT NOT NULL AUTO_INCREMENT FIRST,
+    ADD PRIMARY KEY (car_id),
+    CHANGE COLUMN mo model VARCHAR(20),
+    CHANGE COLUMN howmuch price DEC(7,2),
+    ADD COLUMN VIN VARCHAR(17) AFTER car_id,
+    MODIFY color varchar(10) AFTER model,
+    MODIFY year int(4) AFTER color;
 ```
+
+윗코드를 실행하면 다음과 같이 잘 변경된 것을 확인할 수 있다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE hooptie
@@ -747,50 +749,58 @@ MariaDB [gregs_list]> ALTER TABLE hooptie
     -> MODIFY year int(4) AFTER color;
 Query OK, 3 rows affected (0.021 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [gregs_list]> DESC car_table;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| car_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| VIN    | varchar(17)  | YES  |     | NULL    |                |
+| make   | varchar(10)  | YES  |     | NULL    |                |
+| model  | varchar(20)  | YES  |     | NULL    |                |
+| color  | varchar(10)  | YES  |     | NULL    |                |
+| year   | int(4)       | YES  |     | NULL    |                |
+| price  | decimal(7,2) | YES  |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+7 rows in set (0.003 sec)
+
+MariaDB [gregs_list]> SELECT * FROM car_table;
++--------+------+---------+----------+--------+------+----------+
+| car_id | VIN  | make    | model    | color  | year | price    |
++--------+------+---------+----------+--------+------+----------+
+|      1 | NULL | Porsche | Boxter   | silver | 1998 | 17992.54 |
+|      2 | NULL | Jaguar  | XJ       | NULL   | 2000 | 15995.00 |
+|      3 | NULL | Cadilac | Escalade | red    | 2002 | 40215.90 |
++--------+------+---------+----------+--------+------+----------+
+3 rows in set (0.001 sec)
 ```
+
+이제 'VIN'열에 내용을 채워 넣자.
 
 ```sql
-UPDATE car_table
-SET VIN = 'RNKLK66N33G213481'
-WHERE car_id = 1;
+UPDATE car_table SET VIN = 'RNKLK66N33G213481' WHERE car_id = 1;
 
-UPDATE car_table
-SET VIN = 'SAEDA44B175BO4113'
-WHERE car_id = 2;
+UPDATE car_table SET VIN = 'SAEDA44B175BO4113' WHERE car_id = 2;
 
-UPDATE car_table
-SET VIN = '3GYEK63NT2G28O668'
-WHERE car_id = 3;
+UPDATE car_table SET VIN = '3GYEK63NT2G28O668' WHERE car_id = 3;
 ```
 
+윗 코드를 실행하면 내용이 잘 추가된 것을 확인할 수 있다. 위에서 제시한 표와 똑같은 테이블을 완성했다.
+
 ```bash
-MariaDB [gregs_list]> UPDATE car_table
-    -> SET VIN = 'RNKLK66N33G213481'
-    -> WHERE car_id = 1;
-Query OK, 1 row affected (0.012 sec)
+MariaDB [gregs_list]> UPDATE car_table SET VIN = '3GYEK63NT2G28O668' WHERE car_id = 3;
+Query OK, 1 row affected (0.052 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
-MariaDB [gregs_list]> UPDATE car_table
-    -> SET VIN = 'SAEDA44B175BO4113'
-    -> WHERE car_id = 2;
-Query OK, 1 row affected (0.003 sec)
+MariaDB [gregs_list]> UPDATE car_table SET VIN = 'SAEDA44B175BO4113' WHERE car_id = 2;
+Query OK, 1 row affected (0.002 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
 MariaDB [gregs_list]>
-MariaDB [gregs_list]> UPDATE car_table
-    -> SET VIN = '3GYEK63NT2G28O668'
-    -> WHERE car_id = 3;
-Query OK, 1 row affected (0.004 sec)
+MariaDB [gregs_list]> UPDATE car_table SET VIN = '3GYEK63NT2G28O668' WHERE car_id = 3;
+Query OK, 1 row affected (0.002 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
-```
 
-완성된 테이블을 확인해보자.
-
-```sql
-SELECT * FROM car_table;
-```
-
-```bash
 MariaDB [gregs_list]> SELECT * FROM car_table;
 +--------+-------------------+---------+----------+--------+------+----------+
 | car_id | VIN               | make    | model    | color  | year | price    |
@@ -800,8 +810,11 @@ MariaDB [gregs_list]> SELECT * FROM car_table;
 |      3 | 3GYEK63NT2G28O668 | Cadilac | Escalade | red    | 2002 | 40215.90 |
 +--------+-------------------+---------+----------+--------+------+----------+
 3 rows in set (0.001 sec)
-
 ```
+
+참고로 데이터를 수정하지 않고 기본키를 설정을 제거하려면 다음과 같이 하면 됩니다.
+
+- `DROP PRIMARY KEY`: `ALTER TABLE`과 같이 사용하여 해당 테이블에서 기본키를 없앨 수 있다.
 
 ## 연필을 깎으며
 
