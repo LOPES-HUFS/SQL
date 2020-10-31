@@ -376,7 +376,9 @@ MariaDB [gregs_list]> DESC my_contacts;
 - `ADD`: 테이블 내에 새로운 열을 추가할 수 있다.
 - `DROP`: 테이블 내에 열을 제거한다.
 
-참고로 `CHANGE`, `MODIFY`, `DROP` 명령어의 경우 데이터가 변경되거나 삭제되기 때문에 데이터 손실이 발생할 수 있다.
+참고로 `CHANGE`, `MODIFY`, `DROP` 명령어를 사용할 때, 데이터가 변경되거나 삭제될 수도 있기 때문에 데이터 손실이 발생할 수 있다.
+
+연습을 하기 위하여 테이블을 하나 만들어보자.
 
 ```sql
 CREATE TABLE projekts(
@@ -394,6 +396,8 @@ INSERT INTO projekts(
 );
 
 ```
+
+윗 코드를 실행하면 다음과 같다.
 
 ```bash
 MariaDB [gregs_list]> CREATE TABLE projekts(
@@ -415,13 +419,15 @@ Query OK, 4 rows affected (0.004 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 ```
 
-만들어진 테이블의 구조와 데이터를 확인한다.
+위에서 만든 테이블의 구조와 데이터를 확인하보자.
 
 ```sql
 DESC projekts;
 
 SELECT * FROM projekts;
 ```
+
+윗 코드를 실행하면 다음과 같다.
 
 ```bash
 MariaDB [gregs_list]> DESC projekts;
