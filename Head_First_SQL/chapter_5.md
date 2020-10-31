@@ -796,7 +796,6 @@ MariaDB [gregs_list]> UPDATE car_table SET VIN = 'SAEDA44B175BO4113' WHERE car_i
 Query OK, 1 row affected (0.002 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
-MariaDB [gregs_list]>
 MariaDB [gregs_list]> UPDATE car_table SET VIN = '3GYEK63NT2G28O668' WHERE car_id = 3;
 Query OK, 1 row affected (0.002 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
