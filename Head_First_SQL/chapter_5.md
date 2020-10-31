@@ -452,17 +452,30 @@ MariaDB [gregs_list]> SELECT * FROM projekts;
 4 rows in set (0.001 sec)
 ```
 
-RENAME TO: 테이블의 이름을 바꾸는 방법이다.
+위의 데이블은 어떤 문제가 있을까? 우선 테이블의 이름이 명확하지 않다. 우선 테이블의 이름을 명확하게 project_list으로 변경해보자.
+
+- `RENAME TO`: `ALTER TABLE`과 같이 사용하여 테이블의 이름을 바꾼다.
 
 ```sql
 ALTER TABLE projekts RENAME TO project_list;
 ```
 
-RENAME TO 명령어를 사용해 테이블 이름을 프로젝트 리스트로 변경해준다.
+윗 명령어를 사용하면 'projekts'이라는 이름이 'project_list'으로 변경될 것이다. 실행하면 다음과 같다. 당연히 이름을 변경했기 때문에 테이블을 확인하려고 할 때에도 변경된 이름을 사용해야 한다.
 
 ```bash
 MariaDB [gregs_list]> ALTER TABLE projekts RENAME TO project_list;
 Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [gregs_list]> SELECT * FROM project_list;
++--------+-------------------------+-----------------+
+| number | desciptionofproj        | contractoronjob |
++--------+-------------------------+-----------------+
+|      1 | outside house painting  | Murphy          |
+|      2 | kitchen remodel         | Valdez          |
+|      3 | wood floor installation | Keller          |
+|      4 | roofing                 | Jackson         |
++--------+-------------------------+-----------------+
+4 rows in set (0.004 sec)
 ```
 
 이제 이 테이블에 고유 아이디, 시작일, 계약회사의 이름과 전화번호, 예상 금액, 프로젝트 내용 설명 등의 열들을 추가하거나 기존의 열을 변경해주어야 한다. 기존에 있는 열에 프로젝트 내용 설명, 계약 회사의 이름, 고유 아이디로 사용할 숫자는 존재하고 있다. 따라서 이 3가지 열을 알맞은 이름과 역할로 변경해주어야 한다.
