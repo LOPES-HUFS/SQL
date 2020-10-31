@@ -12,7 +12,7 @@ docker에서 실행중인 MariaDB에 접속하려면 다음과 같이 하면 됩
 docker exec -it mariadb /bin/bash
 ```
 
-그러면 다음과 같은 결과가 나오고 `mariadb`로 들어갈 수 있습니다. password는 앞에서 도커로 설치할 때 사용한 것을 그대로 사용했습니다. 만약 password를 다른 것으로 바꿔 샤용하신 분은 본인이 입력한 password를 입력하시면 됩니다.
+그러면 다음과 같은 결과가 나오고 `mariadb`로 들어갈 수 있습니다. password는 앞에서 도커로 설치할 때 사용한 것을 그대로 사용했습니다. 만약 password를 다른 것으로 바꾼 분들은 본인이 입력한 password를 입력하시면 됩니다.
 
 ```bash
 ❯ docker exec -it mariadb /bin/bash
