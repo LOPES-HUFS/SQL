@@ -27,7 +27,7 @@ root@ad0bb5de3d3f:/#
 root@e144fdbab9be:/# mysql -u root -p
 # MYSQL_ROOT_PASSWORD=RT27hDosK
 Enter password:
-Welcome to the  ㅍ monitor.  Commands end with ; or \g.
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 4
 Server version: 10.5.5-MariaDB-1:10.5.5+maria~focal mariadb.org binary distribution
 
