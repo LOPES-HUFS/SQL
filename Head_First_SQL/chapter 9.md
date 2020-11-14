@@ -1,4 +1,4 @@
-#chapter 9
+# chapter 9
 
 ```sql
 
@@ -330,3 +330,102 @@ WHERE title LIKE 'Web%';
 웹 디자이너와 웹 개발자의 평균 월급을 구하기 위해 월급 열을 INT 형으로 변경해준다. 그리고 웹 디자이너와 웹 개발자의 정보와 평균 월급을 구해본다. 이제 구해진 두 정보를 하나의 쿼리를 묶어본다. 웹 디자이너와 웹 개발자의 월급에서 웹 직군의 평균 월급을 빼는 결과를 하나의 쿼리로 묶었다.
 
 ## 여러 값을 사용하는 비상관 쿼리 IN, NOT IN
+
+```sql
+SELECT mc.first_name, mc.last_name, mc.phone, jc.title
+FROM job_current AS jc NATURAL JOIN my_contacts AS mc
+WHERE jc.title IN (SELECT title FROM job_listing);
+
+SELECT mc.first_name, mc.last_name, mc.phone, jc.title
+FROM job_current AS jc NATURAL JOIN my_contacts AS mc
+WHERE jc.title NOT IN (SELECT title FROM job_listing);
+```
+
+비상관 서브 쿼리는 IN, NOT IN을 사용해서 값이 서브 쿼리에서 반환된 집합의 원소인지 아닌지를 확인할 수 있다.
+
+## 연습 문제
+
+가장 월급이 높은 사람은 다음과 같이 뽑을 수 있다.
+
+
+```sql
+SELECT title FROM job_listing
+WHERE salary = (SELECT MAX(salary)FROM job_listing);
+```
+
+```bash
+MariaDB [gregs_list]> SELECT title FROM job_listing
+    -> WHERE salary = (SELECT MAX(salary)FROM job_listing);
++-------+
+| title |
++-------+
+| Cook  |
++-------+
+1 row in set (0.001 sec)
+```
+
+평균 월급보다 많은 월급인 사람의 이름 정보를 뽑는 것은 다음과 같다.
+
+```sql
+SELECT mc.first_name, mc.last_name
+FROM my_contacts mc NATURAL JOIN job_current jc
+WHERE jc.salary > (SELECT AVG(salary) FROM job_current);
+```
+
+```bash
+MariaDB [gregs_list]> SELECT mc.first_name, mc.last_name
+    -> FROM my_contacts mc NATURAL JOIN job_current jc
+    -> WHERE jc.salary > (SELECT AVG(salary) FROM job_current);
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| Jillian    | Anderson  |
+| jared      | Callaway  |
+| juan       | Garza     |
+| Regis      | Sullivan  |
++------------+-----------+
+4 rows in set (0.001 sec)
+```
+
+## 상관 서브 쿼리
+
+비상관 서브 쿼리는 내부 쿼리를 먼저 수행하고 외부 쿼리를 수행합니다. 상관 서브 쿼리는 내부 쿼리의 값이 결정되는 과정에서 외부 쿼리에 의존하게 된다.
+
+비상관 서브쿼리의 IN, NOT IN과 같이 EXISTS와 NOT EXISTS가 있다.
+
+```sql
+SELECT mc.first_name, mc.last_name, mc.email
+FROM my_contacts mc
+WHERE NOT EXISTS (SELECT * FROM job_current jc
+WHERE mc.contact_id = jc.contact_id);
+
+SELECT mc.first_name, mc.last_name, mc.email
+FROM my_contacts mc
+WHERE EXISTS (SELECT * FROM job_current jc
+WHERE mc.contact_id = jc.contact_id);
+```
+
+```bash
+MariaDB [gregs_list]> SELECT mc.first_name, mc.last_name, mc.email
+    -> FROM my_contacts mc
+    -> WHERE NOT EXISTS (SELECT * FROM job_current jc
+    -> WHERE mc.contact_id = jc.contact_id);
+Empty set (0.001 sec)
+
+MariaDB [gregs_list]> SELECT mc.first_name, mc.last_name, mc.email
+    -> FROM my_contacts mc
+    -> WHERE EXISTS (SELECT * FROM job_current jc
+    -> WHERE mc.contact_id = jc.contact_id);
++------------+-----------+----------------------------------+
+| first_name | last_name | email                            |
++------------+-----------+----------------------------------+
+| Jillian    | Anderson  | jill_anderson@breakneckpizza.com |
+| Pat        | NULL      | patpost@breakneckpizza.com       |
+| Sean       | Miller    | NULL                             |
+| jared      | Callaway  | NULL                             |
+| juan       | Garza     | NULL                             |
+| Alexis     | Ferguson  | alexangel@yahoo.com              |
+| Regis      | Sullivan  | me@kathieleeisaflake.com         |
++------------+-----------+----------------------------------+
+7 rows in set (0.001 sec)
+```
