@@ -84,3 +84,72 @@ MariaDB [gregs_list]> SELECT * FROM clown_info;
 
 ## 기존 테이블에서 데이터 분리하기
 
+새로운 테이블에 데이터를 추가하기 위해서는 `clown_info`에 있는 데이터들을 분리해주어여 한다. `activities`를 먼저 살펴보자.
+
+```sql
+MariaDB [gregs_list]> SELECT activities FROM clown_info;
++-----------------------+
+| activities            |
++-----------------------+
+| mime                  |
+| horn, umbrella        |
+| violin                |
+| yelling, dancing      |
+| balloons              |
+| dancing               |
+| balancing, little car |
+| singing, dancing      |
+| NULL                  |
++-----------------------+
+9 rows in set (0.002 sec)
+```
+
+이제 해당 테이블에서 쉼표(,)로 연결되어 원자적 데이터가 아닌 레코드들을 하나씩 분리할 것이다. 그렇게 하기 위해서는 한 레코드에 들어있는 데이터만큼 열을 생성해주어야 한다. 아래의 코드를 입력하여 데이터가 가장 많은 레코드를 반환해보자.
+
+```sql
+ SELECT MAX(Activities) FROM clown_info;
+
+ +------------------+
+| MAX(activities)  |
++------------------+
+| yelling, dancing |
++------------------+
+1 row in set (0.002 sec)
+ ```
+
+`activities`에서는 2개이다. 따라서 `clown_info`에 새로운 열 2개를 생성하여 카테고리 `activities`을 원자적 데이터로 분리할 것이다. 이때 사용할 함수는 `SUBSTRING_INDEX()`와 `SUBSTR()`이다.
+
+먼저 새로운 열을 만들어주자.
+
+```sql
+ALTER TABLE clown_info
+    ADD COLUMN activity1 VARCHAR(30),
+    ADD COLUMN activity2 VARCHAR(30);
+```
+
+### SUBSTRING_INDEX()
+
+그 다음 함수 `SUBSTRING_INDEX()`를 사용하여 첫 번째 데이터를 `activity1`에 넣어준다.
+
+```sql
+UPDATE clown_info
+    SET activity1 = SUBSTRING_INDEX(activities, ',' ,1);
+
++----+------------+-----------------------+---------------------------------------+-----------------------+-----------+-----------+
+| id | name       | last_seen             | appearance                            | activities            | activity1 | activity2 |
++----+------------+-----------------------+---------------------------------------+-----------------------+-----------+-----------+
+|  2 | Pickles    | Jack Green's Party    | M, orange hair, blue suit, huge feet  | mime                  | mime      | NULL      |
+|  3 | Sunggles   | Ball-Mart             | F, yellow shirt, baggy red pants      | horn, umbrella        | horn      | NULL      |
+|  4 | Mr.Hobo    | BG Circus             | M, cigar, black hair, tiny hat        | violin                | violin    | NULL      |
+|  5 | Clarabelle | Belmont Senior Certer | F, pink hair, huge flower, blue dress | yelling, dancing      | yelling   | NULL      |
+|  6 | Scooter    | Oakland Hospital      | M, blue hair, red suit, huge nose     | balloons              | balloons  | NULL      |
+|  7 | Zippo      | Millstone Mall        | F, orange suit, baggy pants           | dancing               | dancing   | NULL      |
+|  8 | Babe       | Earl's Autos          | F, all pink and sparkly               | balancing, little car | balancing | NULL      |
+|  9 | Bonzo      | NULL                  | M, in drag, polka dotted dress        | singing, dancing      | singing   | NULL      |
+| 10 | Sniffles   | Tracy's               | M, green and puple suit, pointy nose  | NULL                  | NULL      | NULL      |
++----+------------+-----------------------+---------------------------------------+-----------------------+-----------+-----------+
+9 rows in set (0.001 sec)
+```
+
+### `SUBSTR()`
+
