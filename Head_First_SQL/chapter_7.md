@@ -99,7 +99,7 @@ Situation: 50가지의 activity 항목이 있는 테이블이 있으며, 우리�
 ```sql
 CREATE TABLE activities(
     act_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    activities VARCHAR(30) NOT NULL,
+    activities VARCHAR(30),
     id INT NOT NULL,
     CONSTRAINT clown_info_id_fk FOREIGN KEY (id) REFERENCES clown_info (id));
 ```
