@@ -420,3 +420,86 @@ INSERT INTO activities (cw_acts, id)
 준비가 모두 끝났다. 이제 제한 조건에 따른 내부 조인의 여러 종류를 배워보자.
 
 ### 동등 조인
+
+동등 조인은 두 테이블에 같은 값이 존재할 때 어떤 값들이 매핑되는지를 보여준다. 아래의 예시를 보면 기본키와 참조키를 사용하여 각 광대들의 활동이 무엇인지를 한번에 볼 수 있도록 반환한다. 참고로 두 개의 열은 각각 다른 테이블에서 도출된 것이다.
+
+```sql
+SELECT cw.name, act.cw_acts
+FROM clown_info AS cw
+    INNER JOIN activities AS act
+ON cw.id = act.id;
+
++------------+-----------+
+| name       | cw_acts   |
++------------+-----------+
+| Sniffles   | NULL      |
+| Babe       | balancing |
+| Scooter    | balloons  |
+| Zippo      | dancing   |
+| Sunggles   | horn      |
+| Pickles    | mime      |
+| Bonzo      | singing   |
+| Mr.Hobo    | violin    |
+| Clarabelle | yelling   |
++------------+-----------+
+9 rows in set (0.003 sec)
+```
+
+### 비동등 조인
+
+비동등 조인은 동등 조인과 반대로 값지 않은 값들만 도출한다.
+
+```sql
+SELECT cw.name, act.cw_acts
+FROM clown_info AS cw
+    INNER JOIN activities AS act
+ON cw.id <> act.id;
+
++------------+-----------+
+| name       | cw_acts   |
++------------+-----------+
+| Pickles    | NULL      |
+| Sunggles   | NULL      |
+| Mr.Hobo    | NULL      |
+| Clarabelle | NULL      |
+| Scooter    | NULL      |
+| Zippo      | NULL      |
+| Babe       | NULL      |
+| Bonzo      | NULL      |
+| Pickles    | balancing |
+| Sunggles   | balancing |
+| Mr.Hobo    | balancing |
+             .
+             .
+             .
+72 rows in set (0.002 sec)
+```
+
+위 결과를 보면 81개의 경우의 수 중에 같은 값에 해당하는 9개를 제외한 나머지 72개를 도출하는 것을 볼 수 있다.
+
+### 자연 조인
+
+자연 조인은 지정되는 두 테이블의 같은 열 이름을 찾아서 비교한 후 일치하는 행을 반환한다.
+
+```sql
+SELECT cw.name, act.cw_acts
+FROM clown_info AS cw
+    NATURAL JOIN activities AS act;
+
++------------+-----------+
+| name       | cw_acts   |
++------------+-----------+
+| Sniffles   | NULL      |
+| Babe       | balancing |
+| Scooter    | balloons  |
+| Zippo      | dancing   |
+| Sunggles   | horn      |
+| Pickles    | mime      |
+| Bonzo      | singing   |
+| Mr.Hobo    | violin    |
+| Clarabelle | yelling   |
++------------+-----------+
+9 rows in set (0.002 sec)
+```
+
+`clown_info`와 `activities`은 'id'라는 공통된 열을 가지고 있기 때문에 해당 열의 값이 일치하는 레코드들을 나열한 것이다.
