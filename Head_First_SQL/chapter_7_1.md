@@ -165,3 +165,174 @@ MariaDB [gregs_list]> SELECT * FROM interests;
 MariaDB [gregs_list]> DELETE FROM my_contacts WHERE contact_id = 1;
 ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`gregs_list`.`interests`, CONSTRAINT `my_contacts_contact_id_fk` FOREIGN KEY (`contact_id`) REFERENCES `my_contacts` (`contact_id`))
 ```
+
+## 제 1 정규형이 아닌데
+
+```sql
+CREATE DATABASE toy_db;
+USE toy_db;
+```
+
+```sql
+CREATE TABLE is_not_1nf_toy(
+    toy_id INT NOT NULL,
+    toy VARCHAR(30) default NULL,
+    color VARCHAR(30) default NULL
+    );
+
+INSERT INTO is_not_1nf_toy(toy_id, toy, color) VALUES (5, 'whiffleball', 'white, yellow, blue');
+INSERT INTO is_not_1nf_toy(toy_id, toy, color) VALUES (6, 'frisbee', 'green, yellow');
+INSERT INTO is_not_1nf_toy(toy_id, toy, color) VALUES (9, 'kite', 'red, blue, green');
+INSERT INTO is_not_1nf_toy(toy_id, toy, color) VALUES (12, 'yoyo', 'white, yellow');
+```
+
+지금까지 만든 것을 확인하며 다음과 같습니다.
+
+```sql
+MariaDB [toy_db]> DESC is_not_1nf_toy;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| toy_id | int(11)     | NO   |     | NULL    |       |
+| toy    | varchar(30) | YES  |     | NULL    |       |
+| color  | varchar(30) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.003 sec)
+
+MariaDB [toy_db]> SELECT * FROM is_not_1nf_toy;
++--------+-------------+---------------------+
+| toy_id | toy         | color               |
++--------+-------------+---------------------+
+|      5 | whiffleball | white, yellow, blue |
+|      6 | frisbee     | green, yellow       |
+|      9 | kite        | red, blue, green    |
+|     12 | yoyo        | white, yellow       |
++--------+-------------+---------------------+
+4 rows in set (0.001 sec)
+```
+
+그러나 이 테이블은 **제 1 정규형(1NF)**이 아닙니다.
+
+`1NF(제 1 정규형)`은 규칙 1: 열은 원자적 값만을 포함한다, 규칙 2: 같은 데이터가 여러 열에 반복되지 말아야 합니다.
+
+위의 **is_not_1nf_toy** 테이블은 `color`열에 색이 2, 3가지 색이 들어 있기 때문에 **규칙 1**을 위배하고 있습니다. 이를 보완하기 위해서 과감히 지우고 새 테이블을 만들어 봅시다.
+
+```sql
+MariaDB [toy_db]> DROP TABLE is_not_1nf_1_toy;
+Query OK, 0 rows affected (0.007 sec)
+```
+
+```sql
+CREATE TABLE is_not_1nf_toy(
+    toy_id INT NOT NULL,
+    toy VARCHAR(30) default NULL,
+    color1 VARCHAR(30) default NULL,
+    color2 VARCHAR(30) default NULL,
+    color3 VARCHAR(30) default NULL
+    );
+
+INSERT INTO is_not_1nf_toy(toy_id, toy) VALUES (5, 'whiffleball', 'white', 'yellow', 'blue');
+INSERT INTO is_not_1nf_toy(toy_id, toy) VALUES (6, 'frisbee', 'green', 'yellow','');
+INSERT INTO is_not_1nf_toy(toy_id, toy) VALUES (9, 'kite', 'red', 'blue', 'green');
+INSERT INTO is_not_1nf_toy(toy_id, toy) VALUES (12, 'yoyo', 'white', 'yellow', '');
+```
+
+새로 만든 것을 확인하며 다음과 같습니다.
+
+```sql
+MariaDB [toy_db]> DESC is_not_1nf_toy;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| toy_id | int(11)     | NO   |     | NULL    |       |
+| toy    | varchar(30) | YES  |     | NULL    |       |
+| color1 | varchar(30) | YES  |     | NULL    |       |
+| color2 | varchar(30) | YES  |     | NULL    |       |
+| color3 | varchar(30) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.001 sec)
+
+MariaDB [toy_db]> SELECT * FROM is_not_1nf_toy;
++--------+-------------+--------+--------+--------+
+| toy_id | toy         | color1 | color2 | color3 |
++--------+-------------+--------+--------+--------+
+|      5 | whiffleball | white  | yellow | blue   |
+|      6 | frisbee     | green  | yellow |        |
+|      9 | kite        | red    | blue   | green  |
+|     12 | yoyo        | white  | yellow |        |
++--------+-------------+--------+--------+--------+
+4 rows in set (0.001 sec)
+```
+
+그러나 아쉽게도 여전히 `is_not_1nf_toy` 테이블은 **제 1 정규형**이 아닙니다. 왜냐하면 열들에 같은 종류의 값을 가지고 있어, **규칙 2**을 위배하고 있기 때문입니다.
+
+## 마침내 1NF
+
+`1NF`을 맟추기 위해서는 테이블을 2개로 나는 것이 좋습니다.
+
+```sql
+CREATE TABLE toys(
+    toy_id INT NOT NULL,
+    toy VARCHAR(30) default NULL
+    );
+
+INSERT INTO toys(toy_id, toy) VALUES (5, 'whiffleball');
+INSERT INTO toys(toy_id, toy) VALUES (6, 'frisbee');
+INSERT INTO toys(toy_id, toy) VALUES (9, 'kite');
+INSERT INTO toys(toy_id, toy) VALUES (12, 'yoyo');
+
+CREATE TABLE toy_colors(
+    toy_id INT NOT NULL,
+    color VARCHAR(20) default NULL
+    );
+
+INSERT INTO toy_colors(toy_id, color) VALUES (5, 'white');
+INSERT INTO toy_colors(toy_id, color) VALUES (5, 'yellow');
+INSERT INTO toy_colors(toy_id, color) VALUES (5, 'blue');
+INSERT INTO toy_colors(toy_id, color) VALUES (6, 'green');
+INSERT INTO toy_colors(toy_id, color) VALUES (6, 'yellow');
+INSERT INTO toy_colors(toy_id, color) VALUES (9, 'red');
+INSERT INTO toy_colors(toy_id, color) VALUES (9, 'blue');
+INSERT INTO toy_colors(toy_id, color) VALUES (9, 'green');
+INSERT INTO toy_colors(toy_id, color) VALUES (12, 'white');
+INSERT INTO toy_colors(toy_id, color) VALUES (12, 'yellow');
+```
+
+```sql
+MariaDB [toy_db]> SELECT * FROM toys;
++--------+-------------+
+| toy_id | toy         |
++--------+-------------+
+|      5 | whiffleball |
+|      6 | frisbee     |
+|      9 | kite        |
+|     12 | yoyo        |
++--------+-------------+
+4 rows in set (0.001 sec)
+
+MariaDB [toy_db]> SELECT * FROM toy_colors;
++--------+--------+
+| toy_id | color  |
++--------+--------+
+|      5 | white  |
+|      5 | yellow |
+|      5 | blue   |
+|      6 | green  |
+|      6 | yellow |
+|      9 | red    |
+|      9 | blue   |
+|      9 | green  |
+|     12 | white  |
+|     12 | yellow |
++--------+--------+
+10 rows in set (0.001 sec)
+```
+
+뒤에서 배우겠지만 이렇게 2개의 테이블을 작성하면 다음과 같은 명령어로 어떤 장난감이 어떤 색을 가지고 있는지 파악할 수 있다.
+
+```sql
+SELECT t.toy, c.color
+    FROM toys t
+    INNER JOIN toy_colors c
+    ON t.toy_id = c.toy_id;
+```

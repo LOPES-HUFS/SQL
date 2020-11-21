@@ -19,7 +19,7 @@ docker exec -it mariadb /bin/bash
 root@ad0bb5de3d3f:/#
 ```
 
-여기서 아래와 같이 `mysql -u root -p`을 입력하시면 `mariadb`로 들어갈 수 있습니다. password는 앞에서 도커로 설치할 때 사용한 것을 그대로 사용했습니다. 만약 password를 다른 것으로 바꾼 분들은 본인이 입력한 password를 입력하시면 됩니다.
+위와 같이 `root@어쪄구:/`같이 화면에 나오신다면 도커에 설치한 리눅스 서버, 유식하게 말하면 컨테이너에 들어간 것입니다. 이 컨테이너에는 **MariaDB**이 돌이가고 있습니다. 이 DB에 SQL 명령어를 실행하기 위해서는 아래와 같이 `mysql -u root -p`을 입력하신다음 `mariadb`로 들어가시면 실행햐실 수 있습니다. password는 앞에서 도커로 설치할 때 사용한 것을 그대로 사용했습니다. 만약 password를 다른 것으로 바꾸신 분들은 본인이 입력한 password를 입력하시면 됩니다.
 
 ```bash
 ❯ docker exec -it mariadb /bin/bash
