@@ -147,7 +147,7 @@ GRANT SELECT ON clown_info TO sleepy; --sleepy에게 권한 수여--
 ### 해당 부분의 코드가 작동하지 않습니다. 나머지는 식당 갔다와서 끝내겠습니당
 
 ```sql
-REVOKE GRANT OPTION FOR UPDATE ON clown_info FROM elise;
+REVOKE GRANT OPTION ON UPDATE ON clown_info FROM elise;
 REVOKE GRANT OPTION ON UPDATE ON activities FROM elise;
 REVOKE GRANT OPTION ON UPDATE ON info_apperance FROM elise;
 REVOKE GRANT OPTION ON SELECT ON appearance FROM elise;
