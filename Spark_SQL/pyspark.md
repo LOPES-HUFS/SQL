@@ -11,6 +11,14 @@ hadoop dfs -put stock_full.csv
 
 우선 pyspark(이하 파이스파크)를 실행하고 `SparkSession`을 이용해 자료를 저장할 곳을 하나 만든다. 진행 과정은 다음과 같다.
 
+```pytho
+spark = SparkSession \
+     .builder \
+     .appName("Python Spark SQL basic example") \
+     .config("spark.some.config.option", "some-value") \
+     .getOrCreate()
+```
+
 ```bash
 pi@master:~ $ pyspark
 Python 3.7.3 (default, Jul 25 2020, 13:03:44) 
@@ -35,7 +43,6 @@ SparkSession available as 'spark'.
 ...     .appName("Python Spark SQL basic example") \
 ...     .config("spark.some.config.option", "some-value") \
 ...     .getOrCreate()
->>> df = spark.read.csv("stock_full.csv")
 2021-01-13 07:02:03,486 WARN util.SizeEstimator: Failed to check whether UseCompressedOops is set; assuming yes
 ```
 
@@ -173,4 +180,88 @@ root
 >>> 
 ```
 
-스키마가 적절하게 잘 들어갔는지 `stock.printSchema()`으로 확인해보니 적절하게 잘 들어갔다.
+스키마가 적절하게 잘 들어갔는지 `stock.printSchema()`으로 확인해보니 적절하게 잘 들어갔다. 앞에
+
+```python
+
+from pyspark.sql.types import StructType, StructField
+from pyspark.sql.types import StringType, IntegerType, DateType
+
+schema = StructType()  \
+     .add("Date", DateType(),True) \
+     .add("Open",IntegerType(),True) \
+     .add("High",IntegerType(),True) \
+     .add("Low",IntegerType(),True) \
+     .add("Close",IntegerType(),True) \
+     .add("Volume",IntegerType(),True) \
+     .add("Adj_Close",IntegerType(),True) \
+     .add("code",StringType(),True) \
+     .add("id",IntegerType(),True)
+
+stock = spark.read.format("csv").option("header", True).schema(schema).load("stock_full.csv")
+```
+
+지금까지 한 것을 정리해서 차례로 처리하면 다음과 같은 결과가 나올 것이다.
+
+```python
+>>> park = SparkSession \
+...      .builder \
+...      .appName("Python Spark SQL basic example") \
+...      .config("spark.some.config.option", "some-value") \
+...      .getOrCreate()
+>>> from pyspark.sql.types import StructType, StructField
+>>> from pyspark.sql.types import StringType, IntegerType, DateType
+>>> 
+>>> schema = StructType()  \
+...      .add("Date", DateType(),True) \
+...      .add("Open",IntegerType(),True) \
+...      .add("High",IntegerType(),True) \
+...      .add("Low",IntegerType(),True) \
+...      .add("Close",IntegerType(),True) \
+...      .add("Volume",IntegerType(),True) \
+...      .add("Adj_Close",IntegerType(),True) \
+...      .add("code",StringType(),True) \
+...      .add("id",IntegerType(),True)
+>>> stock = spark.read.format("csv").option("header", True).schema(schema).load("stock_full.csv")
+2021-01-13 08:31:05,361 WARN util.SizeEstimator: Failed to check whether UseCompressedOops is set; assuming yes
+>>> stock.printSchema()
+root
+ |-- Date: date (nullable = true)
+ |-- Open: integer (nullable = true)
+ |-- High: integer (nullable = true)
+ |-- Low: integer (nullable = true)
+ |-- Close: integer (nullable = true)
+ |-- Volume: integer (nullable = true)
+ |-- Adj_Close: integer (nullable = true)
+ |-- code: string (nullable = true)
+ |-- id: integer (nullable = true)
+
+>>> stock.show() 
++----------+----+----+----+-----+--------+---------+------+---+                 
+|      Date|Open|High| Low|Close|  Volume|Adj_Close|  code| id|
++----------+----+----+----+-----+--------+---------+------+---+
+|2000-01-04|2658|3110|2658|15552|  898582|     2752|000020|  1|
+|2000-01-05|3167|3572|2940|16495| 3865389|     2918|000020|  2|
+|2000-01-06|3299|3468|2808|14327| 1382353|     2535|000020|  3|
+|2000-01-07|2978|3289|2827|16448| 2402938|     2910|000020|  4|
+|2000-01-10|3638|3694|3157|16024| 3993227|     2835|000020|  5|
+|2000-01-11|3204|3487|3110|16354| 1596654|     2893|000020|  6|
+|2000-01-12|3289|3760|3204|18804| 3941243|     3327|000020|  7|
+|2000-01-13|3770|4203|3468|17532|11397248|     3102|000020|  8|
+|2000-01-14|3506|3506|2988|14940| 4794737|     2643|000020|  9|
+|2000-01-17|2950|3204|2903|14798| 3258024|     2618|000020| 10|
+|2000-01-18|3016|3110|2827|14233| 2067694|     2518|000020| 11|
+|2000-01-19|2856|2978|2676|13479| 2006692|     2385|000020| 12|
+|2000-01-20|2639|2714|2545|13007| 1070448|     2301|000020| 13|
+|2000-01-21|2639|2865|2554|13290| 2250169|     2351|000020| 14|
+|2000-01-24|2714|2865|2667|13479| 1558462|     2385|000020| 15|
+|2000-01-25|2667|2771|2582|12913|  939957|     2285|000020| 16|
+|2000-01-26|2658|2676|2545|13054|  772335|     2310|000020| 17|
+|2000-01-27|2639|2969|2610|13667| 3375253|     2418|000020| 18|
+|2000-01-28|2827|2827|2667|13761| 1084770|     2435|000020| 19|
+|2000-01-31|2714|2865|2714|13573| 1197226|     2401|000020| 20|
++----------+----+----+----+-----+--------+---------+------+---+
+only showing top 20 rows
+
+>>> 
+```
