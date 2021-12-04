@@ -35,9 +35,16 @@ MariaDB [gregs_list]> SHOW DATABASES;
 | performance_schema |
 +--------------------+
 4 rows in set (0.001 sec)
-
 ```
-exit
+
+그리고 MariaDB에서 나가려면, `exit;`을 입력하면 된다.
+
+- `exit`는 만든 데이터베이스 콘솔에서 나가는 명령어
+
+```bash
+MariaDB [gregs_list]> exit;
+Bye
+```
 
 ## 테이블을 만드는 방법 CREATE TABLE
 
