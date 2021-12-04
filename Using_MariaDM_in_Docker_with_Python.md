@@ -182,7 +182,7 @@ import datetime
 conn.execute(my_contacts.insert(('Soukup', 'Alan', 'soupup@breakneckbizza.com', datetime.date(1975, 12, 2), 'Aeronautical Engineer', 'San Antonio, TX', 'Married', 'RPG, Programming', 'Nothing')))
 ```
 
-윗 코드를 작동시켜보면 자료가 입력된 것을 확인할 수 있습니다.
+윗 코드를 작동시켜보면 자료가 입력된 것을 확인할 수 있습니다. 처음 2 줄은 자료를 입력하기 위한 것이고, 나머지 줄이 입력한 결과를 확인하는 코드입니다.
 
 ```python
 >>> import datetime
