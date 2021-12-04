@@ -20,6 +20,25 @@ MariaDB [(none)]> USE gregs_list;
 Database changed
 ```
 
+참고로 `SHOW DATABASES;`을 사용하면 지금까지 만든 것을 데이터베이스를 확인할 수 있다.
+
+- `SHOW`는 만든 데이터베이스를 확인하는 명령어
+
+```bash
+MariaDB [gregs_list]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| gregs_list         |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.001 sec)
+
+```
+exit
+
 ## 테이블을 만드는 방법 CREATE TABLE
 
 `CREATE TABLE` 명령어는 데이터 베이스 안에 테이블을 만드는 명령어이다. 테이블을 만들어야 데이터 베이스 안에 데이터를 저장할 수 있다. 테이블을 구성하는 데이터 타입들에 대해 알아보자.
