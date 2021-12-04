@@ -9,6 +9,8 @@
 ```sql
 CREATE DATABASE gregs_list;
 
+USE gregs_list;
+
 CREATE TABLE my_contacts(
     last_name VARCHAR(30),
     first_name VARCHAR(20),
