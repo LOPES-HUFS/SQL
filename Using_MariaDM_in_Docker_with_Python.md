@@ -15,6 +15,7 @@ CREATE TABLE my_contacts(
     last_name VARCHAR(30),
     first_name VARCHAR(20),
     email VARCHAR(50),
+    gender CHAR(1),
     birthday Date,
     profession VARCHAR(50),
     location VARCHAR(50),
