@@ -174,7 +174,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 [('Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', datetime.date(1980, 9, 5), 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'), (None, 'Pat', 'patpost@breakneckpizza.com', None, 'Postal Worker', 'Princeton, NJ', None, None, None)]
 ```
 
-이것을 이용해서 자료를 입력해보겠습니다. 참고로 생년월일을 입력하기 위해서 `datetime`가 필요합니다.
+지금까지 작성한 코드를 이용하여 자료를 하나 추가해보겠습니다. 참고로 생년월일을 입력하기 위해서 `datetime`가 필요합니다.
 
 ```python
 import datetime
@@ -192,6 +192,20 @@ conn.execute(my_contacts.insert(('Soukup', 'Alan', 'soupup@breakneckbizza.com', 
 >>> rows = result.fetchall()
 >>> print(rows)
 [('Anderson', 'Jillian', 'jill_anderson@breakneckpizza.com', datetime.date(1980, 9, 5), 'Technical Writer', 'Palo Alto, CA', 'Single', 'Kayaking, Reptiles', 'Relationship, Friends'), (None, 'Pat', 'patpost@breakneckpizza.com', None, 'Postal Worker', 'Princeton, NJ', None, None, None), ('Soukup', 'Alan', 'soupup@breakneckbizza.com', datetime.date(1975, 12, 2), 'Aeronautical Engineer', 'San Antonio, TX', 'Married', 'RPG, Programming', 'Nothing')]
+```
+
+MariaDB에 가서 확인해 보니 잘 입력된 것을 확인하실 수 있습니다. 
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM my_contacts;
++-----------+------------+----------------------------------+--------+------------+-----------------------+-----------------+---------+--------------------+-----------------------+
+| last_name | first_name | email                            | gender | birthday   | profession            | location        | status  | interests          | seeking               |
++-----------+------------+----------------------------------+--------+------------+-----------------------+-----------------+---------+--------------------+-----------------------+
+| Anderson  | Jillian    | jill_anderson@breakneckpizza.com | F      | 1980-09-05 | Technical Writer      | Palo Alto, CA   | Single  | Kayaking, Reptiles | Relationship, Friends |
+| NULL      | Pat        | patpost@breakneckpizza.com       | NULL   | NULL       | Postal Worker         | Princeton, NJ   | NULL    | NULL               | NULL                  |
+| Soukup    | Alan       | soupup@breakneckbizza.com        | NULL   | 1975-12-02 | Aeronautical Engineer | San Antonio, TX | Married | RPG, Programming   | Nothing               |
++-----------+------------+----------------------------------+--------+------------+-----------------------+-----------------+---------+--------------------+-----------------------+
+3 rows in set (0.001 sec)
 ```
 
 ## SQLAlchemy, the Object-Relational Mapper (ORM) 작성 중
