@@ -82,6 +82,8 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 
 명령어 `CASE`는 조건을 여러 개 설정하여 그에 따라 값을 변경할 수 있도록 해준다. 아래의 코드를 통해 사용법을 알아보자.
 
+- `CASE`: 여러 개를 한꺼번에 바꾼다.
+
 ```sql
 UPDATE movie_table
     SET category =
@@ -95,7 +97,7 @@ UPDATE movie_table
         END;
 ```
 
-위 코드는 WHEN 조건에 해당되는 경우에 값을 변경하고 바로 종료한다. 위 코드의 결과는 다음과 같다.
+위 코드는 `WHEN` 조건에 해당되는 경우에 값을 변경하고 바로 종료한다. 위 코드의 결과는 다음과 같다.
 
 ```sql
 MariaDB [gregs_list]> SELECT * FROM movie_table;
@@ -117,6 +119,8 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 ## 데이터 정렬하기
 
 만약 위 테이블을 열 `title`의 값 알파벳 순서를 기준으로 정렬하고 싶다고 생각해보자. 실제로 해당 테이블의 순서는 엉망이다. 이럴 때 명령어 `ORDER BY`를 사용한다. 아래의 코드를 입력해보고 이전과 비교해보자.
+
+- `ORDER BY`: 결과를 언급한 컬럼을 토대로 알바벳으로 정렬한다.
 
 ```sql
 SELECT * FROM movie_table
@@ -271,6 +275,8 @@ MariaDB [gregs_list]> SELECT * FROM movie_table
 
 오름차순이 아니라 내림차순으로 정렬하고 싶을 때는 명령어 `DESC`를 `ORDER BY`에 오든 열 이름 뒤에 붙여주면 된다. 쿼리를 확인해보자.
 
+- `DESC`: 역순으로
+
 ```sql
 SELECT * FROM movie_table
     ORDER BY category, title DESC;
@@ -377,6 +383,8 @@ SELECT SUM(amount1) FROM easy_drinks
 ```
 
 만약에 각각의 음료들의 `amount1`을 합한 값을 알고 싶다면 어떻게 해야할까? 그럴 때는 명령어 `GROUP BY`를 사용하면 된다. 명령어 `GROUP BY`는 지정되는 카테고리의 결과들을 총체적으로 보여준다.
+
+- `GROUP BY`: 공통 컬럼을 가지고 열들을 통합 정리한다(Consolidate rows based on a common column).
 
 ```sql
 SELECT drink_name,SUM(amount1) FROM easy_drinks
