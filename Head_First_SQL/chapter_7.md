@@ -1,5 +1,48 @@
+# 여러 개의 테이블 다루기 (multi-table database design)
 
-# 여러 개의 테이블 다루기
+## 나이젤에게 사랑 찾아주기
+
+외로운 친구 나이젤에게 관심사((interests)가 같은 여자를 소개시켜주자!
+
+나이젤의 데이터
+
+- 일련변호(contact_id): 341
+- 성(last_name): 무어(Moore)
+- 이름(first_name): 나이젤(Nigel)
+- 전화번호(phone): 5552311111
+- 이메일(email): nigelmoore@ranchersrule.com
+- 성별(gender): M
+- 생일(birthday): 1975-08-28
+- 직업(profession): 목장주(Rancher)
+- 도시(city): 오스틴(Austin)
+- 주(state): 텍사스(TX)
+- 결혼여부(status): 미혼(single)
+- 관심사(interests): 동물(animals), 말타기(horsebackriding), 영화(movies)
+- 원하는 것(seeking): 미혼 여자(single F)
+
+**주의할 점**: 관심사(interests) 열이 원자적이지 않다.
+
+**To do**: 나이젤을 위한 쿼리 작성하기
+
+```sql
+/* my_contact 테이블에서 아래에 조건에 맞는 모든 것을 찾는다. */
+SELECT * FROM my_contact
+/* 우선 여성 */
+WHERE gender = 'F'
+/* 미혼 */
+AND status = 'single'
+/* 같은 주 */
+AND state = 'TX'
+/* 찾는 사람도 미혼 남자를 찾아야 한다. */
+AND seeking = '%single M%'
+/* 나이 차이가 아래 위로 5살 차이!*/
+AND birthday > '1970-08-28'
+AND birthday < '1980-08-28'
+/* 관심사 3개가 모두 같으면 좋겠다! */
+AND interests LIKE '%animals%'
+AND interests LIKE '%horsebackriding%'
+AND interests LIKE '%movies%';
+```
 
 초기에 테이블을 잘 설계하면 쿼리의 복잡도가 낮아지며, 원하는 데이터를 더 쉽게 찾을 수 있다. 그렇다면 테이블을 잘 설계하는 방법은 무엇인가? 그 방법 중 하나가 여러 개의 테이블을 사용하는 것이다. 여러 개의 테이블을 사용하면 각 카테고리에 대한 세부 정보들을 체계적으로 정리할 수 있다.
 
