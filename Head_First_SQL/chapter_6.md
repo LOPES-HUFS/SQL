@@ -1,31 +1,170 @@
 
 # 6장 고급 SELECT문
 
-이번 장에서는 순서를 정하고 데이터를 '그룹핑'하고 결과에 '수학 연산'을 수행하는 방법을 살펴볼 것이다.
+데이터를 다루다보면 원하는 값들만 뽑아보고 싶을 때가 있습니다.
+이번 장에서는 순서를 정해야 하거나, 데이터를 특정 조건에 맞는 값끼리 '그룹핑'하거나 혹은 
+주어진 값들을 토대로 '수학 연산'을 수행하는 방법을 살펴볼 것입니다.
+
 
 ## 사용할 테이블 만들기
 
-먼저 아래의 코드를 입력하여 사용할 테이블을 생성하고 데이터를 입력하자.
+먼저 아래의 코드를 입력하여 사용할 테이블을 생성하고 데이터를 입력해서 살펴봅시다
+
+```sql
+--사용할 테이블 입력--
+
+USE gregs_list;
+
+우리가 비디오 가게가 가지고 가지고 있는 비디오 자료를 정리하려고 한다고 가정해 봅시다. 현재 우리가 가지고 있는 자료를 다음과 같다고 해봅시다.
+
+MariaDB [gregs_list]> SELECT * FROM movie_table;
++-----------+-------------------------+--------+-------+--------+--------+------+-------+----------+---------+------------+
+| movice_id | title                   | rating | drama | comedy | action | gore | sdifi | for_kids | cartoon | purchased  |
++-----------+-------------------------+--------+-------+--------+--------+------+-------+----------+---------+------------+
+|         1 | Monsters, Inc.          | G      | F     | T      | F      | F    | F     | T        | T       | 2002-03-06 |
+|         2 | The Godfather           | R      | F     | F      | T      | T    | F     | F        | F       | 2001-02-05 |
+|         3 | Gone with the Wind      | G      | T     | F      | F      | F    | F     | F        | F       | 1999-11-20 |
+|         4 | American Pie            | R      | F     | T      | F      | F    | F     | F        | F       | 2003-04-19 |
+|         5 | Nightmare on Elm Street | R      | F     | F      | T      | T    | F     | F        | F       | 2003-04-19 |
+|         6 | Casablanca              | PG     | T     | F      | F      | F    | F     | F        | F       | 2001-02-05 |
++-----------+-------------------------+--------+-------+--------+--------+------+-------+----------+---------+------------+
+6 rows in set (0.002 sec)
+```
+
+위의 테이블을 만든 방법은 다음과 같습니다.
 
 ```sql
 --사용할 테이블 입력--
 USE gregs_list;
 
 --테이블 생성--
+CREATE TABLE movie_table(
+    movice_id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(100),
+    rating VARCHAR(3),
+    drama CHAR(1),
+    comedy CHAR(1),
+    action CHAR(1),
+    gore CHAR(1),
+    sdifi CHAR(1),
+    for_kids CHAR(1),
+    cartoon CHAR(1),
+    purchased Date,
+    PRIMARY KEY (movice_id));
+
+--데이터 입력--
+INSERT INTO movie_table
+    VALUE
+        (NULL, 'Monsters, Inc.', 'G', 'F', 'T', 'F', 'F', 'F','T', 'T', '2002-03-06'),
+        (NULL, 'The Godfather', 'R', 'F', 'F', 'T', 'T', 'F','F', 'F', '2001-02-05'),
+        (NULL, 'Gone with the Wind', 'G', 'T', 'F', 'F', 'F', 'F','F', 'F', '1999-11-20'),
+        (NULL, 'American Pie', 'R', 'F', 'T', 'F', 'F', 'F','F', 'F', '2003-04-19'),
+        (NULL, 'Nightmare on Elm Street', 'R', 'F', 'F', 'T', 'T', 'F','F', 'F', '2003-04-19'),
+        (NULL, 'Casablanca', 'PG', 'T', 'F', 'F', 'F', 'F','F', 'F', '2001-02-05');
+```
+
+이 테이블을 토대로 7개의 장르별로 되어 있는 새 진열대에 비디오를 놓으려고 합니다. 그러나 테이블 자료를 잘 살펴보면, 여러가지 문제가 있습니다. 먼저 비디오가 여러 장르에 걸쳐 있는 것을 확인할 수 있습니다. 여러 장르에 걸쳐 비디오 영화가 어느 장르에 속하는지 정확히 알기 어렵습니다. 
+참, 거짓 값에 우선 순위가 없기 때문에, 코미디 섹션에 공포 영화 비디오가 들어갈 수도 있습니다. 마지막으로 참, 거짓으로 데이터를 채우는 것에는 시간이 오래걸리며, 에러가 발생할 가능성도 커집니다. 따라서 새롭게 진열을 하기 위해서는 장르 카테고리가 필요합니다.
+
+ALTER를 사용하여 CATEGORY COLUMN을 추가해줘봅시다.
+
+
+```sql
+ALTER TABLE movie_table ADD COLUMN category VARCHAR(100);
+```
+
+```bash
+MariaDB [gregs_list]> ALTER TABLE movie_table ADD COLUMN category VARCHAR(100);
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+```sql
+UPDATE movie_table SET category = 'drama' WHERE drama = 'T';
+UPDATE movie_table SET category = 'comedy' WHERE comedy = 'T';
+UPDATE movie_table SET category = 'action' WHERE action = 'T';
+UPDATE movie_table SET category = 'horror' WHERE gore = 'T';
+UPDATE movie_table SET category = 'scifi' WHERE scifi = 'T';
+UPDATE movie_table SET category = 'family' WHERE for_kids = 'T';
+UPDATE movie_table SET category = 'family' WHERE cartoon = 'T' AND rating = 'G';
+UPDATE movie_table SET category = 'misc' WHERE cartoon = 'T' AND rating <> 'G';
+
+SELECT * FROM movie_table;
+```
+
+```bash
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'drama' WHERE drama = 'T';
+Query OK, 2 rows affected (0.003 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'comedy' WHERE comedy = 'T';
+Query OK, 2 rows affected (0.002 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'action' WHERE action = 'T';
+Query OK, 2 rows affected (0.001 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'horror' WHERE gore = 'T';
+Query OK, 2 rows affected (0.001 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'scifi' WHERE scifi = 'T';
+ERROR 1054 (42S22): Unknown column 'scifi' in 'where clause'
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'family' WHERE for_kids = 'T';
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'family' WHERE cartoon = 'T' AND rating = 'G';
+Query OK, 0 rows affected (0.002 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+MariaDB [gregs_list]> UPDATE movie_table SET category = 'misc' WHERE cartoon = 'T' AND rating <> 'G';
+Query OK, 0 rows affected (0.003 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [gregs_list]> SELECT * FROM movie_table;
++-----------+-------------------------+--------+-------+--------+--------+------+-------+----------+---------+------------+----------+
+| movice_id | title                   | rating | drama | comedy | action | gore | sdifi | for_kids | cartoon | purchased  | category |
++-----------+-------------------------+--------+-------+--------+--------+------+-------+----------+---------+------------+----------+
+|         1 | Monsters, Inc.          | G      | F     | T      | F      | F    | F     | T        | T       | 2002-03-06 | family   |
+|         2 | The Godfather           | R      | F     | F      | T      | T    | F     | F        | F       | 2001-02-05 | horror   |
+|         3 | Gone with the Wind      | G      | T     | F      | F      | F    | F     | F        | F       | 1999-11-20 | drama    |
+|         4 | American Pie            | R      | F     | T      | F      | F    | F     | F        | F       | 2003-04-19 | comedy   |
+|         5 | Nightmare on Elm Street | R      | F     | F      | T      | T    | F     | F        | F       | 2003-04-19 | horror   |
+|         6 | Casablanca              | PG     | T     | F      | F      | F    | F     | F        | F       | 2001-02-05 | drama    |
++-----------+-------------------------+--------+-------+--------+--------+------+-------+----------+---------+------------+----------+
+6 rows in set (0.001 sec)
+```
+
+다른 테이블 구성을 만들어서 다시 해봅시다.
+
+```SQL
+DROP TABLE movie_table;
+```
+
+--테이블 생성--
+
+```sql
 CREATE TABLE movie_table(title VARCHAR(100), rating VARCHAR(3),
      drama CHAR(1), comedy CHAR(1), action CHAR(1), sf CHAR(1),
      cartoon CHAR(1), category VARCHAR(100));
+```
 
 --데이터 입력--
+
+```sql
 INSERT INTO movie_table
     VALUE
         ('Big Adventure', 'G', 'F','F','F','F','T', NULL),
         ('Mad Clowns', 'R', 'F','T','F','F','F', NULL),
         ('Paraskavedekatriaphobia', 'R', 'F','F','T','T','F', NULL),
-        ('End of the Line', 'PG','T','F','F','T','T', NULL),
+        ('End of the Line', 'PG','T','F','F','T','T  ', NULL),
         ('Take it back', 'G', 'F','T','F','F','F', NULL),
         ('Angry Pirate', 'PG', 'T','F','F','F','F', NULL);
 ```
+
+
 
 `movie_table`을 열어보면 아래와 같이 테이블이 셋팅된 것을 확인할 수 있다.
 
@@ -44,7 +183,10 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 6 rows in set (0.001 sec)
 ```
 
-`category`는 각 영화의 장르를 나타낸다. 하지만 위에 보면 열의 `category`가 전부 `NULL`값으로 되어 있다. 해당 열에 값들을 채워보자. 각 영화의 장르는 앞 열의 값들을 통해 알 수 있다. 예를 들어 `Big Adventure`의 경우 열 `cartoon`의 값만 `T` 즉, True 이므로 장르가 cartoon 인 것을 알 수 있다. 이를 쿼리로 나타내면 다음과 같다.
+`category`는 각 영화의 장르를 나타낸다. 하지만 위에 보면 열의 `category`가 전부 `NULL`값으로 되어 있다. 해당 열에 값들을 채워보자. 
+우리에겐 이미 각 장르에 대한 정보가 T와 F로 나눠져있는 각 열들이 있다. 각 영화의 장르는 앞 열의 값들을 통해 알 수 있다. 
+예를 들어 `Big Adventure`의 경우 열 `cartoon`의 값만 `T` 즉, True 이므로 장르가 cartoon 인 것을 알 수 있다. 
+이를 쿼리로 나타내면 다음과 같다.
 
 ```sql
 UPDATE movie_table SET category = 'drama' WHERE drama = 'T';
@@ -70,13 +212,20 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 
 열 `drama`의 값이 'T'인 레코드 `Angry Pirate`는 `category` 값이 "drama"로 변경되었으며, 레코드 `End of the Line`는 `category` 값이 "cartoon"로 변경되었다.
 
-하지만 `End of the Line`를 주목해보자. 해당 레코드는 열 `drama`에만 True의 값을 가지는 것은 아니라 열 `sf`, `cartoon`에서도 True 값을 가진다.
+고민되는 부분이 있다.
+그렇다면 장르가 두 가지 이상으로 겹치는 경우는 어떻게 해야할까?
+
+사례를 통해 보자. `End of the Line`를 주목해보자.
+해당 레코드는 열 `drama`에만 True의 값을 가지는 것은 아니라 열 `sf`, `cartoon`에서도 True 값을 가진다.
+이럴 때 자료는 update문을 반영해서 어떤 식으로 산출 될까?
+
 
 **이런 경우, 마지막으로 실행된 UPDATE문 결과가 적용된다.**
 
-즉, `End of the Line`의 `category`는 drama -> cartoon 순으로 변경되어 결과적으로는 `cartoon`값을 가지는 것이다.
+즉, `End of the Line`의 `category`는 drama -> cartoon 순으로 변경되어 결과적으로는 `cartoon`의 값을 가지는 것이다.
 
-하지만 `End of the Line`의 `category`를 "drama"로 유지하고 싶다면 이런 경우 어떻게 해야 할까? 바로 조건문을 사용하면 된다.
+그렇다면 `End of the Line`의 `category`를 "drama"로 유지하고 싶다면 이런 경우 어떻게 해야 할까? 바로 조건문을 사용하면 된다.
+
 
 ## 조건문 명령어 CASE
 
@@ -95,7 +244,11 @@ UPDATE movie_table
         END;
 ```
 
-위 코드는 WHEN 조건에 해당되는 경우에 값을 변경하고 바로 종료한다. 위 코드의 결과는 다음과 같다.
+위 코드는 WHEN 조건에 해당되는 경우에 값을 변경하고 바로 종료한다. 
+이 부분이 핵심이다. 단순 UPDATE문은 결과가 덮였지만, CASE 조건문의 경우
+해당되는 값을 반환하고 나면 그 다음 단계로 넘어가기에 한번 산출된 값은 덮여지지 않는다.
+
+위 코드의 결과는 다음과 같다.
 
 ```sql
 MariaDB [gregs_list]> SELECT * FROM movie_table;
@@ -116,7 +269,14 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 
 ## 데이터 정렬하기
 
-만약 위 테이블을 열 `title`의 값 알파벳 순서를 기준으로 정렬하고 싶다고 생각해보자. 실제로 해당 테이블의 순서는 엉망이다. 이럴 때 명령어 `ORDER BY`를 사용한다. 아래의 코드를 입력해보고 이전과 비교해보자.
+데이터를 다루다보면 문자, 숫자형 자료를 내림차순 혹은 오름차순 등의 순서로 정렬하고 싶을 때가 있다.
+아래부터는 데이터를 정렬하는 법을 살펴본다.
+
+만약 위 테이블을 열 `title`의 값 알파벳 순서를 기준으로 정렬하고 싶다고 생각해보자. 실제로 해당 테이블의 순서는 엉망이다. 이럴 때 명령어 `ORDER BY`를 사용한다. 다시 한번 기억하자. 정렬은 'ORDER BY'다 !
+
+그럼,
+아래의 코드를 입력해보고 이전과 비교해보자.
+
 
 ```sql
 SELECT * FROM movie_table
@@ -153,7 +313,8 @@ SELECT * FROM movie_table
 
 `title`이 알파벳 순서로 작동하는 것을 확인할 수 있다.
 
-그렇다면 명령어 `ORDER BY`는 어떤 순서로 정렬할까? 이를 확인해보기 위해서 아래의 테이블을 하나 생성한 후 정렬해보자.
+그렇다면 명령어 `ORDER BY`는 어떤 기준으로 순서를 정렬할까? 
+이를 확인해보기 위해서 아래의 테이블을 하나 생성한 후 정렬해보자.
 
 ```sql
 --테스트 테이블 생성--
@@ -236,9 +397,16 @@ MariaDB [gregs_list]> SELECT * FROM test ORDER BY test;
 
 실험 결과 명령어 `ORDER BY`의 순서는 기호 - 숫자 - 알파벳이고, 알파벳의 경우 대소문자 구분을 하지 않는다.
 
+다시 한번 기억하자. 
+기호 / 숫자/ 알파벳 순이다.
+
+
 ## 여러 열로 정렬하기
 
-만약에 하나의 열이 아니라 여러 개의 열을 기준으로 정리하고 싶다면 어떻게 쿼리를 보내야할까? 예를 들어서 `movie_table`을 `category`를 가장 큰 기준으로 정렬하고 이후 세부적으로는 `title`의 알파벳 순으로 정렬하고 싶다고 가정해보자.
+다음은 정렬할 것이 한 개의 열이 아닌 경우의 케이스다. 
+즉, 하나의 열이 아니라 여러 개의 열을 기준으로 각각 정리하고 싶다면 어떻게 쿼리를 보내야할까? 
+
+예를 들어서 `movie_table`을 `category`를 가장 큰 기준으로 정렬하고 이후 세부적으로는 `title`의 알파벳 순으로 정렬하고 싶다고 가정해보자.
 
 그러면 아래와 같이 쿼리를 보내면 된다.
 
@@ -319,7 +487,16 @@ MariaDB [gregs_list]> SELECT * FROM movie_table
 
 하나만 내림차순으로 변경했던 테이블과 비교해보면 `category`도 역순으로 정렬된 것을 확인할 수 있다.
 
-## 쿼리로 계산하기
+## 추가적인 질문!! 업무를 하다보면 단순히 정렬만 하진 않는다. 직원들의 매출액 합산액도 보고 싶고,
+## 계산도 해서 깔끔하게 이름순으로 내림차순으로 자료를 뽑아보고 싶을 때가 있을 것이다. 이럴 땐 어떻게 해야할까?
+
+위의 질문을 해결하기 아래의 설명을 따라하자.
+
+## → GROUP BY를 이용해 SUM(), AVG()와 정렬을 함께 해보자 !
+
+
+
+## 쿼리로 계산해서 정렬해보기
 
 지금부터는 숫자가 포함된 데이터를 다룰 예정이다. 기존에 생성했던 `easy_drinks` 테이블에 데이터 몇개만 추가하여 사용할 것이다. 아래의 코드를 통해 데이터를 생성하자.
 
@@ -366,6 +543,7 @@ SELECT SUM(amount1) FROM easy_drinks
 ```
 
 위 코드는 음료 이름이 'Oh my Gosh'인 레코드의 `amount1`을 합한 값을 보여준다. 결과는 아래와 같다.
+'oh my gosh' 행의 amount1 값이 두개인데 각각 1과 5다. 두 개를 합한 값이 6이 나올 것이다. 아래르 보자.
 
 ```sql
 +--------------+
@@ -376,7 +554,10 @@ SELECT SUM(amount1) FROM easy_drinks
 1 row in set (0.010 sec)
 ```
 
-만약에 각각의 음료들의 `amount1`을 합한 값을 알고 싶다면 어떻게 해야할까? 그럴 때는 명령어 `GROUP BY`를 사용하면 된다. 명령어 `GROUP BY`는 지정되는 카테고리의 결과들을 총체적으로 보여준다.
+만약에 각각의 음료들의 `amount1`을 합한 값을 알고 싶다면 어떻게 해야할까? 
+그럴 때는 명령어 `GROUP BY`를 사용하면 된다. 명령어 `GROUP BY`는 지정되는 카테고리의 결과들을 총체적으로 보여준다.
+말 그대로 그룹을 기준으로 결과를 만들어주는 것이다.
+
 
 ```sql
 SELECT drink_name,SUM(amount1) FROM easy_drinks
@@ -403,7 +584,8 @@ MariaDB [gregs_list]> SELECT drink_name,SUM(amount1) FROM easy_drinks GROUP BY d
 
 ## 평균 명렁어 AVG
 
-명령어 `AVG`는 평균을 구해준다. 즉, `SUM`과 사용방법은 동일하지만 더하는 것이 아니라 평균을 구해주는 것이다. 아래의 코드를 입력하고 결과를 확인해보자.
+명령어 `AVG`는 평균을 구해준다. 즉, `SUM`과 사용방법은 동일하지만 더하는 것이 아니라 평균을 구해주는 것이다. 
+아래의 코드를 입력하고 결과를 확인해보자.
 
 ```sql
 SELECT drink_name,AVG(amount1) FROM easy_drinks
@@ -425,7 +607,8 @@ SELECT drink_name,AVG(amount1) FROM easy_drinks
 
 ## MIN과 MAX
 
-최솟값으 구해주는 명령어 `MIN`과 최댓값을 구해주는 명령어인 `MAX`도 위의 연산 명령어들과 동일하다. 아래의 코드를 입력하고 결과를 확인해보자.
+최솟값을 구해주는 명령어 `MIN`과 최댓값을 구해주는 명령어인 `MAX`도 위의 연산 명령어들과 동일하다. 
+아래의 코드를 입력하고 결과를 확인해보자.
 
 ### MIN test
 
@@ -526,6 +709,11 @@ MariaDB [gregs_list]> SELECT COUNT(drink_name) FROM easy_drinks;
 ## 중복 제거하는 명령어 DISTINCT
 
 명령어 `DISTINCT`는 해당 데이터의 고유값들만 보여준다.
+비유하자면 엑셀의 중복값 제거 기능과 비슷하다. 
+이 easy_drink 테이블의 경우 drink_name이 중복되어 있다. 중복된 값을 날리고
+drink_name을 보고 싶을 땐 어떻게 할까?
+그럴 때 쓰는게 DISTINCT다.
+
 
 ```sql
 SELECT DISTINCT drink_name FROM easy_drinks;
@@ -546,7 +734,10 @@ SELECT DISTINCT drink_name FROM easy_drinks;
 
 여기서는 NULL값도 포함되는 것을 확인할 수 있다.
 
+
+갯수도 알 수 있다.
 만약 중복 제거된 고유값이 몇 개인지 알고 싶다면 아래처럼 쿼리를 주자.
+
 
 ```sql
 SELECT COUNT(DISTINCT drink_name) FROM easy_drinks;
@@ -605,9 +796,10 @@ SELECT drink_name,SUM(amount1) FROM easy_drinks
 2 rows in set (0.002 sec)
 ```
 
-원하는 정보만 바로 받아볼 수 있다.
+원하는 정보만 바로 받아볼 수도 있다.
+만약 특정 구간만을 제한해서 결과를 보고 싶다면 어떻게 해야 할까? 
 
-만약 특정 구간만을 제한하고 싶다면 어떻게 해야 할까? 아래의 코드는 `amount1`의 합이 큰 음료 중에서 3등부터 5등까지만 보여준다.
+아래의 코드는 `amount1`의 합이 큰 음료 중에서 3등부터 5등까지만 보여준다.
 
 ```sql
 SELECT drink_name,SUM(amount1) FROM easy_drinks
@@ -616,7 +808,8 @@ SELECT drink_name,SUM(amount1) FROM easy_drinks
     LIMIT 2,3;
 ```
 
-위 코드는 3번째부터 아래로 3개의 데이터를 보여달라는 의미이다. SQL에서는 0부터 순서로 시작하기 때문에 2가 세 번째 레코드를 의미한다. 결과는 다음과 같다.
+위 코드는 3번째부터 아래로 3개의 데이터를 보여달라는 의미이다. 
+SQL에서는 0부터 순서로 시작하기 때문에 2가 세 번째 레코드를 의미한다. 결과는 다음과 같다.
 
 ```sql
 +------------------+--------------+
