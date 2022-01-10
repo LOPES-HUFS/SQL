@@ -1,5 +1,79 @@
 # 여러 개의 테이블 다루기 (multi-table database design)
 
+다음 '나이젤에게 사랑 찾아주기'에서는 `my_contacts`이라는 테이블을 사용한다. 이 테이블은 지금까지 이 교재를 잘 따라왔다면 `gregs_list`이라는 데이터 베이스에 `my_contacts`가  앞에서 만들어져 있을 것이다. 확인해보자.
+
+```sql
+MariaDB [(none)]> USE gregs_list;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [gregs_list]> DESC my_contacts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| contact_id | int(11)      | NO   | PRI | NULL    | auto_increment |
+| phone      | varchar(10)  | YES  |     | NULL    |                |
+| last_name  | varchar(30)  | YES  |     | NULL    |                |
+| first_name | varchar(20)  | YES  |     | NULL    |                |
+| email      | varchar(50)  | YES  |     | NULL    |                |
+| gender     | char(1)      | YES  |     | NULL    |                |
+| birthday   | date         | YES  |     | NULL    |                |
+| profession | varchar(50)  | YES  |     | NULL    |                |
+| location   | varchar(50)  | YES  |     | NULL    |                |
+| status     | varchar(20)  | YES  |     | NULL    |                |
+| interests  | varchar(100) | YES  |     | NULL    |                |
+| seeking    | varchar(100) | YES  |     | NULL    |                |
+| city       | varchar(50)  | YES  |     | NULL    |                |
+| state      | varchar(2)   | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+14 rows in set (0.003 sec)
+```
+
+만약 다음과 같은 메세지가 나온다면 `gregs_list` 데이터베이스가 없는 것이다. 물론 `my_contacts` 테이블도 없을 것이다.
+
+```sql
+MariaDB [(none)]> USE gregs_list;
+ERROR 1049 (42000): Unknown database 'gregs_list'
+```
+
+그러면 만들어 보자. 우선 데이터베이스를 만들고 이곳에 `my_contacts`을 만들자.
+
+```sql
+CREATE DATABASE gregs_list;
+USE gregs_list;
+
+CREATE TABLE my_contacts(
+    contact_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    last_name VARCHAR(30) default NULL,
+    first_name VARCHAR(20) default NULL,
+    email VARCHAR(50) default NULL,
+    birthday date default NULL,
+    profession VARCHAR(50) default NULL,
+    phone VARCHAR(10) default NULL,
+    gender char(1) default NULL,
+    city VARCHAR(50),
+    state VARCHAR(2),
+    status VARCHAR(20) default NULL,
+    interests VARCHAR(100) default NULL,
+    seeking VARCHAR(100) default NULL
+    );
+
+INSERT INTO my_contacts(
+    contact_id, last_name, first_name, email, birthday, profession, phone, gender, city, state, status, interests, seeking
+)
+VALUES (
+    NULL, 'Fiore', 'Carla', 'cfiore@fioreanimalclinic.com', '1974-01-07', 'Veterinarian', '5557894855', 'F', 'Round Rock', 'TX', 'single', 'horseback riding, movies, animals, mystery novels, hiking', 'single M'
+);
+
+INSERT INTO my_contacts(
+    contact_id, last_name, first_name, email, birthday, profession, phone, gender, city, state, status, interests, seeking
+)
+VALUES (
+    NULL, 'Ferguson', 'Alexis', 'alexis@yahoo.com', '1956-09-19', 'Artist', '5550983474', 'F', 'Pflugerville', 'MA', 'single', 'animals, Taxidermy', 'single M'
+);
+```
+
 ## 나이젤에게 사랑 찾아주기
 
 외로운 친구 나이젤에게 관심사((interests)가 같은 여자를 소개시켜주자!
@@ -34,15 +108,69 @@ AND status = 'single'
 /* 같은 주 */
 AND state = 'TX'
 /* 찾는 사람도 미혼 남자를 찾아야 한다. */
-AND seeking = '%single M%'
+AND seeking LIKE '%single M%'
 /* 나이 차이가 아래 위로 5살 차이!*/
 AND birthday > '1970-08-28'
 AND birthday < '1980-08-28'
 /* 관심사 3개가 모두 같으면 좋겠다! */
 AND interests LIKE '%animals%'
-AND interests LIKE '%horsebackriding%'
+AND interests LIKE '%horseback riding%'
 AND interests LIKE '%movies%';
 ```
+
+주석이 포함되어 있으면 에러가 발생할 수 있으니 아래 코드를 사용하자.
+
+```sql
+SELECT * FROM my_contacts
+WHERE gender = 'F'
+AND status = 'single'
+AND state = 'TX'
+AND seeking LIKE '%single M%'
+AND birthday > '1970-08-28'
+AND birthday < '1980-08-28'
+AND interests LIKE '%animals%'
+AND interests LIKE '%horseback riding%'
+AND interests LIKE '%movies%';
+```
+
+직접 실행하면 다음과 같다. 참고로 결과는 생략했다.
+
+```sql
+MariaDB [gregs_list]> SELECT * FROM my_contacts
+    -> WHERE gender = 'F'
+    -> AND status = 'single'
+    -> AND state = 'TX'
+    -> AND seeking LIKE '%single M%'
+    -> AND birthday > '1970-08-28'
+    -> AND birthday < '1980-08-28'
+    -> AND interests LIKE '%animals%'
+    -> AND interests LIKE '%horseback riding%'
+    -> AND interests LIKE '%movies%';
+```
+
+다른 친구 레기스도 여자 친구를 소개해달라고 합니다. 나이차가 다섯 살 아래 여자를 찾고 있습니다.
+
+레기스의 데이터
+
+- 일련변호(contact_id): 873
+- 성(last_name): 설리반(Sullivan)
+- 이름(first_name): 나이젤(Regis)
+- 전화번호(phone): 5552311122
+- 이메일(email): me@kathieleeisaflake.com
+- 성별(gender): M
+- 생일(birthday): 1955-03-20
+- 직업(profession): 코메디언(Comedian)
+- 도시(city): 오스틴(Cambridge)
+- 주(state): 텍사스(MA)
+- 결혼여부(status): 미혼(single)
+- 관심사(interests): 동물(animals), 카드 교환(trading cards), 보물찾기(geocashing)
+- 원하는 것(seeking): 미혼 여자(single F)
+
+`my_contacts`에 자료가 많다고 가정하면 위와 같이 `AND interests LIKE '%animals%'`과 같은 형식을 많이 사용한다면 결과가 느리게 나올 수 있다. 빠르게 하기 위해 `interests`에서 `animals` 하나만 사용해서 찾는 쿼리를 작성하면 다음과 같다.
+
+(요기에 내용을 추가한다.)
+
+문제가 발생했다. 레기스를 위해 찾아준 사람은 동물도 좋아하지만, 아주 심각한 다른 취미도 있었다. 이런 문제를 해결하기 위하여 만약 `interests`을 분리하여 `interests1`, `interests2`과 같이 여러 개의 컬럼을 만든다고 해도 쿼리가 간단해지지 않는다. 원자적 대이터에 대한 규칙도 위반하게 된다.
 
 초기에 테이블을 잘 설계하면 쿼리의 복잡도가 낮아지며, 원하는 데이터를 더 쉽게 찾을 수 있다. 그렇다면 테이블을 잘 설계하는 방법은 무엇인가? 그 방법 중 하나가 여러 개의 테이블을 사용하는 것이다. 여러 개의 테이블을 사용하면 각 카테고리에 대한 세부 정보들을 체계적으로 정리할 수 있다.
 
@@ -273,11 +401,11 @@ SELECT * FROM clown_info;
 
 위의 스키마를 예시로 설명하면서 테이블간의 관계를 하나씩 살펴보자.
 
-1. 일대일 관계
+1.일대일 관계
 
 일대일 관계는 이해하기 가장 쉬운 간단한 형태이다. 즉, **부모 테이블 기본키 = 자식 테이블 참조키**라고 정의할 수 있다. 부모 테이블의 하나의 레코드와 자식의 참조키가 하나인 경우이다. 물론 부모 테이블의 기본키 순서와 자식 테이블의 참조키 순서가 다를 순 있지만, 하나의 부모 테이블의 기본키가 자식 테이블의 참조키 여러 개로 들어가지는 않는다.
 
-2. 일대다 관계
+2.일대다 관계
 
 일대다 관계는 부모 테이블 기본키 하나가 자식 테이블의 참조키로 여러번 들어가 있는 경우이다. 예를 들면 위에서 살펴봤던 부모 테이블인 `clown_info`와 자식 테이블인 `activities`가 여기에 해당한다. `clown_info`에서 기본키인 `2`가 자식 테이블인 `activities`에 여러 번 들어가 있는 것을 확인할 수 있다.
 
@@ -291,7 +419,7 @@ SELECT * FROM clown_info;
 2 rows in set (0.001 sec)
 ```
 
-3. 다대다 관계
+3.다대다 관계
 
 마지막으로 다대다 관계이다. 이 관게는 두 개의 테이블이 서로 참조키를 가지고 있는 경우이다. `clown_info`와 `activities`를 통해서 해당 설정이 가능한지 살펴보자.
 
