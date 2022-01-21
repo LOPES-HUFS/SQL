@@ -231,6 +231,8 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 
 명령어 `CASE`는 조건을 여러 개 설정하여 그에 따라 값을 변경할 수 있도록 해준다. 아래의 코드를 통해 사용법을 알아보자.
 
+- `CASE`: 여러 개를 한꺼번에 바꾼다.
+
 ```sql
 UPDATE movie_table
     SET category =
@@ -244,6 +246,7 @@ UPDATE movie_table
         END;
 ```
 
+<<<<<<< HEAD
 위 코드는 WHEN 조건에 해당되는 경우에 값을 변경하고 바로 종료한다. 
 이 부분이 핵심이다. 단순 UPDATE문은 결과가 덮였지만, CASE 조건문의 경우
 해당되는 값을 반환하고 나면 그 다음 단계로 넘어가기에 한번 산출된 값은 덮여지지 않는다.
@@ -277,6 +280,8 @@ MariaDB [gregs_list]> SELECT * FROM movie_table;
 그럼,
 아래의 코드를 입력해보고 이전과 비교해보자.
 
+
+- `ORDER BY`: 결과를 언급한 컬럼을 토대로 알바벳으로 정렬한다.
 
 ```sql
 SELECT * FROM movie_table
@@ -439,6 +444,8 @@ MariaDB [gregs_list]> SELECT * FROM movie_table
 
 오름차순이 아니라 내림차순으로 정렬하고 싶을 때는 명령어 `DESC`를 `ORDER BY`에 오든 열 이름 뒤에 붙여주면 된다. 쿼리를 확인해보자.
 
+- `DESC`: 역순으로
+
 ```sql
 SELECT * FROM movie_table
     ORDER BY category, title DESC;
@@ -559,6 +566,8 @@ SELECT SUM(amount1) FROM easy_drinks
 말 그대로 그룹을 기준으로 결과를 만들어주는 것이다.
 
 
+- `GROUP BY`: 공통 컬럼을 가지고 열들을 통합 정리한다(Consolidate rows based on a common column).
+
 ```sql
 SELECT drink_name,SUM(amount1) FROM easy_drinks
     GROUP BY drink_name;
@@ -607,8 +616,12 @@ SELECT drink_name,AVG(amount1) FROM easy_drinks
 
 ## MIN과 MAX
 
+<<<<<<< HEAD
 최솟값을 구해주는 명령어 `MIN`과 최댓값을 구해주는 명령어인 `MAX`도 위의 연산 명령어들과 동일하다. 
 아래의 코드를 입력하고 결과를 확인해보자.
+=======
+최솟값을 구해주는 명령어 `MIN`과 최댓값을 구해주는 명령어인 `MAX`도 위의 연산 명령어들과 동일하다. 아래의 코드를 입력하고 결과를 확인해보자.
+>>>>>>> afa749b7384685187cb9b66225823ee25aa6114b
 
 ### MIN test
 
@@ -821,3 +834,4 @@ SQL에서는 0부터 순서로 시작하기 때문에 2가 세 번째 레코드�
 +------------------+--------------+
 3 rows in set (0.001 sec)
 ```
+
