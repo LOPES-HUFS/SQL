@@ -2,6 +2,18 @@
 
 ```sql
 
+
+새로운 데이터베이스와 TABLE을 사용하여 작업을 진행하려 합니다.
+그래도 코드 입력을 위해 기존 데이터베이스를 일단 불러와봅니다 
+
+USE gregs_list;
+
+새로운 테이블을 추가해봅니다.
+
+
+
+```sql
+
 CREATE TABLE job_current (
     contact_id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(20),
